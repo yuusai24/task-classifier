@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>講座アーカイブ</title>
+<style>
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: #f9f6f1;
+    color: #333;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 16px;
+  }
+
+  .title-block {
+    background: linear-gradient(135deg, #c8a96e, #e8c98a);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .title-block .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+    opacity: 0.85;
+    margin-bottom: 6px;
+  }
+  .title-block h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .section-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+
+  /* 得られること：グリーン系 */
+  .section-gain .section-icon { background: #e6f4ea; }
+  .section-gain .section-title { color: #2e7d32; }
+  .section-gain { border-left: 4px solid #4caf50; }
+
+  /* 重要ポイント：ゴールド系 */
+  .section-points .section-icon { background: #fff8e1; }
+  .section-points .section-title { color: #b8860b; }
+  .section-points { border-left: 4px solid #c8a96e; }
+
+  /* 実践ステップ：ブルー系 */
+  .section-steps .section-icon { background: #e3f2fd; }
+  .section-steps .section-title { color: #1565c0; }
+  .section-steps { border-left: 4px solid #2196f3; }
+
+  /* 一言メモ：ピンク系 */
+  .section-memo .section-icon { background: #fce4ec; }
+  .section-memo .section-title { color: #b71c1c; }
+  .section-memo { border-left: 4px solid #e91e63; }
+
+  .section p {
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 0;
+    color: #444;
+  }
+
+  .point-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .point-list li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    padding: 6px 0 6px 20px;
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .point-list li:last-child { border-bottom: none; }
+  .point-list li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: #c8a96e;
+    font-size: 10px;
+    top: 9px;
+  }
+
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: step;
+  }
+  .step-list li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    padding: 8px 0 8px 40px;
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+    counter-increment: step;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    width: 26px;
+    height: 26px;
+    background: #2196f3;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 7px;
+  }
+
+  .memo-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #c2185b;
+    line-height: 1.8;
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+  <div class="title-block">
+    <div class="label">ARCHIVE</div>
+    <h1>金運爆上げ強化月間</h1>
+  </div>
+
+  <div class="section section-gain">
+    <div class="section-header">
+      <div class="section-icon">✨</div>
+      <div class="section-title">この講座で得られること</div>
+    </div>
+    <p>お金に対して自分が無意識に持っている感情・思い込みを言語化し、お金の滞りをなくして豊かに循環するシステムを創るための第一歩を踏み出せる。</p>
+  </div>
+
+  <div class="section section-points">
+    <div class="section-header">
+      <div class="section-icon">💡</div>
+      <div class="section-title">重要ポイント</div>
+    </div>
+    <ul class="point-list">
+      <li>通帳・レシート・請求書・入金など、お金が絡む場面での自分の感情を正直に見つめることが出発点</li>
+      <li>「お金がないと生活できない」で止まらず、もう一段深く自分の本音を掘り下げることが大事</li>
+      <li>誰かがやってるから自分はやらない、は「私はお金が要らない」と言っているのと同じ</li>
+      <li>在り方が整っている人のもとには、望む出来事・人・お金が自然と引き寄せられる</li>
+      <li>宇宙はお金に真剣に向き合う行動をちゃんと見ている</li>
+      <li>先に書き出した人が得をする。空白のところから書く方が、自分の言葉で出てくる</li>
+    </ul>
+  </div>
+
+  <div class="section section-steps">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <div class="section-title">実践ステップ</div>
+    </div>
+    <ol class="step-list">
+      <li>お金に対して自分が感じること・思っていることを、とにかく書き出す</li>
+      <li>最低5個、できるだけたくさん（全員合わせて目標50個）</li>
+      <li>翌日10:30のライブまでにコメントとして提出する</li>
+      <li>次回ライブで全員の書き出しをもとに、次のワークへ進む</li>
+    </ol>
+  </div>
+
+  <div class="section section-memo">
+    <div class="section-header">
+      <div class="section-icon">💌</div>
+      <div class="section-title">受講生への一言メモ</div>
+    </div>
+    <p class="memo-text">アーカイブで見ているあなたも、自分事としてやってみてください。書き出すという行動そのものが、お金との関係を変えていきます。</p>
+  </div>
+
+</body>
+</html>
