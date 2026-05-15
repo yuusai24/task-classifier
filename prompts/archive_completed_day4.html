@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>講座アーカイブ</title>
+<style>
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: #e8f4fd;
+    color: #333;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 16px;
+  }
+  .title-block {
+    background: #ff00ff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .title-block .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+    opacity: 0.85;
+    margin-bottom: 6px;
+  }
+  .title-block h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+    line-height: 1.4;
+  }
+  .section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .section-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .section-gain .section-icon { background: #c1ff72; }
+  .section-gain .section-title { color: #2e7d32; }
+  .section-gain { border-left: 4px solid #c1ff72; }
+  .section-points .section-icon { background: #fff8e1; }
+  .section-points .section-title { color: #b8860b; }
+  .section-points { border-left: 4px solid #c8a96e; }
+  .section-steps .section-icon { background: #e3f2fd; }
+  .section-steps .section-title { color: #1565c0; }
+  .section-steps { border-left: 4px solid #2196f3; }
+  .section-memo .section-icon { background: #fce4ec; }
+  .section-memo .section-title { color: #b71c1c; }
+  .section-memo { border-left: 4px solid #e91e63; }
+  .section p {
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 0;
+    color: #444;
+  }
+  .point-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .point-list li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    padding: 6px 0 6px 20px;
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .point-list li:last-child { border-bottom: none; }
+  .point-list li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: #c8a96e;
+    font-size: 10px;
+    top: 9px;
+  }
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: step;
+  }
+  .step-list li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    padding: 8px 0 8px 40px;
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+    counter-increment: step;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    width: 26px;
+    height: 26px;
+    background: #2196f3;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 7px;
+  }
+  .memo-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #c2185b;
+    line-height: 1.8;
+    margin: 0;
+  }
+  .alert-box {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #7d5a00;
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+  <div class="title-block">
+    <div class="label">ARCHIVE</div>
+    <h1>金運爆上げ強化月間</h1>
+  </div>
+
+  <div class="section section-gain">
+    <div class="section-header">
+      <div class="section-icon">✨</div>
+      <div class="section-title">この講座で得られること</div>
+    </div>
+    <p>お金への感情と愛への感情が同じであることに気づき、家族への「見下し」をやめることでお金の循環が大きく変わる仕組みが理解できる。自分の内側に何があるかを正直に見る力が身につく。</p>
+  </div>
+
+  <div class="section section-points">
+    <div class="section-header">
+      <div class="section-icon">💡</div>
+      <div class="section-title">重要ポイント</div>
+    </div>
+    <ul class="point-list">
+      <li>お金への感情の言葉が少ない（16個）のは、感情に蓋をしてきた証拠。悪いことではなく、そうせざるを得なかった理由がある</li>
+      <li>お金に対する思いと愛に対する思いは同じ。愛にプラスのイメージを持てるなら、同じようにお金にも向けられる</li>
+      <li>エセポジティブはNG。請求書を見てズーンと感じたら、まずその感情をちゃんと言語化する。無理に前向きにしない</li>
+      <li>家族（お父さん・お母さん・旦那さん）への「心配性」「頑固」などの批評は、見下しにあたる。これがお金の循環を止める</li>
+      <li>見下しをやめるには、マイナスで終わらせずに「〜だからこうだった」と愛に変換する言葉をつなげる</li>
+      <li>お金は人と同じ。大切にされる人のところに、仲間を連れて戻ってくる</li>
+    </ul>
+  </div>
+
+  <div class="section section-steps">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <div class="section-title">実践ステップ</div>
+    </div>
+    <ol class="step-list">
+      <li>アーカイブをここで一時停止し、お母さん・お父さん・旦那さんに対して思っていることをスプレッドシートに書き出す</li>
+      <li>書き出した中でマイナスの言葉を探し、「〜だけど、〜してくれていた」と愛に変換する</li>
+      <li>宿題：お父さんに「お金ちょうだい」と伝える（直接・電話・LINEどれでもOK）</li>
+      <li>お父さんがいない方はパートナーに。両方いない方は、いた時のことを思い浮かべながら内側を感じる</li>
+      <li>5月19日（火）午前中までに、やってみた感想をLINEまたはマスターグループセッションで報告する</li>
+    </ol>
+    <div class="alert-box">
+      ⚠️ 宿題の目的はお金をもらうことではありません。<br>
+      自分がどんな感情・抵抗・設定を持っているかを感じることが目的です。<br>
+      意図は後から話してOK。先に説明するのはなし。
+    </div>
+  </div>
+
+  <div class="section section-memo">
+    <div class="section-header">
+      <div class="section-icon">💌</div>
+      <div class="section-title">受講生への一言メモ</div>
+    </div>
+    <p class="memo-text">ざわざわする、怖い、恥ずかしい——その感情が出てきたこと自体が大正解。気づけた自分に花丸をつけてあげて。やった人だけが、次のステージへ進める。</p>
+  </div>
+
+</body>
+</html>
