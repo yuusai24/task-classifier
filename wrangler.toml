@@ -1,0 +1,7 @@
+name = "yuusai-feedback"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding  = "DB"
+database_name = "yuusai-school"
+database_id   = "YOUR_DATABASE_ID_HERE"
