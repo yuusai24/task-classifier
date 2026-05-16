@@ -48,10 +48,9 @@ if __name__ == "__main__":
     csv_path = "docs/01_受講生カルテ.csv"
     students = load_students(csv_path)
 
-    # かすみんさん（1名分）のデモ
-    kasumi = students[0]
-    print(f"=== {kasumi['仮名']} さんへの今週のフィードバック ===\n")
-    feedback = generate_feedback(kasumi)
-    print(feedback)
-    print("\n" + "="*40)
-    print(f"文字数: {len(feedback)}文字")
+    for student in students:
+        print(f"=== {student['仮名']} さんへの今週のフィードバック ===\n")
+        feedback = generate_feedback(student)
+        print(feedback)
+        print("\n" + "="*40)
+        print(f"文字数: {len(feedback)}文字\n")
