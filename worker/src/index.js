@@ -1,9 +1,18 @@
 export default {
   async scheduled(event, env, ctx) {
+    const now = new Date();
+    const day = now.getUTCDay();
+
+    let messageType;
+    if (day === 1) messageType = "monday";
+    else if (day === 3) messageType = "wednesday";
+    else if (day === 5) messageType = "friday";
+    else return;
+
     const students = await env.DB.prepare("SELECT * FROM students").all();
 
     for (const student of students.results) {
-      const feedback = await generateFeedback(student, env.ANTHROPIC_API_KEY);
+      const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY);
       await sendLine(student.id, feedback, env.LINE_CHANNEL_ACCESS_TOKEN);
       await env.DB.prepare(
         "UPDATE students SET last_feedback_at = ? WHERE id = ?"
@@ -12,17 +21,25 @@ export default {
   }
 };
 
-async function generateFeedback(student, apiKey) {
+async function generateFeedback(student, messageType, apiKey) {
+  const typePrompts = {
+    monday: `月曜日のマインドセットメッセージを送ります。今週も頑張れる気持ちになれるよう、受講生の仕事・状況を踏まえた前向きな言葉と、今週意識してほしいことを1つ伝えてください。`,
+    wednesday: `水曜日の中間チェックインメッセージを送ります。「今どんな感じ？」という雰囲気で、今週の半分を過ごした受講生に寄り添い、状況を聞きながら励ます内容にしてください。`,
+    friday: `金曜日の週間お疲れさまメッセージを送ります。今週1週間を労い、受講生の成長を認め、週末をゆっくり過ごしてほしいという温かい内容にしてください。`
+  };
+
   const prompt = `あなたは女性起業家・副業ママのビジネスコーチ「友彩（ゆうさい）」のAIアシスタントです。
-受講生へのLINEフィードバックメッセージを作成してください。
+受講生へのLINEメッセージを作成してください。
 
 【ルール】
 - 200〜300文字以内
 - 受講生の仕事・状況を具体的に言及する
 - 自然な関西弁を混ぜる（「やで」「やね」程度）
 - 個人の家族状況などは文中に書かない
-- 来週の小さなアクションを1つ提案する
-- 締めは「応援してるよ」系で終わる
+- 締めは温かい言葉で終わる
+
+【メッセージの種類】
+${typePrompts[messageType]}
 
 【受講生情報】
 仮名: ${student.name}

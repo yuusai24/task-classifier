@@ -8,4 +8,4 @@ database_name = "task-classifier"
 database_id = "80c22da8-453a-4926-ad94-5b5a613ec788"
 
 [triggers]
-crons = ["0 0 * * 1"]
+crons = ["0 0 * * 1", "0 0 * * 3", "0 0 * * 5"]
