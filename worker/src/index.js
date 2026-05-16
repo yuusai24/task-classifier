@@ -1,18 +1,10 @@
 export default {
   async scheduled(event, env, ctx) {
-    const now = new Date();
-    const day = now.getUTCDay();
-
-    const date = now.getUTCDate();
-    const month = now.getUTCMonth();
-    const lastDay = new Date(now.getUTCFullYear(), month + 1, 0).getUTCDate();
-
     let messageType;
-    if (date === 28 && date === lastDay) messageType = "monthly";
-    else if (date === 28) messageType = "monthly";
-    else if (day === 1) messageType = "monday";
-    else if (day === 3) messageType = "wednesday";
-    else if (day === 5) messageType = "friday";
+    if (event.cron === "0 0 28 * *") messageType = "monthly";
+    else if (event.cron === "0 0 * * 1") messageType = "monday";
+    else if (event.cron === "0 0 * * 3") messageType = "wednesday";
+    else if (event.cron === "0 0 * * 5") messageType = "friday";
     else return;
 
     const students = await env.DB.prepare("SELECT * FROM students").all();
