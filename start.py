@@ -113,19 +113,37 @@ def main():
         server.terminate()
         sys.exit(1)
 
-    # Zoom Webhook URLを自動更新
-    print("\n[3/3] ZoomのWebhook URLを更新します...")
+    # Webhook URLをクリップボードにコピーしてブラウザを開く
+    webhook_url = f"{public_url}/webhook/zoom"
+    app_id = os.environ.get("ZOOM_APP_ID", "")
+
+    print("\n[3/3] Webhook URLの更新準備をします...")
+
+    # クリップボードにコピー
     try:
-        token = get_zoom_token()
-        update_zoom_webhook(public_url, token)
-    except Exception as e:
-        webhook_url = f"{public_url}/webhook/zoom"
-        print(f"[WARN] 自動更新できませんでした。手動でURLを更新してください: {webhook_url}")
+        subprocess.run(f'echo {webhook_url}| clip', shell=True)
+        print(f"      Webhook URLをクリップボードにコピーしました！")
+    except Exception:
+        pass
+
+    # Zoom MarketplaceをブラウザでOpen
+    zoom_feature_url = f"https://marketplace.zoom.us/develop/apps/{app_id}/feature"
+    try:
+        import webbrowser
+        webbrowser.open(zoom_feature_url)
+        print(f"      Zoom Marketplaceをブラウザで開きました")
+    except Exception:
+        pass
 
     print(f"\n{'=' * 50}")
-    print("  起動完了！Zoomで録画すると自動でHTMLが生成されます")
-    print(f"  出力先: output フォルダ")
+    print("  【やること】")
+    print("  ブラウザのZoom Marketplaceが開いたら")
+    print("  「イベントサブスクリプション」のURLに")
+    print("  クリップボードの内容を貼り付けて保存")
+    print(f"  URL: {webhook_url}")
     print(f"{'=' * 50}")
+    print("\n起動完了！Zoomで録画すると自動でHTMLが生成されます")
+    print("出力先: output フォルダ")
     print("\n停止するには Ctrl+C を押してください。")
 
     try:
