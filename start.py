@@ -45,21 +45,42 @@ def get_ngrok_url() -> str:
         except Exception:
             pass
         time.sleep(2)
-    raise RuntimeError("ngrokのURLが取得できませんでした。ngrokが起動しているか確認してください。")
+    raise RuntimeError("ngrokのURLが取得できませんでした。")
 
 
 def update_zoom_webhook(public_url: str, token: str):
     webhook_url = f"{public_url}/webhook/zoom"
+    app_id = os.environ.get("ZOOM_APP_ID", "")
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
-    # アプリの一覧からWebhookを探して更新
-    resp = httpx.get(f"{ZOOM_API_BASE}/marketplace/apps", headers=headers)
-    if resp.status_code != 200:
-        print(f"[WARN] ZoomのWebhook URL自動更新はスキップします。手動で設定してください: {webhook_url}")
+    if not app_id:
+        print(f"[WARN] ZOOM_APP_IDが未設定です。手動でURLを更新してください: {webhook_url}")
         return
 
-    print(f"[OK] Webhook URL: {webhook_url}")
-    print("Zoom MarketplaceのイベントサブスクリプションのURLをこれに更新してください（初回のみ）")
+    # サブスクリプション一覧を取得
+    resp = httpx.get(f"{ZOOM_API_BASE}/marketplace/apps/{app_id}/event_subscriptions", headers=headers)
+    if resp.status_code != 200:
+        print(f"[WARN] サブスクリプション取得失敗。手動でURLを更新してください: {webhook_url}")
+        return
+
+    subscriptions = resp.json().get("event_subscriptions", [])
+    if not subscriptions:
+        print(f"[WARN] サブスクリプションが見つかりません。手動でURLを更新してください: {webhook_url}")
+        return
+
+    sub_id = subscriptions[0]["id"]
+
+    # Webhook URLを更新
+    patch_resp = httpx.patch(
+        f"{ZOOM_API_BASE}/marketplace/apps/{app_id}/event_subscriptions/{sub_id}",
+        headers=headers,
+        json={"notification_url": webhook_url},
+    )
+
+    if patch_resp.status_code in (200, 204):
+        print(f"      Webhook URLを自動更新しました: {webhook_url}")
+    else:
+        print(f"[WARN] 自動更新失敗。手動でURLを更新してください: {webhook_url}")
 
 
 def main():
@@ -86,20 +107,25 @@ def main():
 
     try:
         public_url = get_ngrok_url()
-        print(f"      公開URL: {public_url}")
+        print(f"      公開URL取得: {public_url}")
     except RuntimeError as e:
         print(f"[ERROR] {e}")
         server.terminate()
         sys.exit(1)
 
-    # Zoom Webhook URL表示
-    print("\n[3/3] Zoom Webhook URLを確認します...")
-    webhook_url = f"{public_url}/webhook/zoom"
+    # Zoom Webhook URLを自動更新
+    print("\n[3/3] ZoomのWebhook URLを更新します...")
+    try:
+        token = get_zoom_token()
+        update_zoom_webhook(public_url, token)
+    except Exception as e:
+        webhook_url = f"{public_url}/webhook/zoom"
+        print(f"[WARN] 自動更新できませんでした。手動でURLを更新してください: {webhook_url}")
+
     print(f"\n{'=' * 50}")
-    print(f"  Webhook URL: {webhook_url}")
+    print("  起動完了！Zoomで録画すると自動でHTMLが生成されます")
+    print(f"  出力先: output フォルダ")
     print(f"{'=' * 50}")
-    print("\nZoom MarketplaceのイベントサブスクリプションのURLをこれに更新してください。")
-    print("（URLが前回と同じなら更新不要です）")
     print("\n停止するには Ctrl+C を押してください。")
 
     try:
