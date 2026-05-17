@@ -125,7 +125,7 @@ function renderStats(){
 function renderList(){
   document.getElementById('lhd').textContent='受講生 '+students.length+' 名';
   document.getElementById('litems').innerHTML=students.map((s,i)=>
-    '<div class="sitem'+(s.id===selectedId?' active':'')+'" onclick="sel(\''+s.id+'\')">'+
+    '<div class="sitem'+(s.id===selectedId?' active':'')+'" data-id="'+s.id+'" onclick="sel(this.dataset.id)">'+
     '<div class="av" style="background:'+c(i)+'">'+s.name[0]+'</div>'+
     '<div class="sinfo"><div class="sname">'+s.name+'</div>'+
     '<div class="sstage">'+(s.current_stage||'-')+'</div>'+
@@ -143,8 +143,8 @@ function sel(id){
     '<div class="dhead">'+
     '<div class="dav" style="background:'+c(i)+'">'+s.name[0]+'</div>'+
     '<div><div class="dname">'+s.name+'</div><div class="dmeta">入会 '+s.joined_at+' · '+(s.current_stage||'-')+'</div></div>'+
-    '<button class="prevbtn" data-id="'+id+'" onclick="openPreview(this.getAttribute(\'data-id\'))">プレビュー</button>'+
-    '<button class="linebtn" data-id="'+id+'" onclick="sendLine(this.getAttribute(\'data-id\'))">LINE で送る</button></div>'+
+    '<button class="prevbtn" data-id="'+id+'" onclick="openPreview(this.dataset.id)">プレビュー</button>'+
+    '<button class="linebtn" data-id="'+id+'" onclick="sendLine(this.dataset.id)">LINE で送る</button></div>'+
     '<div class="card"><h3>進捗</h3>'+
     '<div class="pnums"><span>'+s.name+'</span><span>'+(s.progress||0)+' / 100</span></div>'+
     '<div class="bigpb"><div class="bigpf" style="width:'+(s.progress||0)+'%"></div></div></div>'+
@@ -153,7 +153,7 @@ function sel(id){
     '<div class="erow"><label>ステージ</label><input id="es" value="'+(s.current_stage||'')+'" placeholder="例：ステージ2"></div>'+
     '<div class="erow"><label>進捗率</label><input id="ep" type="number" min="0" max="100" value="'+(s.progress||0)+'"></div>'+
     '<div class="erow" style="align-items:flex-start"><label style="padding-top:6px">メモ</label><textarea class="notes" id="en">'+(s.notes||'')+'</textarea></div>'+
-    '<button class="savebtn" data-id="'+id+'" onclick="save(this.getAttribute(\'data-id\'))">保存する</button></div>';
+    '<button class="savebtn" data-id="'+id+'" onclick="save(this.dataset.id)">保存する</button></div>';
 }
 async function save(id){
   const stage=document.getElementById('es').value;
