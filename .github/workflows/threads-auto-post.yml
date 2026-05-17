@@ -1,0 +1,53 @@
+name: Threads 自動投稿（友彩ボイス）
+
+on:
+  workflow_dispatch:
+    inputs:
+      theme:
+        description: "投稿テーマ（例: お金と感情の関係、在り方を整えるとは）"
+        required: true
+        default: "在り方とお金の循環"
+  schedule:
+    # 毎朝8時（JST = UTC+9）に自動投稿
+    - cron: "0 23 * * *"
+
+jobs:
+  post-to-threads:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Python セットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 投稿テーマを設定
+        id: set-theme
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "theme=${{ github.event.inputs.theme }}" >> $GITHUB_OUTPUT
+          else
+            # スケジュール実行時はデフォルトテーマをローテーション
+            THEMES=(
+              "在り方とお金の循環"
+              "感情に蓋をしないということ"
+              "引き寄せの本質"
+              "愛とお金の関係"
+              "気づきが変化の始まり"
+              "やった人だけが体感できること"
+              "自分の言葉で書き出すとはどういうことか"
+            )
+            DAY=$(date +%u)  # 1(月)〜7(日)
+            INDEX=$(( (DAY - 1) % ${#THEMES[@]} ))
+            echo "theme=${THEMES[$INDEX]}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 生成して投稿
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THEME: ${{ steps.set-theme.outputs.theme }}
+        run: python scripts/generate_and_post.py
