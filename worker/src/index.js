@@ -9,14 +9,19 @@ const HTML = `<!DOCTYPE html>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;display:flex;flex-direction:column;height:100vh;overflow:hidden}
-header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-size:17px;font-weight:700;color:#333}
+header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-size:17px;font-weight:700;color:#333;display:flex;align-items:center;gap:12px}
+.hdr-btns{margin-left:auto;display:flex;gap:8px;align-items:center}
+.hdr-btn{color:white;border:none;padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.bulk-btn{background:#FF9F43}.bulk-btn:hover{background:#e8902e}
+.sheet-btn{background:#34A853}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);background:white;border-bottom:1px solid #e0e0e0}
 .stat{padding:14px;text-align:center;border-right:1px solid #e0e0e0}
 .stat-val{font-size:26px;font-weight:700;color:#333}
 .stat-lbl{font-size:11px;color:#888;margin-top:2px}
 .main{display:grid;grid-template-columns:270px 1fr 250px;flex:1;overflow:hidden}
 .list{background:white;border-right:1px solid #e0e0e0;overflow-y:auto;display:flex;flex-direction:column}
-.list-hd{padding:12px 16px;font-size:12px;color:#888;border-bottom:1px solid #e0e0e0;font-weight:500}
+.list-hd{padding:12px 16px;font-size:12px;color:#888;border-bottom:1px solid #e0e0e0;font-weight:500;display:flex;align-items:center;justify-content:space-between}
+.add-btn{background:#4A7BFF;color:white;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600}
 .sitem{padding:11px 16px;cursor:pointer;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:10px}
 .sitem:hover,.sitem.active{background:#f0f4ff}
 .av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;flex-shrink:0}
@@ -28,27 +33,29 @@ header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-s
 .ppct{font-size:11px;color:#888;flex-shrink:0}
 .detail{padding:24px;overflow-y:auto;background:#f9f9f9}
 .empty{display:flex;align-items:center;justify-content:center;height:100%;color:#bbb;font-size:14px}
-.dhead{background:white;border-radius:12px;padding:20px;display:flex;align-items:center;gap:14px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.dhead{background:white;border-radius:12px;padding:20px;display:flex;align-items:center;gap:14px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);flex-wrap:wrap}
 .dav{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:white;flex-shrink:0}
 .dname{font-size:20px;font-weight:700;color:#333}
 .dmeta{font-size:12px;color:#999;margin-top:3px}
-.linebtn{margin-left:auto;background:#06C755;color:white;border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.dbtns{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.linebtn{background:#06C755;color:white;border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
 .linebtn:hover{background:#05b34c}
-.prevbtn{margin-left:8px;background:#4A7BFF;color:white;border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.prevbtn{background:#4A7BFF;color:white;border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
 .prevbtn:hover{background:#3a6bef}
+.delbtn{background:#ff4757;color:white;border:none;padding:9px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.delbtn:hover{background:#e84141}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center}
 .modal-bg.open{display:flex}
-.modal{background:white;border-radius:16px;padding:28px;max-width:480px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.18)}
-.modal h3{font-size:15px;font-weight:700;color:#333;margin-bottom:12px}
+.modal{background:white;border-radius:16px;padding:28px;max-width:500px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.18);max-height:90vh;overflow-y:auto}
+.modal h3{font-size:15px;font-weight:700;color:#333;margin-bottom:16px}
 .modal-msg{background:#f5f8ff;border-left:3px solid #4A7BFF;padding:14px;border-radius:6px;font-size:14px;color:#444;line-height:1.8;white-space:pre-wrap;margin-bottom:18px;min-height:80px}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 .mbtn{border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
-.mbtn-send{background:#06C755;color:white}
-.mbtn-send:hover{background:#05b34c}
-.mbtn-regen{background:#FF9F43;color:white}
-.mbtn-regen:hover{background:#e8902e}
-.mbtn-cancel{background:#eee;color:#555}
-.mbtn-cancel:hover{background:#ddd}
+.mbtn-send{background:#06C755;color:white}.mbtn-send:hover{background:#05b34c}
+.mbtn-regen{background:#FF9F43;color:white}.mbtn-regen:hover{background:#e8902e}
+.mbtn-cancel{background:#eee;color:#555}.mbtn-cancel:hover{background:#ddd}
+.mbtn-primary{background:#4A7BFF;color:white}.mbtn-primary:hover{background:#3a6bef}
+.mbtn-danger{background:#ff4757;color:white}.mbtn-danger:hover{background:#e84141}
 .modal-type{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .mtype-btn{border:1px solid #e0e0e0;background:white;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;color:#555}
 .mtype-btn.active{background:#4A7BFF;color:white;border-color:#4A7BFF}
@@ -65,15 +72,32 @@ header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-s
 .savebtn{background:#4A7BFF;color:white;border:none;padding:8px 20px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600}
 .savebtn:hover{background:#3a6bef}
 .right{background:white;border-left:1px solid #e0e0e0;padding:16px;overflow-y:auto}
-.right h2{font-size:12px;color:#999;font-weight:500;margin-bottom:14px}
+.right h2{font-size:12px;color:#999;font-weight:500;margin-bottom:10px}
 .sci{padding:10px 0;border-bottom:1px solid #f5f5f5}
 .sct{font-size:12px;color:#888}
 .sctitle{font-size:13px;font-weight:500;color:#333;margin-top:2px}
 .scbadge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;margin-top:4px;background:#e8f5e9;color:#2e7d32}
+.sbadge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;margin-left:5px;vertical-align:middle}
+.sbadge-grad{background:#e3f2fd;color:#1565c0}
+.sbadge-sus{background:#fff3e0;color:#e65100}
+.hist-item{padding:6px 0;border-bottom:1px solid #f5f5f5}
+.hist-type{font-weight:600;color:#4A7BFF;font-size:11px}
+.hist-time{color:#aaa;font-size:11px;margin-left:6px}
+.msg-item{padding:10px;background:#f5f8ff;border-radius:8px;margin-bottom:6px}
+.msg-name{font-weight:600;font-size:12px;color:#333}
+.msg-time{font-size:11px;color:#aaa}
+.msg-text{font-size:13px;color:#444;margin-top:4px}
+.unread-dot{width:8px;height:8px;background:#ff4757;border-radius:50%;display:inline-block;margin-left:4px}
 </style>
 </head>
 <body>
-<header>受講生ダッシュボード ― 友彩　<a href="https://docs.google.com/spreadsheets/d/1z1gvME-9VQI_Zawt10nOHRsWVrUnar4HXoXqVl63z2I/edit" target="_blank" style="margin-left:16px;background:#34A853;color:white;border:none;padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none">ワーク管理シート</a></header>
+<header>
+  受講生ダッシュボード ― 友彩
+  <div class="hdr-btns">
+    <button class="hdr-btn bulk-btn" onclick="openBulkSend()">一斉送信</button>
+    <a href="https://docs.google.com/spreadsheets/d/1z1gvME-9VQI_Zawt10nOHRsWVrUnar4HXoXqVl63z2I/edit" target="_blank" class="hdr-btn sheet-btn">ワーク管理シート</a>
+  </div>
+</header>
 <div class="stats">
   <div class="stat"><div class="stat-val" id="s1">-</div><div class="stat-lbl">在籍</div></div>
   <div class="stat"><div class="stat-val" id="s2">-%</div><div class="stat-lbl">平均進捗</div></div>
@@ -82,11 +106,17 @@ header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-s
 </div>
 <div class="main">
   <div class="list">
-    <div class="list-hd" id="lhd">受講生</div>
+    <div class="list-hd">
+      <span id="lhd">受講生</span>
+      <button class="add-btn" onclick="openAddStudent()">＋ 追加</button>
+    </div>
     <div id="litems"></div>
   </div>
   <div class="detail" id="detail"><div class="empty">← 受講生を選んでください</div></div>
   <div class="right">
+    <h2>受信メッセージ <span id="unread-dot" style="display:none" class="unread-dot"></span></h2>
+    <div id="messages-list"><div style="font-size:12px;color:#bbb;padding:4px 0">メッセージなし</div></div>
+    <div style="margin-top:20px"></div>
     <h2>自動配信スケジュール</h2>
     <div class="sci"><div class="sct">毎週月曜 09:00</div><div class="sctitle">マインドセット</div><span class="scbadge">設定済み</span></div>
     <div class="sci"><div class="sct">毎週水曜 09:00</div><div class="sctitle">中間チェックイン</div><span class="scbadge">設定済み</span></div>
@@ -95,15 +125,17 @@ header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-s
     <div class="sci"><div class="sct">毎月28日 09:00</div><div class="sctitle">月末振り返りレポート</div><span class="scbadge">設定済み</span></div>
   </div>
 </div>
+
+<!-- Preview Modal -->
 <div class="modal-bg" id="modal">
   <div class="modal">
     <h3>メッセージプレビュー</h3>
-    <div class="modal-type">
-      <button class="mtype-btn active" data-type="monday" onclick="setType(this)">月曜マインドセット</button>
-      <button class="mtype-btn" data-type="wednesday" onclick="setType(this)">水曜チェックイン</button>
-      <button class="mtype-btn" data-type="friday" onclick="setType(this)">金曜お疲れさま</button>
-      <button class="mtype-btn" data-type="gratitude" onclick="setType(this)">毎月1日 感謝</button>
-      <button class="mtype-btn" data-type="monthly" onclick="setType(this)">月末振り返り</button>
+    <div class="modal-type" id="preview-types">
+      <button class="mtype-btn active" data-type="monday" onclick="setType(this)">月曜</button>
+      <button class="mtype-btn" data-type="wednesday" onclick="setType(this)">水曜</button>
+      <button class="mtype-btn" data-type="friday" onclick="setType(this)">金曜</button>
+      <button class="mtype-btn" data-type="gratitude" onclick="setType(this)">毎月1日</button>
+      <button class="mtype-btn" data-type="monthly" onclick="setType(this)">月末</button>
     </div>
     <div class="modal-msg" id="modal-msg">生成中...</div>
     <div class="modal-actions">
@@ -113,15 +145,59 @@ header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-s
     </div>
   </div>
 </div>
+
+<!-- Add Student Modal -->
+<div class="modal-bg" id="add-modal">
+  <div class="modal">
+    <h3>受講生を追加</h3>
+    <div class="erow"><label>LINE ID</label><input id="a-id" placeholder="U..."></div>
+    <div class="erow"><label>名前</label><input id="a-name" placeholder="例：かすみん"></div>
+    <div class="erow"><label>入会日</label><input id="a-joined" placeholder="例：2025-04"></div>
+    <div class="erow"><label>ステージ</label><input id="a-stage" placeholder="例：ステージ1"></div>
+    <div class="erow"><label>進捗率</label><input id="a-progress" type="number" min="0" max="100" value="0"></div>
+    <div class="erow"><label>仕事</label><input id="a-job" placeholder="例：ハンドメイド作家"></div>
+    <div class="erow" style="align-items:flex-start"><label style="padding-top:6px">メモ</label><textarea class="notes" id="a-notes" placeholder="最近の状況など"></textarea></div>
+    <div class="modal-actions">
+      <button class="mbtn mbtn-cancel" onclick="closeAddModal()">キャンセル</button>
+      <button class="mbtn mbtn-primary" onclick="addStudent()">追加する</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bulk Send Modal -->
+<div class="modal-bg" id="bulk-modal">
+  <div class="modal">
+    <h3>一斉送信</h3>
+    <p style="font-size:13px;color:#666;margin-bottom:14px">アクティブな受講生全員にメッセージを送ります。</p>
+    <div class="modal-type" id="bulk-types">
+      <button class="mtype-btn active" data-type="monday" onclick="setBulkType(this)">月曜</button>
+      <button class="mtype-btn" data-type="wednesday" onclick="setBulkType(this)">水曜</button>
+      <button class="mtype-btn" data-type="friday" onclick="setBulkType(this)">金曜</button>
+      <button class="mtype-btn" data-type="gratitude" onclick="setBulkType(this)">毎月1日</button>
+      <button class="mtype-btn" data-type="monthly" onclick="setBulkType(this)">月末</button>
+    </div>
+    <div class="modal-actions">
+      <button class="mbtn mbtn-cancel" onclick="closeBulkModal()">キャンセル</button>
+      <button class="mbtn mbtn-send" onclick="executeBulkSend()">全員に送信</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const COLORS=['#4A7BFF','#FF6B6B','#FF9F43','#26de81','#a29bfe','#fd79a8','#00cec9','#6c5ce7'];
-let students=[],selectedId=null,modalStudentId=null,modalType='monday';
+let students=[],selectedId=null,modalStudentId=null,modalType='monday',bulkType='monday';
 function c(i){return COLORS[i%COLORS.length]}
+function statusBadge(s){
+  if(s==='graduated')return '<span class="sbadge sbadge-grad">卒業</span>';
+  if(s==='suspended')return '<span class="sbadge sbadge-sus">休会</span>';
+  return '';
+}
 function renderStats(){
-  document.getElementById('s1').textContent=students.length;
-  const avg=students.length?Math.round(students.reduce((a,s)=>a+(s.progress||0),0)/students.length):0;
+  const active=students.filter(s=>!s.status||s.status==='active');
+  document.getElementById('s1').textContent=active.length;
+  const avg=active.length?Math.round(active.reduce((a,s)=>a+(s.progress||0),0)/active.length):0;
   document.getElementById('s2').textContent=avg+'%';
-  document.getElementById('s3').textContent=students.filter(s=>(s.progress||0)<=30).length;
+  document.getElementById('s3').textContent=active.filter(s=>(s.progress||0)<=30).length;
   document.getElementById('s4').textContent=new Date().toLocaleDateString('ja-JP');
 }
 function renderList(){
@@ -129,7 +205,7 @@ function renderList(){
   document.getElementById('litems').innerHTML=students.map((s,i)=>
     '<div class="sitem'+(s.id===selectedId?' active':'')+'" data-id="'+s.id+'" onclick="sel(this.dataset.id)">'+
     '<div class="av" style="background:'+c(i)+'">'+s.name[0]+'</div>'+
-    '<div class="sinfo"><div class="sname">'+s.name+'</div>'+
+    '<div class="sinfo"><div class="sname">'+s.name+statusBadge(s.status)+'</div>'+
     '<div class="sstage">'+(s.current_stage||'-')+'</div>'+
     '<div class="pb"><div class="pf" style="width:'+(s.progress||0)+'%"></div></div></div>'+
     '<div class="ppct">'+(s.progress||0)+'%</div></div>'
@@ -145,70 +221,156 @@ function sel(id){
     '<div class="dhead">'+
     '<div class="dav" style="background:'+c(i)+'">'+s.name[0]+'</div>'+
     '<div><div class="dname">'+s.name+'</div><div class="dmeta">入会 '+s.joined_at+' · '+(s.current_stage||'-')+'</div></div>'+
+    '<div class="dbtns">'+
     '<button class="prevbtn" data-id="'+id+'" onclick="openPreview(this.dataset.id)">プレビュー</button>'+
-    '<button class="linebtn" data-id="'+id+'" onclick="sendLine(this.dataset.id)">LINE で送る</button></div>'+
+    '<button class="linebtn" data-id="'+id+'" onclick="sendLine(this.dataset.id)">LINE送信</button>'+
+    '<button class="delbtn" data-id="'+id+'" onclick="deleteStudent(this.dataset.id)">削除</button>'+
+    '</div></div>'+
     '<div class="card"><h3>進捗</h3>'+
     '<div class="pnums"><span>'+s.name+'</span><span>'+(s.progress||0)+' / 100</span></div>'+
     '<div class="bigpb"><div class="bigpf" style="width:'+(s.progress||0)+'%"></div></div></div>'+
     '<div class="card"><h3>最近のメモ</h3><div class="afeedback">'+(s.notes||'メモなし')+'</div></div>'+
+    '<div class="card"><h3>送信履歴</h3><div id="hist-list" style="font-size:12px;color:#bbb">読み込み中...</div></div>'+
     '<div class="card"><h3>進捗を更新</h3>'+
     '<div class="erow"><label>ステージ</label><input id="es" value="'+(s.current_stage||'')+'" placeholder="例：ステージ2"></div>'+
     '<div class="erow"><label>進捗率</label><input id="ep" type="number" min="0" max="100" value="'+(s.progress||0)+'"></div>'+
+    '<div class="erow"><label>ステータス</label><select id="est">'+
+    '<option value="active"'+((!s.status||s.status==='active')?' selected':'')+'>アクティブ</option>'+
+    '<option value="graduated"'+(s.status==='graduated'?' selected':'')+'>卒業</option>'+
+    '<option value="suspended"'+(s.status==='suspended'?' selected':'')+'>休会</option>'+
+    '</select></div>'+
     '<div class="erow" style="align-items:flex-start"><label style="padding-top:6px">メモ</label><textarea class="notes" id="en">'+(s.notes||'')+'</textarea></div>'+
     '<button class="savebtn" data-id="'+id+'" onclick="save(this.dataset.id)">保存する</button></div>';
+  loadHistory(id);
+}
+async function loadHistory(id){
+  const res=await fetch('/api/history/'+encodeURIComponent(id));
+  const data=await res.json();
+  const el=document.getElementById('hist-list');
+  if(!el)return;
+  if(!data.length){el.textContent='まだ送信履歴がないよ';return;}
+  const types={monday:'月曜',wednesday:'水曜',friday:'金曜',monthly:'月末',gratitude:'感謝',manual:'手動'};
+  el.innerHTML=data.map(h=>
+    '<div class="hist-item"><span class="hist-type">'+(types[h.message_type]||h.message_type)+'</span>'+
+    '<span class="hist-time">'+new Date(h.sent_at).toLocaleString('ja-JP')+'</span></div>'
+  ).join('');
 }
 async function save(id){
   const stage=document.getElementById('es').value;
   const progress=parseInt(document.getElementById('ep').value);
   const notes=document.getElementById('en').value;
-  await fetch('/api/students/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({current_stage:stage,progress,notes})});
+  const status=document.getElementById('est').value;
+  await fetch('/api/students/'+encodeURIComponent(id),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({current_stage:stage,progress,notes,status})});
   const s=students.find(x=>x.id===id);
-  s.current_stage=stage;s.progress=progress;s.notes=notes;
+  s.current_stage=stage;s.progress=progress;s.notes=notes;s.status=status;
   renderList();renderStats();alert('保存しました！');
 }
 async function sendLine(id){
   if(!confirm('このユーザーにLINEメッセージを送りますか？'))return;
-  await fetch('/api/send/'+id,{method:'POST'});
+  await fetch('/api/send/'+encodeURIComponent(id),{method:'POST'});
   alert('送信しました！');
+  loadHistory(id);
+}
+async function deleteStudent(id){
+  const s=students.find(x=>x.id===id);
+  if(!confirm(s.name+'を削除しますか？この操作は元に戻せません。'))return;
+  await fetch('/api/students/'+encodeURIComponent(id),{method:'DELETE'});
+  students=students.filter(x=>x.id!==id);
+  selectedId=null;
+  renderList();renderStats();
+  document.getElementById('detail').innerHTML='<div class="empty">← 受講生を選んでください</div>';
+}
+function openAddStudent(){
+  ['a-id','a-name','a-joined','a-stage','a-job','a-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('a-progress').value=0;
+  document.getElementById('add-modal').classList.add('open');
+}
+function closeAddModal(){document.getElementById('add-modal').classList.remove('open');}
+async function addStudent(){
+  const id=document.getElementById('a-id').value.trim();
+  const name=document.getElementById('a-name').value.trim();
+  if(!id||!name){alert('LINE IDと名前は必須やで！');return;}
+  const body={
+    id,name,
+    joined_at:document.getElementById('a-joined').value.trim(),
+    current_stage:document.getElementById('a-stage').value.trim(),
+    progress:parseInt(document.getElementById('a-progress').value)||0,
+    job:document.getElementById('a-job').value.trim(),
+    notes:document.getElementById('a-notes').value.trim(),
+    status:'active'
+  };
+  await fetch('/api/students',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  closeAddModal();
+  await load();
+  alert(name+'を追加したよ！');
+}
+function openBulkSend(){
+  bulkType='monday';
+  document.querySelectorAll('#bulk-types .mtype-btn').forEach(b=>b.classList.toggle('active',b.dataset.type==='monday'));
+  document.getElementById('bulk-modal').classList.add('open');
+}
+function closeBulkModal(){document.getElementById('bulk-modal').classList.remove('open');}
+function setBulkType(btn){
+  bulkType=btn.dataset.type;
+  document.querySelectorAll('#bulk-types .mtype-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+async function executeBulkSend(){
+  const active=students.filter(s=>!s.status||s.status==='active');
+  if(!confirm('アクティブな受講生'+active.length+'名に送信しますか？'))return;
+  closeBulkModal();
+  const res=await fetch('/api/send-all',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:bulkType})});
+  const data=await res.json();
+  alert('送信完了！'+data.count+'名に送ったよ。');
+  if(selectedId)loadHistory(selectedId);
 }
 async function openPreview(id){
-  modalStudentId=id;
-  modalType='monday';
-  document.querySelectorAll('.mtype-btn').forEach(b=>b.classList.toggle('active',b.dataset.type==='monday'));
+  modalStudentId=id;modalType='monday';
+  document.querySelectorAll('#preview-types .mtype-btn').forEach(b=>b.classList.toggle('active',b.dataset.type==='monday'));
   document.getElementById('modal').classList.add('open');
   await loadPreview();
 }
-function closeModal(){
-  document.getElementById('modal').classList.remove('open');
-  modalStudentId=null;
-}
+function closeModal(){document.getElementById('modal').classList.remove('open');modalStudentId=null;}
 function setType(btn){
   modalType=btn.dataset.type;
-  document.querySelectorAll('.mtype-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#preview-types .mtype-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   loadPreview();
 }
 async function loadPreview(){
   const el=document.getElementById('modal-msg');
   el.textContent='生成中...';
-  const res=await fetch('/api/preview/'+modalStudentId+'?type='+modalType,{method:'POST'});
+  const res=await fetch('/api/preview/'+encodeURIComponent(modalStudentId)+'?type='+modalType,{method:'POST'});
   const data=await res.json();
   el.textContent=data.message||'エラーが発生しました';
 }
-async function regenerate(){
-  await loadPreview();
-}
+async function regenerate(){await loadPreview();}
 async function sendFromModal(){
   const msg=document.getElementById('modal-msg').textContent;
   if(!modalStudentId||!msg)return;
-  await fetch('/api/send-message/'+modalStudentId,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
-  closeModal();
-  alert('送信しました！');
+  await fetch('/api/send-message/'+encodeURIComponent(modalStudentId),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,type:modalType})});
+  closeModal();alert('送信しました！');
+  loadHistory(modalStudentId);
+}
+async function loadMessages(){
+  const res=await fetch('/api/messages');
+  const data=await res.json();
+  const unread=data.filter(m=>!m.is_read).length;
+  document.getElementById('unread-dot').style.display=unread>0?'inline-block':'none';
+  const el=document.getElementById('messages-list');
+  if(!data.length){el.innerHTML='<div style="font-size:12px;color:#bbb;padding:4px 0">メッセージなし</div>';return;}
+  el.innerHTML=data.slice(0,5).map(m=>
+    '<div class="msg-item">'+
+    '<div style="display:flex;justify-content:space-between"><span class="msg-name">'+(m.student_name||'不明')+'</span>'+
+    '<span class="msg-time">'+new Date(m.received_at).toLocaleDateString('ja-JP')+'</span></div>'+
+    '<div class="msg-text">'+m.message+'</div></div>'
+  ).join('');
 }
 async function load(){
   const res=await fetch('/api/students');
   students=await res.json();
   renderStats();renderList();
+  loadMessages();
 }
 load();
 </script>
@@ -220,15 +382,39 @@ export default {
     const url = new URL(request.url);
     const cors = {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, PUT, POST, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     };
 
     if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
 
+    if (url.pathname === '/webhook' && request.method === 'POST') {
+      const body = await request.json();
+      for (const event of (body.events || [])) {
+        if (event.type === 'message' && event.message.type === 'text') {
+          const userId = event.source.userId;
+          const text = event.message.text;
+          const student = await env.DB.prepare("SELECT name FROM students WHERE id=?").bind(userId).first();
+          await env.DB.prepare(
+            "INSERT INTO line_messages (student_id, student_name, message, received_at) VALUES (?, ?, ?, ?)"
+          ).bind(userId, student?.name || null, text, new Date().toISOString()).run();
+        }
+      }
+      return new Response('OK', { headers: cors });
+    }
+
     if (url.pathname === '/api/students') {
-      const result = await env.DB.prepare("SELECT * FROM students ORDER BY name").all();
-      return Response.json(result.results, { headers: cors });
+      if (request.method === 'GET') {
+        const result = await env.DB.prepare("SELECT * FROM students ORDER BY name").all();
+        return Response.json(result.results, { headers: cors });
+      }
+      if (request.method === 'POST') {
+        const body = await request.json();
+        await env.DB.prepare(
+          "INSERT INTO students (id, name, joined_at, current_stage, progress, job, notes, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+        ).bind(body.id, body.name, body.joined_at, body.current_stage, body.progress, body.job, body.notes, body.status || 'active').run();
+        return Response.json({ ok: true }, { headers: cors });
+      }
     }
 
     if (url.pathname.startsWith('/api/students/')) {
@@ -236,12 +422,32 @@ export default {
       if (request.method === 'PUT') {
         const body = await request.json();
         await env.DB.prepare(
-          "UPDATE students SET current_stage=?, progress=?, notes=? WHERE id=?"
-        ).bind(body.current_stage, body.progress, body.notes, id).run();
+          "UPDATE students SET current_stage=?, progress=?, notes=?, status=? WHERE id=?"
+        ).bind(body.current_stage, body.progress, body.notes, body.status || 'active', id).run();
+        return Response.json({ ok: true }, { headers: cors });
+      }
+      if (request.method === 'DELETE') {
+        await env.DB.prepare("DELETE FROM students WHERE id=?").bind(id).run();
         return Response.json({ ok: true }, { headers: cors });
       }
       const student = await env.DB.prepare("SELECT * FROM students WHERE id=?").bind(id).first();
       return Response.json(student, { headers: cors });
+    }
+
+    if (url.pathname === '/api/send-all' && request.method === 'POST') {
+      const body = await request.json();
+      const messageType = body.type || 'monday';
+      const result = await env.DB.prepare("SELECT * FROM students WHERE status='active' OR status IS NULL").all();
+      let count = 0;
+      for (const student of result.results) {
+        const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY);
+        await sendLine(student.id, feedback, env.LINE_CHANNEL_ACCESS_TOKEN);
+        await env.DB.prepare(
+          "INSERT INTO feedback_history (student_id, message_type, message, sent_at) VALUES (?, ?, ?, ?)"
+        ).bind(student.id, messageType, feedback, new Date().toISOString()).run();
+        count++;
+      }
+      return Response.json({ ok: true, count }, { headers: cors });
     }
 
     if (url.pathname.startsWith('/api/preview/')) {
@@ -257,6 +463,9 @@ export default {
       const id = decodeURIComponent(url.pathname.split('/')[3]);
       const body = await request.json();
       await sendLine(id, body.message, env.LINE_CHANNEL_ACCESS_TOKEN);
+      await env.DB.prepare(
+        "INSERT INTO feedback_history (student_id, message_type, message, sent_at) VALUES (?, ?, ?, ?)"
+      ).bind(id, body.type || 'manual', body.message, new Date().toISOString()).run();
       return Response.json({ ok: true }, { headers: cors });
     }
 
@@ -269,7 +478,25 @@ export default {
       const messageType = day === 1 ? 'monday' : day === 3 ? 'wednesday' : day === 5 ? 'friday' : 'monday';
       const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY);
       await sendLine(student.id, feedback, env.LINE_CHANNEL_ACCESS_TOKEN);
+      await env.DB.prepare(
+        "INSERT INTO feedback_history (student_id, message_type, message, sent_at) VALUES (?, ?, ?, ?)"
+      ).bind(id, messageType, feedback, new Date().toISOString()).run();
       return Response.json({ ok: true }, { headers: cors });
+    }
+
+    if (url.pathname.startsWith('/api/history/')) {
+      const id = decodeURIComponent(url.pathname.split('/')[3]);
+      const result = await env.DB.prepare(
+        "SELECT * FROM feedback_history WHERE student_id=? ORDER BY sent_at DESC LIMIT 20"
+      ).bind(id).all();
+      return Response.json(result.results, { headers: cors });
+    }
+
+    if (url.pathname === '/api/messages') {
+      const result = await env.DB.prepare(
+        "SELECT * FROM line_messages ORDER BY received_at DESC LIMIT 20"
+      ).all();
+      return Response.json(result.results, { headers: cors });
     }
 
     return new Response(HTML, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
@@ -284,13 +511,14 @@ export default {
     else if (event.cron === "0 0 * * 6") messageType = "friday";
     else return;
 
-    const students = await env.DB.prepare("SELECT * FROM students").all();
+    const students = await env.DB.prepare("SELECT * FROM students WHERE status='active' OR status IS NULL").all();
     for (const student of students.results) {
       const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY);
       await sendLine(student.id, feedback, env.LINE_CHANNEL_ACCESS_TOKEN);
+      await env.DB.prepare("UPDATE students SET last_feedback_at=? WHERE id=?").bind(new Date().toISOString(), student.id).run();
       await env.DB.prepare(
-        "UPDATE students SET last_feedback_at = ? WHERE id = ?"
-      ).bind(new Date().toISOString(), student.id).run();
+        "INSERT INTO feedback_history (student_id, message_type, message, sent_at) VALUES (?, ?, ?, ?)"
+      ).bind(student.id, messageType, feedback, new Date().toISOString()).run();
     }
   }
 };
