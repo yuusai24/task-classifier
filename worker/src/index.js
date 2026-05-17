@@ -34,6 +34,24 @@ header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-s
 .dmeta{font-size:12px;color:#999;margin-top:3px}
 .linebtn{margin-left:auto;background:#06C755;color:white;border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
 .linebtn:hover{background:#05b34c}
+.prevbtn{margin-left:8px;background:#4A7BFF;color:white;border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.prevbtn:hover{background:#3a6bef}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:white;border-radius:16px;padding:28px;max-width:480px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.18)}
+.modal h3{font-size:15px;font-weight:700;color:#333;margin-bottom:12px}
+.modal-msg{background:#f5f8ff;border-left:3px solid #4A7BFF;padding:14px;border-radius:6px;font-size:14px;color:#444;line-height:1.8;white-space:pre-wrap;margin-bottom:18px;min-height:80px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end}
+.mbtn{border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.mbtn-send{background:#06C755;color:white}
+.mbtn-send:hover{background:#05b34c}
+.mbtn-regen{background:#FF9F43;color:white}
+.mbtn-regen:hover{background:#e8902e}
+.mbtn-cancel{background:#eee;color:#555}
+.mbtn-cancel:hover{background:#ddd}
+.modal-type{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.mtype-btn{border:1px solid #e0e0e0;background:white;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;color:#555}
+.mtype-btn.active{background:#4A7BFF;color:white;border-color:#4A7BFF}
 .card{background:white;border-radius:12px;padding:18px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
 .card h3{font-size:12px;color:#999;font-weight:500;margin-bottom:12px}
 .bigpb{height:10px;background:#f0f0f0;border-radius:5px;margin:8px 0}
@@ -76,9 +94,26 @@ header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-s
     <div class="sci"><div class="sct">毎月28日 09:00</div><div class="sctitle">月末振り返りレポート</div><span class="scbadge">設定済み</span></div>
   </div>
 </div>
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3>メッセージプレビュー</h3>
+    <div class="modal-type">
+      <button class="mtype-btn active" data-type="monday" onclick="setType(this)">月曜マインドセット</button>
+      <button class="mtype-btn" data-type="wednesday" onclick="setType(this)">水曜チェックイン</button>
+      <button class="mtype-btn" data-type="friday" onclick="setType(this)">金曜お疲れさま</button>
+      <button class="mtype-btn" data-type="monthly" onclick="setType(this)">月末振り返り</button>
+    </div>
+    <div class="modal-msg" id="modal-msg">生成中...</div>
+    <div class="modal-actions">
+      <button class="mbtn mbtn-cancel" onclick="closeModal()">キャンセル</button>
+      <button class="mbtn mbtn-regen" onclick="regenerate()">再生成</button>
+      <button class="mbtn mbtn-send" onclick="sendFromModal()">このまま送信</button>
+    </div>
+  </div>
+</div>
 <script>
 const COLORS=['#4A7BFF','#FF6B6B','#FF9F43','#26de81','#a29bfe','#fd79a8','#00cec9','#6c5ce7'];
-let students=[],selectedId=null;
+let students=[],selectedId=null,modalStudentId=null,modalType='monday';
 function c(i){return COLORS[i%COLORS.length]}
 function renderStats(){
   document.getElementById('s1').textContent=students.length;
@@ -108,6 +143,7 @@ function sel(id){
     '<div class="dhead">'+
     '<div class="dav" style="background:'+c(i)+'">'+s.name[0]+'</div>'+
     '<div><div class="dname">'+s.name+'</div><div class="dmeta">入会 '+s.joined_at+' · '+(s.current_stage||'-')+'</div></div>'+
+    '<button class="prevbtn" onclick="openPreview(\''+id+'\')">プレビュー</button>'+
     '<button class="linebtn" onclick="sendLine(\''+id+'\')">LINE で送る</button></div>'+
     '<div class="card"><h3>進捗</h3>'+
     '<div class="pnums"><span>'+s.name+'</span><span>'+(s.progress||0)+' / 100</span></div>'+
@@ -131,6 +167,40 @@ async function save(id){
 async function sendLine(id){
   if(!confirm('このユーザーにLINEメッセージを送りますか？'))return;
   await fetch('/api/send/'+id,{method:'POST'});
+  alert('送信しました！');
+}
+async function openPreview(id){
+  modalStudentId=id;
+  modalType='monday';
+  document.querySelectorAll('.mtype-btn').forEach(b=>b.classList.toggle('active',b.dataset.type==='monday'));
+  document.getElementById('modal').classList.add('open');
+  await loadPreview();
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  modalStudentId=null;
+}
+function setType(btn){
+  modalType=btn.dataset.type;
+  document.querySelectorAll('.mtype-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  loadPreview();
+}
+async function loadPreview(){
+  const el=document.getElementById('modal-msg');
+  el.textContent='生成中...';
+  const res=await fetch('/api/preview/'+modalStudentId+'?type='+modalType,{method:'POST'});
+  const data=await res.json();
+  el.textContent=data.message||'エラーが発生しました';
+}
+async function regenerate(){
+  await loadPreview();
+}
+async function sendFromModal(){
+  const msg=document.getElementById('modal-msg').textContent;
+  if(!modalStudentId||!msg)return;
+  await fetch('/api/send-message/'+modalStudentId,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
+  closeModal();
   alert('送信しました！');
 }
 async function load(){
@@ -170,6 +240,22 @@ export default {
       }
       const student = await env.DB.prepare("SELECT * FROM students WHERE id=?").bind(id).first();
       return Response.json(student, { headers: cors });
+    }
+
+    if (url.pathname.startsWith('/api/preview/')) {
+      const id = decodeURIComponent(url.pathname.split('/')[3]);
+      const type = url.searchParams.get('type') || 'monday';
+      const student = await env.DB.prepare("SELECT * FROM students WHERE id=?").bind(id).first();
+      if (!student) return Response.json({ error: 'not found' }, { status: 404, headers: cors });
+      const message = await generateFeedback(student, type, env.ANTHROPIC_API_KEY);
+      return Response.json({ message }, { headers: cors });
+    }
+
+    if (url.pathname.startsWith('/api/send-message/')) {
+      const id = decodeURIComponent(url.pathname.split('/')[3]);
+      const body = await request.json();
+      await sendLine(id, body.message, env.LINE_CHANNEL_ACCESS_TOKEN);
+      return Response.json({ ok: true }, { headers: cors });
     }
 
     if (url.pathname.startsWith('/api/send/')) {
