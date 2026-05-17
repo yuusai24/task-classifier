@@ -42,7 +42,7 @@ class ZoomClient:
     async def get_recording_transcript(self, meeting_uuid: str) -> str:
         token = await self._get_token()
         headers = {"Authorization": f"Bearer {token}"}
-        encoded_uuid = quote(quote(meeting_uuid, safe=""))
+        encoded_uuid = quote(meeting_uuid, safe="")
 
         async with httpx.AsyncClient() as client:
             resp = await client.get(
