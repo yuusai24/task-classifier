@@ -262,7 +262,10 @@ export default {
       const id = decodeURIComponent(url.pathname.split('/')[3]);
       const student = await env.DB.prepare("SELECT * FROM students WHERE id=?").bind(id).first();
       if (!student) return Response.json({ error: 'not found' }, { status: 404, headers: cors });
-      const feedback = await generateFeedback(student, 'monday', env.ANTHROPIC_API_KEY);
+      const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+      const day = jst.getUTCDay();
+      const messageType = day === 1 ? 'monday' : day === 3 ? 'wednesday' : day === 5 ? 'friday' : 'monday';
+      const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY);
       await sendLine(student.id, feedback, env.LINE_CHANNEL_ACCESS_TOKEN);
       return Response.json({ ok: true }, { headers: cors });
     }
@@ -292,7 +295,7 @@ export default {
 async function generateFeedback(student, messageType, apiKey) {
   const typePrompts = {
     monday: "月曜日のマインドセットメッセージを送ります。今週も頑張れる気持ちになれるよう、受講生の仕事・状況を踏まえた前向きな言葉と、今週意識してほしいことを1つ伝えてください。",
-    wednesday: "水曜日の中間チェックインメッセージを送ります。今どんな感じ？という雰囲気で、今週の半分を過ごした受講生に寄り添い、状況を聞きながら励ます内容にしてください。",
+    wednesday: "水曜日の中間チェックインメッセージを送ります。今どんな感じ？という雰囲気で、今週の半分を過ごした受講生に寄り添いながら、今困ってることや行き詰まってることがあれば教えてほしい、と自然に投げかける内容にしてください。",
     friday: "金曜日の週間お疲れさまメッセージを送ります。今週1週間を労い、受講生の成長を認め、週末をゆっくり過ごしてほしいという温かい内容にしてください。",
     monthly: "月末の振り返りレポートをお願いするメッセージを送ります。以下の5項目を返信してもらえるようにお願いしてください。温かく、負担にならない雰囲気で伝えてください。①うまくいったこと ②うまくいかなかったこと ③今月の感謝額（売り上げ） ④今月叶ったこと ⑤来月実行すること"
   };
