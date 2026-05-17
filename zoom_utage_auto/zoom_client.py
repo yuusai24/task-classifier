@@ -2,6 +2,7 @@ import hashlib
 import hmac
 import re
 from datetime import datetime, timezone
+from urllib.parse import quote
 
 import httpx
 
@@ -41,7 +42,7 @@ class ZoomClient:
     async def get_recording_transcript(self, meeting_uuid: str) -> str:
         token = await self._get_token()
         headers = {"Authorization": f"Bearer {token}"}
-        encoded_uuid = meeting_uuid.replace("/", "%2F").replace("+", "%2B")
+        encoded_uuid = quote(quote(meeting_uuid, safe=""))
 
         async with httpx.AsyncClient() as client:
             resp = await client.get(
