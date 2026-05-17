@@ -166,19 +166,31 @@ header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-s
 
 <!-- Bulk Send Modal -->
 <div class="modal-bg" id="bulk-modal">
-  <div class="modal">
-    <h3>一斉送信</h3>
-    <p style="font-size:13px;color:#666;margin-bottom:14px">アクティブな受講生全員にメッセージを送ります。</p>
-    <div class="modal-type" id="bulk-types">
-      <button class="mtype-btn active" data-type="monday" onclick="setBulkType(this)">月曜</button>
-      <button class="mtype-btn" data-type="wednesday" onclick="setBulkType(this)">水曜</button>
-      <button class="mtype-btn" data-type="friday" onclick="setBulkType(this)">金曜</button>
-      <button class="mtype-btn" data-type="gratitude" onclick="setBulkType(this)">毎月1日</button>
-      <button class="mtype-btn" data-type="monthly" onclick="setBulkType(this)">月末</button>
+  <div class="modal" style="max-width:600px">
+    <div id="bulk-step1">
+      <h3>一斉送信 - メッセージ種類を選択</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:14px">アクティブな受講生全員のメッセージをプレビューします。</p>
+      <div class="modal-type" id="bulk-types">
+        <button class="mtype-btn active" data-type="monday" onclick="setBulkType(this)">月曜</button>
+        <button class="mtype-btn" data-type="wednesday" onclick="setBulkType(this)">水曜</button>
+        <button class="mtype-btn" data-type="friday" onclick="setBulkType(this)">金曜</button>
+        <button class="mtype-btn" data-type="gratitude" onclick="setBulkType(this)">毎月1日</button>
+        <button class="mtype-btn" data-type="monthly" onclick="setBulkType(this)">月末</button>
+      </div>
+      <div class="modal-actions">
+        <button class="mbtn mbtn-cancel" onclick="closeBulkModal()">キャンセル</button>
+        <button class="mbtn mbtn-primary" onclick="generateBulkPreview()">プレビュー生成</button>
+      </div>
     </div>
-    <div class="modal-actions">
-      <button class="mbtn mbtn-cancel" onclick="closeBulkModal()">キャンセル</button>
-      <button class="mbtn mbtn-send" onclick="executeBulkSend()">全員に送信</button>
+    <div id="bulk-step2" style="display:none">
+      <h3>一斉送信 - メッセージ確認・編集</h3>
+      <p style="font-size:12px;color:#888;margin-bottom:12px">各メッセージを確認・編集してから送信してね</p>
+      <div id="bulk-preview-list" style="max-height:50vh;overflow-y:auto"></div>
+      <div class="modal-actions">
+        <button class="mbtn mbtn-cancel" onclick="closeBulkModal()">キャンセル</button>
+        <button class="mbtn mbtn-regen" onclick="showBulkStep1()">← 戻る</button>
+        <button class="mbtn mbtn-send" onclick="executeBulkSend()">全員に送信</button>
+      </div>
     </div>
   </div>
 </div>
@@ -307,20 +319,46 @@ async function addStudent(){
 function openBulkSend(){
   bulkType='monday';
   document.querySelectorAll('#bulk-types .mtype-btn').forEach(b=>b.classList.toggle('active',b.dataset.type==='monday'));
+  showBulkStep1();
   document.getElementById('bulk-modal').classList.add('open');
 }
 function closeBulkModal(){document.getElementById('bulk-modal').classList.remove('open');}
+function showBulkStep1(){
+  document.getElementById('bulk-step1').style.display='block';
+  document.getElementById('bulk-step2').style.display='none';
+}
 function setBulkType(btn){
   bulkType=btn.dataset.type;
   document.querySelectorAll('#bulk-types .mtype-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 }
-async function executeBulkSend(){
+async function generateBulkPreview(){
   const active=students.filter(s=>!s.status||s.status==='active');
-  if(!confirm('アクティブな受講生'+active.length+'名に送信しますか？'))return;
-  closeBulkModal();
-  const res=await fetch('/api/send-all',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:bulkType})});
+  document.getElementById('bulk-step1').style.display='none';
+  document.getElementById('bulk-step2').style.display='block';
+  const list=document.getElementById('bulk-preview-list');
+  list.innerHTML='<div style="font-size:13px;color:#888;padding:12px">生成中... しばらく待ってね</div>';
+  const results=[];
+  for(const s of active){
+    const res=await fetch('/api/preview/'+encodeURIComponent(s.id)+'?type='+bulkType,{method:'POST'});
+    const data=await res.json();
+    results.push({id:s.id,name:s.name,message:data.message||''});
+  }
+  list.innerHTML=results.map((r,i)=>
+    '<div style="margin-bottom:16px;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden">'+
+    '<div style="background:#f5f8ff;padding:8px 12px;font-size:13px;font-weight:600;color:#333">'+r.name+'</div>'+
+    '<textarea id="bulk-msg-'+i+'" data-id="'+r.id+'" style="width:100%;padding:10px;border:none;font-size:13px;line-height:1.7;font-family:inherit;resize:vertical;min-height:80px">'+r.message+'</textarea>'+
+    '</div>'
+  ).join('');
+}
+async function executeBulkSend(){
+  const textareas=document.querySelectorAll('#bulk-preview-list textarea');
+  if(!textareas.length){alert('先にプレビューを生成してね！');return;}
+  if(!confirm(textareas.length+'名に送信しますか？'))return;
+  const messages=Array.from(textareas).map(t=>({id:t.dataset.id,message:t.value,type:bulkType}));
+  const res=await fetch('/api/send-all',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages,type:bulkType})});
   const data=await res.json();
+  closeBulkModal();
   alert('送信完了！'+data.count+'名に送ったよ。');
   if(selectedId)loadHistory(selectedId);
 }
@@ -437,15 +475,25 @@ export default {
     if (url.pathname === '/api/send-all' && request.method === 'POST') {
       const body = await request.json();
       const messageType = body.type || 'monday';
-      const result = await env.DB.prepare("SELECT * FROM students WHERE status='active' OR status IS NULL").all();
       let count = 0;
-      for (const student of result.results) {
-        const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY);
-        await sendLine(student.id, feedback, env.LINE_CHANNEL_ACCESS_TOKEN);
-        await env.DB.prepare(
-          "INSERT INTO feedback_history (student_id, message_type, message, sent_at) VALUES (?, ?, ?, ?)"
-        ).bind(student.id, messageType, feedback, new Date().toISOString()).run();
-        count++;
+      if (body.messages && body.messages.length) {
+        for (const m of body.messages) {
+          await sendLine(m.id, m.message, env.LINE_CHANNEL_ACCESS_TOKEN);
+          await env.DB.prepare(
+            "INSERT INTO feedback_history (student_id, message_type, message, sent_at) VALUES (?, ?, ?, ?)"
+          ).bind(m.id, m.type || messageType, m.message, new Date().toISOString()).run();
+          count++;
+        }
+      } else {
+        const result = await env.DB.prepare("SELECT * FROM students WHERE status='active' OR status IS NULL").all();
+        for (const student of result.results) {
+          const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY);
+          await sendLine(student.id, feedback, env.LINE_CHANNEL_ACCESS_TOKEN);
+          await env.DB.prepare(
+            "INSERT INTO feedback_history (student_id, message_type, message, sent_at) VALUES (?, ?, ?, ?)"
+          ).bind(student.id, messageType, feedback, new Date().toISOString()).run();
+          count++;
+        }
       }
       return Response.json({ ok: true, count }, { headers: cors });
     }
