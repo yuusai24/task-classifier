@@ -39,14 +39,16 @@ class ZoomClient:
         self._token_expires_at = now + timedelta(seconds=expires_in - 60)
         return self._token
 
-    async def get_recording_transcript(self, meeting_uuid: str) -> str:
+    async def get_recording_transcript(self, meeting_uuid: str, meeting_id: str = "") -> str:
         token = await self._get_token()
         headers = {"Authorization": f"Bearer {token}"}
-        encoded_uuid = quote(meeting_uuid, safe="")
+
+        # まず数字のミーティングIDで試す、なければUUIDを使う
+        meeting_ref = meeting_id if meeting_id else quote(meeting_uuid, safe="")
 
         async with httpx.AsyncClient() as client:
             resp = await client.get(
-                f"{ZOOM_API_BASE}/meetings/{encoded_uuid}/recordings",
+                f"{ZOOM_API_BASE}/meetings/{meeting_ref}/recordings",
                 headers=headers,
             )
             resp.raise_for_status()
@@ -77,6 +79,9 @@ class ZoomClient:
 
     def get_meeting_uuid(self, payload: dict) -> str:
         return payload.get("payload", {}).get("object", {}).get("uuid", "")
+
+    def get_meeting_id(self, payload: dict) -> str:
+        return str(payload.get("payload", {}).get("object", {}).get("id", ""))
 
 
 def verify_webhook_signature(

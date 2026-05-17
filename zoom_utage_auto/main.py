@@ -64,10 +64,11 @@ async def zoom_webhook(
         return Response(status_code=204)
 
     meeting_uuid = zoom.get_meeting_uuid(payload)
+    meeting_id = zoom.get_meeting_id(payload)
     meeting_topic = zoom.get_meeting_topic(payload)
 
     try:
-        transcript = await zoom.get_recording_transcript(meeting_uuid)
+        transcript = await zoom.get_recording_transcript(meeting_uuid, meeting_id)
     except ValueError as e:
         print(f"[WARN] {e}")
         return Response(status_code=204)
