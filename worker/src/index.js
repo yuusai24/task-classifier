@@ -102,6 +102,7 @@ header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-s
       <button class="mtype-btn active" data-type="monday" onclick="setType(this)">月曜マインドセット</button>
       <button class="mtype-btn" data-type="wednesday" onclick="setType(this)">水曜チェックイン</button>
       <button class="mtype-btn" data-type="friday" onclick="setType(this)">金曜お疲れさま</button>
+      <button class="mtype-btn" data-type="gratitude" onclick="setType(this)">毎月1日 感謝</button>
       <button class="mtype-btn" data-type="monthly" onclick="setType(this)">月末振り返り</button>
     </div>
     <div class="modal-msg" id="modal-msg">生成中...</div>
