@@ -73,7 +73,7 @@ header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-s
 </style>
 </head>
 <body>
-<header>受講生ダッシュボード ― 友彩</header>
+<header>受講生ダッシュボード ― 友彩　<a href="https://docs.google.com/spreadsheets/d/1z1gvME-9VQI_Zawt10nOHRsWVrUnar4HXoXqVl63z2I/edit" target="_blank" style="margin-left:16px;background:#34A853;color:white;border:none;padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none">ワーク管理シート</a></header>
 <div class="stats">
   <div class="stat"><div class="stat-val" id="s1">-</div><div class="stat-lbl">在籍</div></div>
   <div class="stat"><div class="stat-val" id="s2">-%</div><div class="stat-lbl">平均進捗</div></div>
