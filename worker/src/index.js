@@ -276,9 +276,9 @@ export default {
   async scheduled(event, env, ctx) {
     let messageType;
     if (event.cron === "0 0 28 * *") messageType = "monthly";
-    else if (event.cron === "0 0 * * 1") messageType = "monday";
-    else if (event.cron === "0 0 * * 3") messageType = "wednesday";
-    else if (event.cron === "0 0 * * 5") messageType = "friday";
+    else if (event.cron === "0 0 * * 2") messageType = "monday";
+    else if (event.cron === "0 0 * * 4") messageType = "wednesday";
+    else if (event.cron === "0 0 * * 6") messageType = "friday";
     else return;
 
     const students = await env.DB.prepare("SELECT * FROM students").all();
