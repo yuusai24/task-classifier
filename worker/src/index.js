@@ -91,6 +91,7 @@ header{background:white;padding:14px 24px;border-bottom:1px solid #e0e0e0;font-s
     <div class="sci"><div class="sct">毎週月曜 09:00</div><div class="sctitle">マインドセット</div><span class="scbadge">設定済み</span></div>
     <div class="sci"><div class="sct">毎週水曜 09:00</div><div class="sctitle">中間チェックイン</div><span class="scbadge">設定済み</span></div>
     <div class="sci"><div class="sct">毎週金曜 09:00</div><div class="sctitle">週間お疲れさま</div><span class="scbadge">設定済み</span></div>
+    <div class="sci"><div class="sct">毎月1日 09:00</div><div class="sctitle">感謝の先取り＆振り返り</div><span class="scbadge">設定済み</span></div>
     <div class="sci"><div class="sct">毎月28日 09:00</div><div class="sctitle">月末振り返りレポート</div><span class="scbadge">設定済み</span></div>
   </div>
 </div>
@@ -276,6 +277,7 @@ export default {
   async scheduled(event, env, ctx) {
     let messageType;
     if (event.cron === "0 0 28 * *") messageType = "monthly";
+    else if (event.cron === "0 0 1 * *") messageType = "gratitude";
     else if (event.cron === "0 0 * * 2") messageType = "monday";
     else if (event.cron === "0 0 * * 4") messageType = "wednesday";
     else if (event.cron === "0 0 * * 6") messageType = "friday";
@@ -297,7 +299,8 @@ async function generateFeedback(student, messageType, apiKey) {
     monday: "月曜日のマインドセットメッセージを送ります。今週も頑張れる気持ちになれるよう、受講生の仕事・状況を踏まえた前向きな言葉と、今週意識してほしいことを1つ伝えてください。",
     wednesday: "水曜日の中間チェックインメッセージを送ります。今どんな感じ？という雰囲気で、今週の半分を過ごした受講生に寄り添いながら、今困ってることや行き詰まってることがあれば教えてほしい、と自然に投げかける内容にしてください。",
     friday: "金曜日の週間お疲れさまメッセージを送ります。今週1週間を労い、受講生の成長を認め、週末をゆっくり過ごしてほしいという温かい内容にしてください。",
-    monthly: "月末の振り返りレポートをお願いするメッセージを送ります。以下の5項目を返信してもらえるようにお願いしてください。温かく、負担にならない雰囲気で伝えてください。①うまくいったこと ②うまくいかなかったこと ③今月の感謝額（売り上げ） ④今月叶ったこと ⑤来月実行すること"
+    monthly: "月末の振り返りレポートをお願いするメッセージを送ります。以下の5項目を返信してもらえるようにお願いしてください。温かく、負担にならない雰囲気で伝えてください。①うまくいったこと ②うまくいかなかったこと ③今月の感謝額（売り上げ） ④今月叶ったこと ⑤来月実行すること",
+    gratitude: "毎月1日の感謝メッセージを送ります。2つのことを自然に投げかけてください。①感謝の先取り：今月末に感謝したいことを今から想像して、どんなことに感謝できそうか先取りして書いてもらう。②感謝の振り返り：先月1ヶ月を振り返って、感謝できることを3つ教えてもらう。受講生の仕事・状況を踏まえて、ポジティブで温かい雰囲気で伝えてください。"
   };
 
   const prompt = "あなたは女性起業家・副業ママのビジネスコーチ「友彩（ゆうさい）」のAIアシスタントです。受講生へのLINEメッセージを作成してください。【ルール】200〜300文字以内。ため口で書く（です・ます調は使わない）。関西弁を必ず混ぜる（やん・やで・やね・やんか・めっちゃ・ほんま など。ただしこてこてにしすぎない）。受講生の仕事・状況を具体的に言及する。個人の家族状況などは文中に書かない。締めは温かい言葉で終わる。【メッセージの種類】" + typePrompts[messageType] + "【受講生情報】仮名: " + student.name + " 入会日: " + student.joined_at + " 現在のステージ: " + student.current_stage + " 進捗率: " + student.progress + "% 仕事・肩書き: " + student.job + " 最近の状況: " + student.notes;
