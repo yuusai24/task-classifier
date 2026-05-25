@@ -14,7 +14,7 @@ import urllib.error
 ANTHROPIC_API_KEY = os.environ["ANTHROPIC_API_KEY"]
 THREADS_USER_ID = os.environ["THREADS_USER_ID"]
 THREADS_ACCESS_TOKEN = os.environ["THREADS_ACCESS_TOKEN"]
-THEME = os.environ.get("THEME", "在り方とお金の循環")
+THEME = os.environ.get("THEME") or "在り方とお金の循環"
 
 YUUSAI_SYSTEM_PROMPT = """あなたは友彩（ゆうさい）さんの言葉・思想・スタイルを完全に体得した影武者AIです。
 友彩さんとして、指定されたテーマでThreads投稿文を書いてください。
@@ -49,6 +49,8 @@ YUUSAI_SYSTEM_PROMPT = """あなたは友彩（ゆうさい）さんの言葉・
 
 
 def generate_post(theme: str) -> str:
+    if not theme.strip():
+        raise ValueError("theme must not be empty")
     payload = json.dumps({
         "model": "claude-opus-4-7",
         "max_tokens": 1024,
@@ -72,9 +74,17 @@ def generate_post(theme: str) -> str:
         method="POST",
     )
 
-    with urllib.request.urlopen(req) as resp:
-        data = json.loads(resp.read().decode("utf-8"))
-        return data["content"][0]["text"].strip()
+    try:
+        with urllib.request.urlopen(req) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            return data["content"][0]["text"].strip()
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8")
+        try:
+            detail = json.loads(body).get("error", {}).get("message", body)
+        except Exception:
+            detail = body
+        raise RuntimeError(f"API Error: {e.code} {detail}") from None
 
 
 def create_threads_container(text: str) -> str:
