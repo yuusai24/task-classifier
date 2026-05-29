@@ -487,7 +487,8 @@ export default {
       } else {
         const result = await env.DB.prepare("SELECT * FROM students WHERE status='active' OR status IS NULL").all();
         for (const student of result.results) {
-          const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY);
+          const replyRow = await env.DB.prepare("SELECT message FROM line_messages WHERE student_id=? ORDER BY received_at DESC LIMIT 1").bind(student.id).first();
+          const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY, replyRow?.message || null);
           await sendLine(student.id, feedback, env.LINE_CHANNEL_ACCESS_TOKEN);
           await env.DB.prepare(
             "INSERT INTO feedback_history (student_id, message_type, message, sent_at) VALUES (?, ?, ?, ?)"
@@ -503,7 +504,8 @@ export default {
       const type = url.searchParams.get('type') || 'monday';
       const student = await env.DB.prepare("SELECT * FROM students WHERE id=?").bind(id).first();
       if (!student) return Response.json({ error: 'not found' }, { status: 404, headers: cors });
-      const message = await generateFeedback(student, type, env.ANTHROPIC_API_KEY);
+      const replyRow = await env.DB.prepare("SELECT message FROM line_messages WHERE student_id=? ORDER BY received_at DESC LIMIT 1").bind(id).first();
+      const message = await generateFeedback(student, type, env.ANTHROPIC_API_KEY, replyRow?.message || null);
       return Response.json({ message }, { headers: cors });
     }
 
@@ -524,7 +526,8 @@ export default {
       const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
       const day = jst.getUTCDay();
       const messageType = day === 1 ? 'monday' : day === 3 ? 'wednesday' : day === 5 ? 'friday' : 'monday';
-      const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY);
+      const replyRow = await env.DB.prepare("SELECT message FROM line_messages WHERE student_id=? ORDER BY received_at DESC LIMIT 1").bind(id).first();
+      const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY, replyRow?.message || null);
       await sendLine(student.id, feedback, env.LINE_CHANNEL_ACCESS_TOKEN);
       await env.DB.prepare(
         "INSERT INTO feedback_history (student_id, message_type, message, sent_at) VALUES (?, ?, ?, ?)"
@@ -561,7 +564,8 @@ export default {
 
     const students = await env.DB.prepare("SELECT * FROM students WHERE status='active' OR status IS NULL").all();
     for (const student of students.results) {
-      const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY);
+      const replyRow = await env.DB.prepare("SELECT message FROM line_messages WHERE student_id=? ORDER BY received_at DESC LIMIT 1").bind(student.id).first();
+      const feedback = await generateFeedback(student, messageType, env.ANTHROPIC_API_KEY, replyRow?.message || null);
       await sendLine(student.id, feedback, env.LINE_CHANNEL_ACCESS_TOKEN);
       await env.DB.prepare("UPDATE students SET last_feedback_at=? WHERE id=?").bind(new Date().toISOString(), student.id).run();
       await env.DB.prepare(
@@ -571,7 +575,7 @@ export default {
   }
 };
 
-async function generateFeedback(student, messageType, apiKey) {
+async function generateFeedback(student, messageType, apiKey, latestReply) {
   const typePrompts = {
     monday: "月曜日のマインドセットメッセージを送ります。今週も頑張れる気持ちになれるよう、受講生の仕事・状況を踏まえた前向きな言葉と、今週意識してほしいことを1つ伝えてください。",
     wednesday: "水曜日の中間チェックインメッセージを送ります。今どんな感じ？という雰囲気で、今週の半分を過ごした受講生に寄り添いながら、今困ってることや行き詰まってることがあれば教えてほしい、と自然に投げかける内容にしてください。",
@@ -580,7 +584,7 @@ async function generateFeedback(student, messageType, apiKey) {
     gratitude: "毎月1日の感謝メッセージを送ります。2つのことを自然に投げかけてください。①感謝の先取り：今月末に感謝したいことを今から想像して、どんなことに感謝できそうか先取りして書いてもらう。②感謝の振り返り：先月1ヶ月を振り返って、感謝できることを3つ教えてもらう。受講生の仕事・状況を踏まえて、ポジティブで温かい雰囲気で伝えてください。"
   };
 
-  const prompt = "あなたは女性起業家・副業ママのビジネスコーチ「友彩（ゆうさい）」のAIアシスタントです。受講生へのLINEメッセージを作成してください。【ルール】200〜300文字以内。ため口で書く（です・ます調は使わない）。関西弁を必ず混ぜる（やん・やで・やね・やんか・めっちゃ・ほんま など。ただしこてこてにしすぎない）。受講生の仕事・状況を具体的に言及する。個人の家族状況などは文中に書かない。締めは温かい言葉で終わる。【メッセージの種類】" + typePrompts[messageType] + "【受講生情報】仮名: " + student.name + " 入会日: " + student.joined_at + " 現在のステージ: " + student.current_stage + " 進捗率: " + student.progress + "% 仕事・肩書き: " + student.job + " 最近の状況: " + student.notes;
+  const prompt = "あなたは女性起業家・副業ママのビジネスコーチ「友彩（ゆうさい）」のAIアシスタントです。受講生へのLINEメッセージを作成してください。【ルール】200〜300文字以内。ため口で書く（です・ます調は使わない）。関西弁を必ず混ぜる（やん・やで・やね・やんか・めっちゃ・ほんま など。ただしこてこてにしすぎない）。受講生の仕事・状況を具体的に言及する。個人の家族状況などは文中に書かない。締めは温かい言葉で終わる。【メッセージの種類】" + typePrompts[messageType] + "【受講生情報】仮名: " + student.name + " 入会日: " + student.joined_at + " 現在のステージ: " + student.current_stage + " 仕事・肩書き: " + student.job + " 最近の状況: " + student.notes + " 受講生の最近の返信（現在地）: " + (latestReply || "なし");
 
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
