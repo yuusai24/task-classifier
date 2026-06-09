@@ -6,761 +6,676 @@
 <title>がむしゃらビジネスを卒業するオープンカレッジ｜友彩</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy:   #1a2d7a;
+  --navy-d: #0d1a52;
+  --navy-l: #2a40a0;
+  --gold:   #c9a020;
+  --gold-l: #e8c040;
+  --gold-d: #9a7010;
+  --green:  #1e6830;
+  --green-l:#2a8040;
+  --blue-bg:#eef3fc;
+  --text:   #1a1a3a;
+}
 body {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-family: 'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;
   background: #f0f0f0;
   max-width: 480px;
   margin: 0 auto;
   overflow-x: hidden;
-  color: #1a1a3a;
+  color: var(--text);
 }
 
-/* ===== NAVY HEADER BAR ===== */
-.header-bar {
-  background: linear-gradient(135deg, #0a1a5c 0%, #1a2d7a 50%, #0a1a5c 100%);
-  padding: 14px 20px 16px;
-  text-align: center;
-  position: relative;
+/* ══════════════════════════════
+   FLOATING CTA (sticky bottom)
+══════════════════════════════ */
+.float-cta {
+  position: fixed;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  padding: 8px 12px 12px;
+  background: rgba(26,45,122,0.97);
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
 }
-.header-bar::before,
-.header-bar::after {
-  content: '🌿';
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px;
-  filter: sepia(1) saturate(0.6) brightness(1.4);
-  opacity: 0.8;
-}
-.header-bar::before { left: 16px; }
-.header-bar::after  { right: 16px; transform: translateY(-50%) scaleX(-1); }
-.header-bar p {
-  font-size: 12px;
-  color: rgba(255,255,255,0.85);
-  letter-spacing: 0.05em;
-  margin-bottom: 4px;
-}
-.header-bar h2 {
-  font-size: 17px;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: 0.05em;
-  line-height: 1.4;
-}
-.header-bar h2 em {
-  font-style: normal;
-  color: #f0d070;
-}
+.float-cta .sub { margin-bottom: -6px; }
+.float-cta .main { font-size: 17px; padding: 14px 16px; }
 
-/* ===== HERO ===== */
-.hero {
-  position: relative;
-  min-height: 480px;
-  overflow: hidden;
-  background: linear-gradient(160deg,
-    #c8dff5 0%, #d8eaf8 20%,
-    #e8f2fc 40%, #f0f6fe 60%,
-    #f5f2f0 80%, #ece8e0 100%
-  );
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 240px 100px at 20% 20%, rgba(255,255,255,0.9) 0%, transparent 65%),
-    radial-gradient(ellipse 300px 120px at 80% 10%, rgba(255,255,255,0.85) 0%, transparent 65%),
-    radial-gradient(ellipse 180px 70px at 55% 35%, rgba(255,255,255,0.7) 0%, transparent 65%);
-  pointer-events: none;
-}
-.hero-photo {
-  position: absolute;
-  right: 0; top: 0;
-  width: 68%; height: 100%;
-  z-index: 1;
-}
-.hero-photo img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: top center;
-}
-.hero-photo-placeholder {
-  width: 100%; height: 100%;
-  background: linear-gradient(160deg, rgba(180,200,230,0.2) 0%, transparent 60%);
-}
-.hero-photo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right,
-    rgba(210,230,248,1) 0%,
-    rgba(210,230,248,0.5) 25%,
-    transparent 60%
-  );
-}
-.hero-photo::before {
-  content: '';
-  position: absolute;
-  inset: 0; z-index: 1;
-  background: linear-gradient(to bottom,
-    transparent 55%,
-    rgba(236,232,224,0.8) 80%,
-    rgba(236,232,224,1) 100%
-  );
-}
-.hero-text {
-  position: relative;
-  z-index: 2;
-  padding: 24px 20px 0;
-  max-width: 58%;
-}
-.hero-title-sm {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a2d7a;
-  line-height: 1.5;
-  text-shadow: 0 1px 4px rgba(255,255,255,0.9);
-}
-.hero-title-lg {
-  font-size: 52px;
-  font-weight: 900;
-  line-height: 1.0;
-  background: linear-gradient(145deg,
-    #1a60c0 0%, #2a80e0 30%, #50a8f8 55%,
-    #2a80e0 75%, #1040a0 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(1px 2px 0 rgba(10,30,120,0.2));
-  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
-}
-.hero-title-lg .excl {
-  font-size: 58px;
-  background: linear-gradient(145deg, #1060c0, #40a0f8, #c09020);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.hero-title-ruby {
-  font-size: 10px;
-  color: #5a70c0;
-  letter-spacing: 2px;
-  display: block;
-  margin-bottom: -4px;
-}
-.hero-catch {
-  font-size: 13px;
-  font-weight: 700;
-  color: #1a1a3a;
-  background: rgba(255,255,255,0.85);
-  border-radius: 20px;
-  padding: 6px 12px;
-  display: inline-block;
-  margin: 10px 0 16px;
-  line-height: 1.5;
-  box-shadow: 0 2px 8px rgba(30,60,160,0.12);
-}
-
-/* ===== 2段CTAボタン ===== */
-.cta-block {
-  padding: 0 12px 20px;
-}
-.cta-sub-label {
-  background: linear-gradient(135deg, #c09020 0%, #e0b830 40%, #f0d050 60%, #c8a020 100%);
+/* ══════════════════════════════
+   SHARED: 2-layer CTA button
+══════════════════════════════ */
+.cta-wrap { padding: 0; }
+.cta-sub {
+  background: linear-gradient(135deg,#b08010 0%,#d4a820 35%,#f0cc50 55%,#c89820 80%,#a07010 100%);
   border-radius: 30px;
   padding: 9px 20px;
   text-align: center;
   font-size: 13px;
   font-weight: 800;
   color: #1a1a3a;
-  letter-spacing: 0.03em;
+  letter-spacing: .03em;
   margin-bottom: -6px;
-  position: relative;
-  z-index: 1;
-  box-shadow: 0 2px 10px rgba(180,130,0,0.35);
+  position: relative; z-index: 1;
+  box-shadow: 0 2px 10px rgba(180,130,0,.35);
 }
-.cta-main-btn {
+.cta-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: linear-gradient(135deg, #1a6030 0%, #2a8040 40%, #1e7035 60%, #165028 100%);
+  background: linear-gradient(135deg,var(--green) 0%,var(--green-l) 40%,#1e7035 60%,#16502a 100%);
   color: #fff;
   border-radius: 12px;
   padding: 18px 20px;
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 900;
-  letter-spacing: 0.04em;
+  letter-spacing: .04em;
   text-decoration: none;
-  box-shadow: 0 6px 20px rgba(20,80,30,0.45), inset 0 2px 0 rgba(255,255,255,0.15), inset 0 -3px 0 rgba(0,0,0,0.2);
-  position: relative;
-  z-index: 0;
-  font-family: 'Hiragino Mincho ProN', serif;
+  box-shadow: 0 6px 20px rgba(20,80,30,.45),inset 0 2px 0 rgba(255,255,255,.15),inset 0 -3px 0 rgba(0,0,0,.2);
+  font-family: 'Hiragino Mincho ProN','Yu Mincho',serif;
+  position: relative; z-index: 0;
 }
-.cta-main-btn .arrow {
-  font-size: 18px;
-  opacity: 0.9;
-}
-
-/* ===== SECTION共通 ===== */
-.section {
-  background: #fff;
-  padding: 28px 20px;
-}
-.section-blue {
-  background: linear-gradient(180deg, #eef3fc 0%, #e8f0fa 100%);
-  padding: 28px 20px;
-}
-.section-navy {
-  background: linear-gradient(135deg, #0a1a5c 0%, #1a2d7a 50%, #0a1a5c 100%);
-  padding: 28px 20px;
-}
-.section-marble {
-  background:
-    radial-gradient(ellipse 300px 200px at 20% 30%, rgba(180,140,220,0.4) 0%, transparent 60%),
-    radial-gradient(ellipse 250px 180px at 80% 70%, rgba(160,120,210,0.35) 0%, transparent 60%),
-    radial-gradient(ellipse 200px 150px at 60% 20%, rgba(200,170,240,0.3) 0%, transparent 55%),
-    linear-gradient(135deg, #e8e0f8 0%, #f0e8fc 30%, #e0d8f4 60%, #ece4fa 100%);
-  padding: 28px 20px;
-}
-
-/* ===== FEATURES ===== */
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 8px;
-}
-.feature-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 7px;
-}
-.feature-circle {
-  width: 66px; height: 66px;
-  border-radius: 50%;
-  border: 2px solid #c09020;
-  background: linear-gradient(135deg, #fff 0%, #faf8f0 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 10px rgba(180,130,0,0.18);
-  gap: 2px;
-}
-.feature-circle .icon { font-size: 24px; }
-.feature-circle .tag {
-  font-size: 8px;
-  font-weight: 800;
-  color: #8a6010;
-  letter-spacing: 0.5px;
-}
-.feature-text {
-  font-size: 10px;
-  font-weight: 600;
-  color: #1a1a3a;
-  line-height: 1.55;
-}
-
-/* ===== 講師プロフィール ===== */
-.profile-inner {
-  background: linear-gradient(135deg, #0a1a5c 0%, #1a2d7a 100%);
-  border-radius: 16px;
-  padding: 20px;
-  color: #fff;
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-}
-.profile-photo {
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  border: 3px solid #d4a820;
-  object-fit: cover;
-  flex-shrink: 0;
-  background: rgba(255,255,255,0.1);
-}
-.profile-info {}
-.profile-label {
-  font-size: 9px;
-  letter-spacing: 3px;
-  color: #d4a820;
-  margin-bottom: 4px;
-}
-.profile-name {
-  font-size: 22px;
-  font-weight: 900;
-  color: #fff;
-  letter-spacing: 0.1em;
-  font-family: 'Hiragino Mincho ProN', serif;
-}
-.profile-ruby {
-  font-size: 10px;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 8px;
-  letter-spacing: 0.15em;
-}
-.profile-bio {
-  font-size: 12px;
-  line-height: 1.8;
-  color: rgba(255,255,255,0.88);
-}
-.profile-bio strong {
-  color: #f0d060;
-  font-weight: 700;
-}
-
-/* ===== 実績バッジ ===== */
-.achievement-box {
-  border: 2px solid #c09020;
-  border-radius: 8px;
-  padding: 16px 20px;
-  text-align: center;
-  position: relative;
-  margin: 20px 0 16px;
-}
-.achievement-box::before {
-  content: '🏆';
-  position: absolute;
-  top: -16px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 28px;
-  background: #fff;
-  padding: 0 6px;
-}
-.achievement-series {
-  font-size: 12px;
-  color: #8a6010;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-.achievement-number {
-  font-size: 38px;
-  font-weight: 900;
-  background: linear-gradient(135deg, #9a6010 0%, #c8900a 30%, #e8b020 50%, #c8900a 70%, #9a6010 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-family: 'Georgia', serif;
-  line-height: 1.1;
-}
-.achievement-sub {
-  font-size: 11px;
-  color: #8a6010;
-  margin-top: 2px;
-}
-.laurel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: #c09020;
-  font-size: 20px;
-  margin: 6px 0 0;
-}
-
-/* ===== チェックリスト ===== */
-.check-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-.check-list li {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 0;
-  border-bottom: 1px solid #e0e8f0;
-  font-size: 14px;
-  color: #1a1a3a;
-  font-weight: 500;
-  line-height: 1.5;
-}
-.check-list li:last-child { border-bottom: none; }
-.check-icon {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1a2d7a 0%, #2a40a0 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: #fff;
-  font-size: 14px;
-  box-shadow: 0 2px 6px rgba(20,40,140,0.25);
-}
-
-/* ===== 3メリット ===== */
-.merit-row {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin-top: 16px;
-}
-.merit-item {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 6px;
-  border-right: 1px solid #d0d8f0;
-  font-size: 11px;
-  font-weight: 600;
-  color: #1a2d7a;
-}
-.merit-item:last-child { border-right: none; }
-.merit-check {
-  color: #e040a0;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-.merit-text { line-height: 1.4; }
-.merit-text span {
-  display: block;
-  font-size: 9px;
-  color: #e040a0;
-  font-weight: 700;
-}
-
-/* ===== 価格セクション ===== */
-.offer-label {
-  text-align: center;
-  font-size: 11px;
-  color: #6a4090;
-  letter-spacing: 2px;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.offer-label::before, .offer-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #b090d0);
-}
-.offer-label::after {
-  background: linear-gradient(to left, transparent, #b090d0);
-}
-.offer-badge-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 16px;
-}
-.offer-time-badge {
-  flex-shrink: 0;
-  width: 70px; height: 70px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #5030a0 0%, #7050c0 50%, #4020a0 100%);
-  border: 2px solid #c0a0e0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(80,40,160,0.35);
-}
-.offer-time-badge .t1 { font-size: 9px; font-weight: 700; }
-.offer-time-badge .t2 { font-size: 18px; font-weight: 900; line-height: 1; }
-.offer-time-badge .t3 { font-size: 9px; font-weight: 700; }
-.offer-title {
-  font-size: 12px;
-  color: #4a2080;
-  font-weight: 600;
-}
-.offer-percent {
-  font-size: 52px;
-  font-weight: 900;
-  background: linear-gradient(135deg, #9a6010 0%, #c8900a 25%, #e8b020 50%, #c8900a 75%, #9a6010 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-family: 'Georgia', serif;
-  line-height: 1;
-}
-.offer-percent span { font-size: 28px; }
-.price-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.cta-notes {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 4px 10px;
+  font-size: 9.5px; color: rgba(255,255,255,.7);
   margin-top: 8px;
-  flex-wrap: wrap;
 }
-.price-original {
-  font-size: 13px;
-  color: #7a7a9a;
-  text-decoration: line-through;
-}
-.price-arrow { color: #1a2d7a; font-size: 16px; }
-.price-sale {
-  font-size: 28px;
-  font-weight: 900;
-  color: #1a2d7a;
-  font-family: 'Georgia', serif;
-}
-.price-note { font-size: 10px; color: #5a5a7a; }
+.cta-notes .bar { color: rgba(255,255,255,.3); }
 
-/* ===== セクションタイトル ===== */
-.sec-title {
-  font-size: 18px;
-  font-weight: 800;
-  color: #1a2d7a;
+/* ══════════════════════════════
+   NAVY HEADER BAR
+══════════════════════════════ */
+.header-bar {
+  background: linear-gradient(135deg,var(--navy-d) 0%,var(--navy) 50%,var(--navy-d) 100%);
+  padding: 14px 40px 16px;
   text-align: center;
-  margin-bottom: 6px;
-  letter-spacing: 0.03em;
+  position: relative;
 }
-.sec-title-underline {
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, #c09020, #e8b830);
-  border-radius: 2px;
-  margin: 0 auto 20px;
+.header-bar::before,.header-bar::after {
+  content:'🌿'; position:absolute; top:50%; transform:translateY(-50%);
+  font-size:22px; opacity:.8; filter:sepia(1) saturate(.6) brightness(1.5);
 }
-.sec-en {
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: #8090c0;
-  text-align: center;
-  margin-bottom: 6px;
+.header-bar::before{left:12px;} .header-bar::after{right:12px;transform:translateY(-50%) scaleX(-1);}
+.header-bar .sub { font-size:11px; color:rgba(255,255,255,.8); letter-spacing:.05em; margin-bottom:4px; }
+.header-bar .ttl { font-size:16px; font-weight:800; color:#fff; line-height:1.45; }
+.header-bar .ttl em { font-style:normal; color:var(--gold-l); }
+
+/* ══════════════════════════════
+   HERO
+══════════════════════════════ */
+.hero {
+  position:relative; min-height:500px; overflow:hidden;
+  background:linear-gradient(160deg,#b8d8f0 0%,#cce5f5 20%,#ddf0fa 40%,#f0f8ff 60%,#f5f2ea 75%,#ede8d8 100%);
+}
+.hero::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 240px 100px at 20% 18%,rgba(255,255,255,.9) 0%,transparent 65%),
+    radial-gradient(ellipse 300px 120px at 78% 10%,rgba(255,255,255,.85) 0%,transparent 65%),
+    radial-gradient(ellipse 180px 70px at 55% 32%,rgba(255,255,255,.7) 0%,transparent 65%);
+}
+.hero-photo {
+  position:absolute; right:0; top:0; width:68%; height:100%; z-index:1;
+}
+.hero-photo img { width:100%; height:100%; object-fit:cover; object-position:top center; }
+.hero-photo::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to right,rgba(190,220,248,1) 0%,rgba(190,220,248,.45) 28%,transparent 62%);
+}
+.hero-photo::before {
+  content:''; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(to bottom,transparent 55%,rgba(237,232,216,.85) 80%,rgba(237,232,216,1) 100%);
+}
+.hero-text { position:relative; z-index:2; padding:24px 18px 0; max-width:56%; }
+.hero-sm { font-size:17px; font-weight:700; color:var(--navy); line-height:1.5; text-shadow:0 1px 4px rgba(255,255,255,.9); }
+.hero-lg {
+  font-size:52px; font-weight:900; line-height:1.0;
+  background:linear-gradient(145deg,#1050b0 0%,#2878e0 30%,#50a8f8 55%,#2060c0 80%,#0a30a0 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  filter:drop-shadow(1px 2px 0 rgba(10,30,120,.2));
+  font-family:'Hiragino Mincho ProN','Yu Mincho',serif;
+}
+.hero-lg .excl { font-size:58px; }
+.hero-catch {
+  font-size:13px; font-weight:700; color:var(--text);
+  background:rgba(255,255,255,.88); border-radius:20px;
+  padding:6px 12px; display:inline-block; margin:10px 0 18px;
+  line-height:1.55; box-shadow:0 2px 8px rgba(30,60,160,.12);
+}
+.hero-catch em { font-style:normal; color:var(--navy); }
+.hero-cta-wrap { padding:0 14px 16px; background:#ece8e0; }
+
+/* ══════════════════════════════
+   SECTION: features (blue bg)
+══════════════════════════════ */
+.sec-blue { background:linear-gradient(180deg,#eef3fc 0%,#e8f0fa 100%); padding:24px 18px; }
+.sec-white { background:#fff; padding:28px 18px; }
+.sec-navy {
+  background:linear-gradient(135deg,var(--navy-d) 0%,var(--navy) 50%,var(--navy-d) 100%);
+  padding:28px 18px;
+}
+.sec-marble {
+  background:
+    radial-gradient(ellipse 300px 200px at 20% 30%,rgba(180,140,220,.4) 0%,transparent 60%),
+    radial-gradient(ellipse 250px 180px at 80% 70%,rgba(160,120,210,.35) 0%,transparent 60%),
+    linear-gradient(135deg,#e8e0f8 0%,#f0e8fc 35%,#e0d8f4 65%,#ece4fa 100%);
+  padding:28px 18px;
+}
+.sec-light {
+  background:linear-gradient(180deg,#f0f5ff 0%,#eaf0fd 100%);
+  padding:28px 18px;
 }
 
-/* ===== FORMAT TAGS ===== */
-.format-row {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin-top: 14px;
+.features-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.feat-item { display:flex; flex-direction:column; align-items:center; text-align:center; gap:7px; }
+.feat-circle {
+  width:66px; height:66px; border-radius:50%;
+  border:2px solid var(--gold); background:#fff;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:0 2px 10px rgba(180,130,0,.18); gap:2px;
 }
+.feat-circle .ic { font-size:24px; }
+.feat-circle .tg { font-size:8px; font-weight:800; color:var(--gold-d); letter-spacing:.5px; }
+.feat-txt { font-size:10px; font-weight:600; color:var(--text); line-height:1.55; }
+
+/* ══════════════════════════════
+   SEC TITLE
+══════════════════════════════ */
+.sec-en { font-size:10px; letter-spacing:3px; color:#8090c0; text-align:center; margin-bottom:5px; }
+.sec-ttl { font-size:18px; font-weight:800; color:var(--navy); text-align:center; letter-spacing:.03em; margin-bottom:6px; }
+.sec-ttl em { font-style:normal; color:var(--gold); }
+.sec-line { width:60px; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-l)); border-radius:2px; margin:0 auto 20px; }
+.sec-ttl-wh { font-size:18px; font-weight:800; color:#f0d060; text-align:center; letter-spacing:.03em; margin-bottom:6px; }
+.sec-line-wh { width:60px; height:2px; background:rgba(212,168,32,.5); border-radius:2px; margin:0 auto 20px; }
+
+/* ══════════════════════════════
+   REAL RESULTS (navy bg)
+══════════════════════════════ */
+.results-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:3px;
+  border-radius:10px; overflow:hidden; margin:16px 0;
+}
+.result-card {
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(212,168,32,.2);
+  border-radius:8px; padding:14px 12px;
+  text-align:center;
+}
+.result-card .month { font-size:9px; color:var(--gold-l); font-weight:700; letter-spacing:2px; margin-bottom:6px; }
+.result-card .quote {
+  font-size:12px; color:rgba(255,255,255,.88); line-height:1.7;
+  text-align:left;
+}
+.result-card .quote em { font-style:normal; color:var(--gold-l); font-weight:700; }
+.result-note { font-size:9.5px; color:rgba(255,255,255,.45); text-align:center; margin-top:8px; }
+
+/* ══════════════════════════════
+   ACHIEVEMENT BOX
+══════════════════════════════ */
+.achiev-box {
+  border:2px solid var(--gold); border-radius:8px;
+  padding:18px 20px; text-align:center; position:relative; margin:20px 0 16px;
+  background:linear-gradient(135deg,rgba(212,168,32,.05) 0%,rgba(255,255,255,1) 50%,rgba(212,168,32,.05) 100%);
+}
+.achiev-box::before {
+  content:'🏆'; position:absolute; top:-16px; left:50%; transform:translateX(-50%);
+  font-size:28px; background:#fff; padding:0 6px;
+}
+.achiev-sub { font-size:11px; color:var(--gold-d); font-weight:600; margin-bottom:4px; }
+.achiev-num {
+  font-size:36px; font-weight:900; line-height:1.1;
+  background:linear-gradient(135deg,#9a6010 0%,#c8900a 30%,#e8b020 50%,#c8900a 70%,#9a6010 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  font-family:'Georgia',serif;
+}
+.achiev-note { font-size:10px; color:var(--gold-d); margin-top:2px; }
+.laurel { display:flex; align-items:center; justify-content:center; gap:8px; color:var(--gold); font-size:20px; margin:6px 0 0; }
+
+/* ══════════════════════════════
+   MERIT ROW
+══════════════════════════════ */
+.merit-row { display:flex; gap:0; justify-content:center; margin-top:16px; border-top:1px solid #e0e8f0; }
+.merit-item {
+  flex:1; display:flex; align-items:center; gap:6px;
+  padding:10px 6px; border-right:1px solid #e0e8f0;
+  font-size:10.5px; font-weight:600; color:var(--navy);
+}
+.merit-item:last-child { border-right:none; }
+.merit-chk { color:#e040a0; font-size:15px; flex-shrink:0; }
+.merit-txt { line-height:1.4; }
+.merit-txt span { display:block; font-size:9px; color:#e040a0; font-weight:700; }
+
+/* ══════════════════════════════
+   PROBLEM LIST
+══════════════════════════════ */
+.prob-list { list-style:none; display:flex; flex-direction:column; }
+.prob-list li {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 0; border-bottom:1px dashed #c8d8f0;
+  font-size:13.5px; font-weight:500; line-height:1.5; color:var(--text);
+}
+.prob-list li:last-child { border-bottom:none; }
+.prob-ic {
+  width:28px; height:28px; border-radius:50%;
+  background:linear-gradient(135deg,var(--navy-d) 0%,var(--navy-l) 100%);
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:13px; flex-shrink:0;
+  box-shadow:0 2px 6px rgba(20,40,140,.25);
+}
+
+/* ══════════════════════════════
+   INSTRUCTOR
+══════════════════════════════ */
+.instructor-wrap { display:flex; gap:0; align-items:stretch; }
+.instructor-photo-col {
+  width:44%; flex-shrink:0; position:relative;
+  background:linear-gradient(180deg,#d0e8fa 0%,#e8f4fc 100%);
+}
+.instructor-photo-col img {
+  width:100%; aspect-ratio:3/4; object-fit:cover; object-position:top center; display:block;
+}
+.instructor-cred {
+  margin:0 10px 10px; padding:10px;
+  border:1px solid var(--gold); border-radius:6px;
+  background:#fff; font-size:9.5px; color:#4a4060; line-height:1.65;
+}
+.instructor-text-col { flex:1; padding:20px 16px; background:#fff; }
+.instructor-text-col .hi { font-size:11px; color:#8090b0; margin-bottom:6px; }
+.instructor-text-col .name-sub { font-size:11px; color:#6070a0; margin-bottom:2px; }
+.instructor-text-col .name { font-size:24px; font-weight:900; color:var(--navy); margin-bottom:2px; font-family:'Hiragino Mincho ProN',serif; }
+.instructor-text-col .name-ruby { font-size:10px; color:#8090b0; margin-bottom:10px; letter-spacing:.15em; }
+.instructor-text-col .catch { font-size:13px; font-weight:700; color:#4a3090; margin-bottom:10px; }
+.instructor-text-col p { font-size:12px; line-height:1.85; color:#3a3050; margin-bottom:8px; }
+.instructor-text-col p strong { color:#c03050; font-weight:700; }
+
+/* ══════════════════════════════
+   NAVY MESSAGE BAR
+══════════════════════════════ */
+.msg-bar {
+  background:var(--navy);
+  padding:18px 20px; text-align:center;
+}
+.msg-bar p { font-size:14px; font-weight:700; color:rgba(255,255,255,.95); line-height:1.7; }
+.msg-bar p em { font-style:normal; color:var(--gold-l); }
+
+/* ══════════════════════════════
+   BONUS
+══════════════════════════════ */
+.bonus-header {
+  background:var(--navy); padding:10px 16px; border-radius:6px;
+  text-align:center; font-size:14px; font-weight:800; color:#fff;
+  margin-bottom:14px; letter-spacing:.05em;
+}
+.bonus-big {
+  text-align:center; margin-bottom:18px;
+}
+.bonus-big .catch { font-size:11px; color:#6060a0; margin-bottom:4px; }
+.bonus-big .num {
+  font-size:54px; font-weight:900; line-height:1;
+  background:linear-gradient(135deg,#9a6010,#c8900a 30%,#e8b020 50%,#c8900a 70%,#9a6010);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  font-family:'Georgia',serif;
+}
+.bonus-big .label { font-size:28px; font-weight:900; color:var(--navy); }
+.bonus-big .sub { font-size:12px; color:#6070a0; margin-top:4px; }
+.bonus-item {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 12px; border-radius:10px; margin-bottom:10px;
+  background:#fff; border:1px solid #e0e8f8;
+  box-shadow:0 2px 8px rgba(30,60,160,.07);
+}
+.bonus-num-badge {
+  flex-shrink:0; width:56px; height:56px; border-radius:50%;
+  background:linear-gradient(135deg,#a07808 0%,#c89a10 30%,#e8b820 50%,#c89a10 70%,#a07808 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:0 3px 10px rgba(160,100,0,.3); border:2px solid #f0d060;
+}
+.bonus-num-badge .bsub { font-size:8px; font-weight:800; color:#fff3c0; }
+.bonus-num-badge .bnum { font-size:22px; font-weight:900; color:#fff; line-height:1; font-family:'Georgia',serif; }
+.bonus-content { flex:1; }
+.bonus-content .btag { font-size:10px; color:#8090b0; margin-bottom:2px; }
+.bonus-content .btitle { font-size:15px; font-weight:800; color:#c03050; line-height:1.3; }
+.bonus-content .bdesc { font-size:11px; color:#5a5a7a; line-height:1.6; margin-top:3px; }
+.bonus-icon { font-size:36px; flex-shrink:0; }
+
+/* ══════════════════════════════
+   OFFER / PRICE
+══════════════════════════════ */
+.offer-label {
+  font-size:11px; color:#6a4090; letter-spacing:2px;
+  text-align:center; margin-bottom:14px;
+  display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.offer-label::before,.offer-label::after {
+  content:''; flex:1; height:1px;
+  background:linear-gradient(to right,transparent,#b090d0);
+}
+.offer-label::after { background:linear-gradient(to left,transparent,#b090d0); }
+.offer-row { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+.offer-badge {
+  flex-shrink:0; width:72px; height:72px; border-radius:50%;
+  background:linear-gradient(135deg,#5030a0,#7050c0 50%,#4020a0);
+  border:2px solid #c0a0e0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; color:#fff;
+  box-shadow:0 4px 14px rgba(80,40,160,.35);
+}
+.offer-badge .t1,.offer-badge .t3 { font-size:9px; font-weight:700; }
+.offer-badge .t2 { font-size:20px; font-weight:900; line-height:1; }
+.offer-main { }
+.offer-title { font-size:11px; color:#4a2080; font-weight:600; margin-bottom:2px; }
+.offer-pct {
+  font-size:50px; font-weight:900; line-height:1;
+  background:linear-gradient(135deg,#9a6010,#c8900a 25%,#e8b020 50%,#c8900a 75%,#9a6010);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  font-family:'Georgia',serif;
+}
+.offer-pct span { font-size:26px; }
+.price-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:6px; }
+.price-orig { font-size:12px; color:#9a9ab0; text-decoration:line-through; }
+.price-arr { color:var(--navy); font-size:16px; }
+.price-sale { font-size:26px; font-weight:900; color:var(--navy); font-family:'Georgia',serif; }
+.price-note { font-size:9.5px; color:#6a6a8a; }
+
+/* ══════════════════════════════
+   FORMAT TAGS
+══════════════════════════════ */
+.format-row { display:flex; gap:8px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
 .format-tag {
-  background: rgba(255,255,255,0.15);
-  border: 1px solid #d4a820;
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #f5e0a0;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  background:rgba(255,255,255,.12); border:1px solid var(--gold);
+  border-radius:20px; padding:6px 14px; font-size:12px;
+  font-weight:700; color:#f5e0a0; display:flex; align-items:center; gap:5px;
 }
 
-/* ===== FOOTER ===== */
-.footer-bar {
-  background: linear-gradient(135deg, #06100a 0%, #0c1e10 50%, #06100a 100%);
-  padding: 16px 20px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: #d4a820;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.footer-bar::before, .footer-bar::after {
-  content: '✦';
-  font-size: 9px;
-  color: #a07818;
-}
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
+.footer { background:linear-gradient(135deg,#060e06,#0c1a0a 50%,#060e06); padding:16px 20px 80px; text-align:center; }
+.footer p { font-size:12px; font-weight:600; color:var(--gold); letter-spacing:.08em; display:flex; align-items:center; justify-content:center; gap:8px; }
+.footer p::before,.footer p::after { content:'✦'; font-size:9px; color:var(--gold-d); }
 </style>
 </head>
 <body>
 
-<!-- ===== NAVY HEADER BAR ===== -->
-<div class="header-bar">
-  <p>頑張るほど空回りするビジネスから卒業しよう。</p>
-  <h2>"心の整え方"で <em>ビジネスが変わる</em>新習慣</h2>
+<!-- ══ FLOATING CTA ══ -->
+<div class="float-cta">
+  <div class="cta-wrap">
+    <div class="cta-sub sub">般若心経でビジネスの本質を学ぶ</div>
+    <a href="https://ws.formzu.net/dist/S5713665/" class="cta-btn main">
+      ◀ オープンチャット無料参加はこちら
+    </a>
+    <div class="cta-notes">
+      <span>💬 見るだけOK</span><span class="bar">|</span>
+      <span>📱 スマホで簡単参加</span><span class="bar">|</span>
+      <span>🩷 途中退室自由</span>
+    </div>
+  </div>
 </div>
 
-<!-- ===== HERO ===== -->
+<!-- ══ HEADER ══ -->
+<div class="header-bar">
+  <p class="sub">頑張るほど空回りするビジネスから卒業しよう。</p>
+  <p class="ttl">"心の整え方"で <em>ビジネスが変わる</em>新習慣</p>
+</div>
+
+<!-- ══ HERO ══ -->
 <section class="hero">
   <div class="hero-photo">
-    <!-- src="yuusai.jpg" に変更してください -->
     <img src="yuusai.jpg" alt="友彩" onerror="this.style.display='none'">
-    <div class="hero-photo-placeholder"></div>
   </div>
   <div class="hero-text">
-    <p class="hero-title-sm">がむしゃらビジネスを</p>
-    <p class="hero-title-lg">
-      <ruby>卒業<rt class="hero-title-ruby">そつぎょう</rt></ruby>する<span class="excl">！</span>
-    </p>
-    <p class="hero-catch">毎日の<strong>心の使い方</strong>で<br>現実は変わり始める</p>
+    <p class="hero-sm">がむしゃらビジネスを</p>
+    <p class="hero-lg">卒業する<span class="excl">！</span></p>
+    <p class="hero-catch">毎日の<em>心の使い方</em>で<br>現実は変わり始める</p>
   </div>
 </section>
-
-<!-- ===== CTA ① ===== -->
-<div class="cta-block" style="background:#ece8e0; padding-top:16px;">
-  <div class="cta-sub-label">般若心経でビジネスの本質を学ぶ</div>
-  <a href="https://ws.formzu.net/dist/S5713665/" class="cta-main-btn">
-    <span class="arrow">◀</span> オープンチャット無料参加はこちら
-  </a>
+<div class="hero-cta-wrap">
+  <div class="cta-wrap">
+    <div class="cta-sub">般若心経でビジネスの本質を学ぶ</div>
+    <a href="https://ws.formzu.net/dist/S5713665/" class="cta-btn">
+      ◀ オープンチャット無料参加はこちら
+    </a>
+  </div>
 </div>
 
-<!-- ===== FEATURES ===== -->
-<section class="section-blue">
+<!-- ══ FEATURES ══ -->
+<section class="sec-blue">
   <div class="features-grid">
-    <div class="feature-item">
-      <div class="feature-circle">
-        <span class="icon">📖</span>
-        <span class="tag">わかりやすく</span>
-      </div>
-      <p class="feature-text">般若心経を<br>やさしく<br>学べる</p>
+    <div class="feat-item">
+      <div class="feat-circle"><span class="ic">📖</span><span class="tg">わかりやすく</span></div>
+      <p class="feat-txt">般若心経を<br>やさしく<br>学べる</p>
     </div>
-    <div class="feature-item">
-      <div class="feature-circle">
-        <span class="icon">📈</span>
-        <span class="tag">実践的</span>
-      </div>
-      <p class="feature-text">経営・お金・<br>人間関係に<br>活かせる</p>
+    <div class="feat-item">
+      <div class="feat-circle"><span class="ic">📈</span><span class="tg">実践的</span></div>
+      <p class="feat-txt">経営・お金・<br>人間関係に<br>活かせる</p>
     </div>
-    <div class="feature-item">
-      <div class="feature-circle">
-        <span class="icon">🕊️</span>
-        <span class="tag">手放す</span>
-      </div>
-      <p class="feature-text">不安・執着を<br>手放して<br>心が軽くなる</p>
+    <div class="feat-item">
+      <div class="feat-circle"><span class="ic">🕊️</span><span class="tg">手放す</span></div>
+      <p class="feat-txt">不安・執着を<br>手放して<br>心が軽くなる</p>
     </div>
-    <div class="feature-item">
-      <div class="feature-circle">
-        <span class="icon">👥</span>
-        <span class="tag">安心の場</span>
-      </div>
-      <p class="feature-text">仲間と共に<br>深め合える<br>コミュニティ</p>
+    <div class="feat-item">
+      <div class="feat-circle"><span class="ic">👥</span><span class="tg">安心の場</span></div>
+      <p class="feat-txt">仲間と共に<br>深め合える<br>コミュニティ</p>
     </div>
   </div>
 </section>
 
-<!-- ===== 実績・プロフィール ===== -->
-<section class="section">
-  <div class="achievement-box">
-    <p class="achievement-series">友彩オープンカレッジ</p>
-    <div class="achievement-number">参加者 続々！</div>
-    <p class="achievement-sub">（LINE・YouTube LIVE 同時開催）</p>
+<!-- ══ ACHIEVEMENT ══ -->
+<section class="sec-white">
+  <div class="achiev-box">
+    <p class="achiev-sub">友彩オープンカレッジ</p>
+    <p class="achiev-num">受講生 続々参加！</p>
+    <p class="achiev-note">（LINE・YouTube LIVE 同時開催）</p>
     <div class="laurel">🌿 &nbsp; 🌿</div>
   </div>
-
   <div class="merit-row">
     <div class="merit-item">
-      <span class="merit-check">✔</span>
-      <div class="merit-text"><span>心から</span>整える</div>
+      <span class="merit-chk">✔</span>
+      <div class="merit-txt"><span>心から</span>整える</div>
     </div>
     <div class="merit-item">
-      <span class="merit-check">✔</span>
-      <div class="merit-text"><span>実績ある</span>本格学習</div>
+      <span class="merit-chk">✔</span>
+      <div class="merit-txt"><span>実績ある</span>本格学習</div>
     </div>
     <div class="merit-item">
-      <span class="merit-check">✔</span>
-      <div class="merit-text"><span>毎日続けやすい</span>シンプル習慣</div>
+      <span class="merit-chk">✔</span>
+      <div class="merit-txt"><span>毎日続けやすい</span>シンプル習慣</div>
     </div>
   </div>
 </section>
 
-<!-- ===== CTA ② ===== -->
-<div class="cta-block" style="background:#1a2d7a; padding:16px 12px 20px;">
-  <div class="cta-sub-label">お得なスタートで根本から変化を体感する</div>
-  <a href="https://ws.formzu.net/dist/S5713665/" class="cta-main-btn">
-    <span class="arrow">◀</span> オープンチャット無料参加はこちら
-  </a>
+<!-- ══ CTA ② ══ -->
+<div style="background:var(--navy); padding:16px 14px 20px;">
+  <div class="cta-wrap">
+    <div class="cta-sub">一緒に学んで、軽やかな未来へ</div>
+    <a href="https://ws.formzu.net/dist/S5713665/" class="cta-btn">
+      ◀ オープンチャット無料参加はこちら
+    </a>
+  </div>
 </div>
 
-<!-- ===== 講師プロフィール ===== -->
-<section class="section-navy">
-  <p class="sec-en" style="color:rgba(255,255,255,0.5);">INSTRUCTOR</p>
-  <p class="sec-title" style="color:#f0d060; margin-bottom:16px;">講師紹介</p>
-  <div class="profile-inner" style="background:rgba(255,255,255,0.08); border:1px solid rgba(212,168,32,0.3);">
-    <!-- src="yuusai.jpg" に変更 -->
-    <img src="yuusai.jpg" alt="友彩" class="profile-photo"
-      onerror="this.style.background='rgba(255,255,255,0.2)'">
-    <div class="profile-info">
-      <p class="profile-label">INSTRUCTOR</p>
-      <p class="profile-name">友彩</p>
-      <p class="profile-ruby">ゆうさい</p>
-      <p class="profile-bio">
-        祖母の他界を機に<strong>サードアイ開眼</strong>。<br>
-        年商5,000万→<strong>1億達成</strong>・毎月<strong>7桁安定化</strong>・ひとり起業からチーム化拡大など、<strong>女性起業家・経営者</strong>のビジネスサポートを行う。
-      </p>
+<!-- ══ PROBLEM ══ -->
+<section class="sec-blue">
+  <p class="sec-ttl">こんなお悩み、<em>ありませんか？</em></p>
+  <div class="sec-line"></div>
+  <ul class="prob-list">
+    <li><span class="prob-ic">✓</span>頑張っているのに、なぜか結果が出ない</li>
+    <li><span class="prob-ic">✓</span>お金や集客への不安がいつも頭から離れない</li>
+    <li><span class="prob-ic">✓</span>人間関係のストレスでエネルギーを消耗している</li>
+    <li><span class="prob-ic">✓</span>「もっと頑張らなきゃ」と自分を追い込んでしまう</li>
+    <li><span class="prob-ic">✓</span>「私には無理かも」と半分諦めかけている</li>
+    <li><span class="prob-ic">✓</span>ビジネスの軸が定まらず、迷い続けている</li>
+  </ul>
+</section>
+
+<!-- ══ REAL RESULTS ══ -->
+<section class="sec-navy">
+  <p class="sec-en" style="color:rgba(255,255,255,.45);">REAL RESULTS</p>
+  <p class="sec-ttl-wh">まず、<span style="color:var(--gold-l)">この変化</span>を見てください</p>
+  <p style="font-size:12px;color:rgba(255,255,255,.75);text-align:center;margin-bottom:16px;line-height:1.6;">
+    オープンカレッジに参加した受講生の<br>実際のビジネス・心の変化です
+  </p>
+  <div class="results-grid">
+    <div class="result-card">
+      <p class="month">VOICE 01</p>
+      <p class="quote">般若心経を学んでから<em>売上が1.5倍</em>に。執着を手放したら逆にお客様が来るようになった。</p>
+    </div>
+    <div class="result-card">
+      <p class="month">VOICE 02</p>
+      <p class="quote">毎朝の心の習慣で<em>不安がなくなり</em>、チームとの関係が劇的に改善しました。</p>
+    </div>
+    <div class="result-card">
+      <p class="month">VOICE 03</p>
+      <p class="quote">「頑張らなきゃ」から「ゆだねる」に変わって<em>月収7桁</em>が安定してきた。</p>
+    </div>
+    <div class="result-card">
+      <p class="month">VOICE 04</p>
+      <p class="quote">経営判断に迷わなくなった。<em>心の軸ができた</em>感覚が一番の変化です。</p>
     </div>
   </div>
-  <div class="format-row">
+  <p class="result-note">※個人の感想であり、成果を保証するものではありません</p>
+</section>
+
+<!-- ══ CTA ③ ══ -->
+<div style="background:var(--navy); padding:16px 14px 20px;">
+  <div class="cta-wrap">
+    <div class="cta-sub">お得なスタートで根本から変化を体感する</div>
+    <a href="https://ws.formzu.net/dist/S5713665/" class="cta-btn">
+      ◀ オープンチャット無料参加はこちら
+    </a>
+  </div>
+</div>
+
+<!-- ══ INSTRUCTOR ══ -->
+<section style="background:#fff; padding:0;">
+  <div style="background:var(--navy-d); padding:10px 20px; text-align:center;">
+    <p style="font-size:10px; letter-spacing:3px; color:var(--gold); font-weight:700;">INSTRUCTOR</p>
+  </div>
+  <div class="instructor-wrap">
+    <div class="instructor-photo-col">
+      <img src="yuusai.jpg" alt="友彩" onerror="this.style.background='#d0e0f0';this.style.minHeight='260px'">
+      <div class="instructor-cred">
+        般若心経ビジネス哲学講師<br>
+        女性起業家・経営者サポート<br>
+        年商1億円・7桁安定化達成<br>
+        ひとり起業→チーム化拡大
+      </div>
+    </div>
+    <div class="instructor-text-col">
+      <p class="hi">はじめまして。</p>
+      <p class="name-sub">般若心経ビジネス哲学講師</p>
+      <p class="name">友彩</p>
+      <p class="name-ruby">ゆうさい</p>
+      <p class="catch">〜心が整うと、ビジネスが整う〜</p>
+      <p>祖母の他界を機に<strong>サードアイ開眼</strong>。</p>
+      <p>年商5,000万から<strong>1億達成</strong>・毎月<strong>7桁安定化</strong>・ひとり起業からチーム化拡大など、<strong>女性起業家・経営者</strong>のビジネスサポートを行う。</p>
+      <p>般若心経の教えをビジネスに落とし込み、<strong>「心を整えると、経営が整う」</strong>を体現している。</p>
+    </div>
+  </div>
+  <div class="format-row" style="background:var(--navy-d); padding:14px 18px; margin-top:0;">
     <span class="format-tag">💬 LINE オープンチャット</span>
     <span class="format-tag">▶ YouTube LIVE</span>
   </div>
 </section>
 
-<!-- ===== お悩みセクション ===== -->
-<section class="section-blue">
-  <p class="sec-title">こんなお悩み、ありませんか？</p>
-  <div class="sec-title-underline"></div>
-  <ul class="check-list">
-    <li>
-      <span class="check-icon">✓</span>
-      頑張っているのに、なぜか結果が出ない
-    </li>
-    <li>
-      <span class="check-icon">✓</span>
-      お金や集客への不安が消えない
-    </li>
-    <li>
-      <span class="check-icon">✓</span>
-      人間関係のストレスでエネルギーを消耗している
-    </li>
-    <li>
-      <span class="check-icon">✓</span>
-      「もっと頑張らなきゃ」と自分を追い込んでしまう
-    </li>
-    <li>
-      <span class="check-icon">✓</span>
-      「年だから仕方ない」と半分諦めかけている
-    </li>
-    <li>
-      <span class="check-icon">✓</span>
-      ビジネスの哲学・軸が定まらず、迷い続けている
-    </li>
-  </ul>
+<!-- ══ MSG BAR ══ -->
+<div class="msg-bar">
+  <p>ビジネスの未来は、今ここから変えられます。<br><em>私が、その変化を全力でサポートします。</em></p>
+</div>
+
+<!-- ══ BONUS ══ -->
+<section class="sec-light">
+  <p style="text-align:center;font-size:11px;color:#6070a0;margin-bottom:8px;">参加者限定</p>
+  <div class="bonus-header">オープンカレッジ参加で</div>
+  <div class="bonus-big">
+    <p class="catch">特別</p>
+    <span class="num">5</span><span class="label">大特典</span>
+    <p style="font-size:24px;font-weight:900;color:var(--navy);margin-top:-4px;">プレゼント</p>
+    <p class="sub">今だけの豪華特典で、軽やかな未来をサポート。</p>
+  </div>
+  <div class="bonus-item">
+    <div class="bonus-num-badge"><span class="bsub">特典</span><span class="bnum">01</span></div>
+    <div class="bonus-content">
+      <p class="btag">参加費</p>
+      <p class="btitle">完全無料</p>
+      <p class="bdesc">全国どこからでも参加費0円<br>※LINE・YouTubeで簡単アクセス</p>
+    </div>
+    <span class="bonus-icon">🆓</span>
+  </div>
+  <div class="bonus-item">
+    <div class="bonus-num-badge"><span class="bsub">特典</span><span class="bnum">02</span></div>
+    <div class="bonus-content">
+      <p class="btag">友彩オープンチャット</p>
+      <p class="btitle">サポートLINEへ無料招待！</p>
+      <p class="bdesc">心の習慣をサポートします！</p>
+    </div>
+    <span class="bonus-icon">💬</span>
+  </div>
+  <div class="bonus-item">
+    <div class="bonus-num-badge"><span class="bsub">特典</span><span class="bnum">03</span></div>
+    <div class="bonus-content">
+      <p class="btag">オリジナル</p>
+      <p class="btitle">般若心経解説テキスト</p>
+      <p class="bdesc">ビジネスに活かせる現代語訳版</p>
+    </div>
+    <span class="bonus-icon">📖</span>
+  </div>
+  <div class="bonus-item">
+    <div class="bonus-num-badge"><span class="bsub">特典</span><span class="bnum">04</span></div>
+    <div class="bonus-content">
+      <p class="btag">録画アーカイブ</p>
+      <p class="btitle">見逃し配信あり</p>
+      <p class="bdesc">当日参加できなくてもOK！</p>
+    </div>
+    <span class="bonus-icon">▶️</span>
+  </div>
+  <div class="bonus-item">
+    <div class="bonus-num-badge"><span class="bsub">特典</span><span class="bnum">05</span></div>
+    <div class="bonus-content">
+      <p class="btag">個別相談</p>
+      <p class="btitle">友彩への質問タイム</p>
+      <p class="bdesc">ライブ中に直接質問できる！</p>
+    </div>
+    <span class="bonus-icon">🎤</span>
+  </div>
 </section>
 
-<!-- ===== CTA ③ (マーブル背景) ===== -->
-<section class="section-marble">
+<!-- ══ CTA ④ MARBLE ══ -->
+<section class="sec-marble" style="padding:24px 14px;">
   <div class="offer-label">来月1日スタート・特別なご案内</div>
-
-  <div class="offer-badge-row">
-    <div class="offer-time-badge">
-      <span class="t1">来月</span>
-      <span class="t2">1日</span>
-      <span class="t3">START!</span>
+  <div class="offer-row">
+    <div class="offer-badge">
+      <span class="t1">来月</span><span class="t2">1日</span><span class="t3">START!</span>
     </div>
-    <div>
+    <div class="offer-main">
       <p class="offer-title">完全無料</p>
-      <p class="offer-percent">0<span>円</span></p>
+      <p class="offer-pct">0<span>円</span></p>
       <div class="price-row">
-        <span class="price-arrow">▶</span>
+        <span class="price-arr">▶</span>
         <span class="price-sale">無料参加</span>
-        <span class="price-note">（見るだけOK・途中退室自由）</span>
+        <span class="price-note">（見るだけOK・退室自由）</span>
       </div>
     </div>
   </div>
-
-  <div class="cta-sub-label">一緒に学んで、軽やかな未来へ</div>
-  <div style="height:6px;"></div>
-  <a href="https://ws.formzu.net/dist/S5713665/" class="cta-main-btn" style="font-size:18px;">
-    <span class="arrow">◀</span> オープンチャット無料参加はこちら
-  </a>
-  <p style="text-align:center; font-size:10px; color:#7a5a9a; margin-top:10px;">
-    💬 見るだけOK &nbsp;|&nbsp; 📱 スマホで簡単参加 &nbsp;|&nbsp; 🩷 途中入室・退室自由
-  </p>
+  <div class="cta-wrap">
+    <div class="cta-sub">一緒に学んで、軽やかな未来へ</div>
+    <a href="https://ws.formzu.net/dist/S5713665/" class="cta-btn" style="font-size:18px;">
+      ◀ オープンチャット無料参加はこちら
+    </a>
+    <div class="cta-notes" style="color:#7a5a9a; margin-top:8px;">
+      <span>💬 見るだけOK</span><span class="bar" style="color:#c0a0d0">|</span>
+      <span>📱 スマホで簡単参加</span><span class="bar" style="color:#c0a0d0">|</span>
+      <span>🩷 途中退室自由</span>
+    </div>
+  </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
-<div class="footer-bar">
-  心を整え、経営を整え、人生を軽くする新しい学びの時間
+<!-- ══ FOOTER ══ -->
+<div class="footer">
+  <p>心を整え、経営を整え、人生を軽くする新しい学びの時間</p>
 </div>
 
 </body>
