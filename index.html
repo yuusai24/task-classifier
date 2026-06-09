@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>がむしゃらビジネスを卒業するオープンカレッジ｜友彩</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: #f5f0e8;
+    max-width: 480px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 700px;
+    overflow: hidden;
+    background: linear-gradient(180deg,
+      #6ab0e0 0%, #8dc8ef 15%, #b0d8f5 30%,
+      #d0eafa 48%, #e8f4f8 58%,
+      #f0ece0 72%, #ede8d4 100%
+    );
+  }
+
+  /* 雲エフェクト */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 220px 90px at 15% 18%, rgba(255,255,255,0.92) 0%, transparent 65%),
+      radial-gradient(ellipse 300px 110px at 75% 12%, rgba(255,255,255,0.88) 0%, transparent 65%),
+      radial-gradient(ellipse 160px 65px at 50% 30%, rgba(255,255,255,0.75) 0%, transparent 65%),
+      radial-gradient(ellipse 200px 75px at 5% 42%, rgba(255,255,255,0.65) 0%, transparent 65%),
+      radial-gradient(ellipse 140px 55px at 90% 35%, rgba(255,255,255,0.7) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* 人物画像 */
+  .hero-photo {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 62%;
+    height: 100%;
+    z-index: 2;
+  }
+  .hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+  /* 左側へのフェードマスク */
+  .hero-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(200,220,235,1) 0%,
+      rgba(200,220,235,0.6) 20%,
+      transparent 55%
+    );
+  }
+  /* 下部へのフェードマスク */
+  .hero-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      transparent 55%,
+      rgba(237,232,216,0.7) 75%,
+      rgba(237,232,216,1) 100%
+    );
+  }
+
+  /* テキストコンテンツ */
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    padding: 0 0 32px;
+  }
+
+  .hero-top-text {
+    text-align: center;
+    padding: 26px 16px 6px;
+    font-size: 13.5px;
+    color: #1a1a1a;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+  }
+  .hero-top-text em {
+    color: #b03020;
+    font-style: normal;
+    font-weight: 800;
+  }
+
+  .hero-divider {
+    text-align: center;
+    color: #b8974a;
+    font-size: 16px;
+    letter-spacing: 6px;
+    padding: 3px 0 10px;
+  }
+
+  .hero-text {
+    padding: 0 20px;
+    max-width: 56%;
+  }
+  .hero-subtitle {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.5;
+    text-shadow: 0 1px 4px rgba(255,255,255,0.9);
+  }
+  .hero-title-main {
+    font-size: 54px;
+    font-weight: 900;
+    line-height: 1.0;
+    background: linear-gradient(145deg,
+      #9a6210 0%, #c4912a 20%, #e8c050 40%,
+      #f5d870 50%, #e0b040 65%, #b07820 80%, #8a5a10 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(1px 2px 0 rgba(100,60,0,0.25));
+    font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  }
+  .hero-title-sub {
+    font-size: 25px;
+    font-weight: 900;
+    color: #1a1a1a;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+    margin-top: -2px;
+    text-shadow: 0 1px 4px rgba(255,255,255,0.9);
+    font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #1e1206 0%, #33200e 50%, #1e1206 100%);
+    border: 1.5px solid #c09030;
+    border-radius: 4px;
+    padding: 7px 16px;
+    margin: 12px 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #f0c850;
+    letter-spacing: 0.12em;
+  }
+  .hero-badge::before, .hero-badge::after {
+    content: '✦';
+    font-size: 10px;
+    color: #c09030;
+  }
+
+  .hero-catch {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.8;
+    text-shadow: 0 1px 4px rgba(255,255,255,0.95);
+  }
+  .hero-catch em {
+    color: #b03020;
+    font-style: normal;
+  }
+  .hero-catch .sp {
+    color: #b8862a;
+    font-size: 13px;
+  }
+
+  /* ===== 講師プロフィール ===== */
+  .profile {
+    background: #fff;
+    margin: 0 16px 0;
+    border-radius: 16px 16px 0 0;
+    padding: 22px 20px 20px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    position: relative;
+    z-index: 4;
+  }
+  .profile-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #b8862a;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .profile-name-wrap {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .profile-name-jp {
+    font-size: 26px;
+    font-weight: 900;
+    color: #2a1a0a;
+    letter-spacing: 0.15em;
+    font-family: 'Hiragino Mincho ProN', serif;
+  }
+  .profile-name-ruby {
+    font-size: 11px;
+    color: #8a7060;
+    letter-spacing: 0.2em;
+    margin-top: 2px;
+  }
+  .profile-divider {
+    width: 48px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #c09030, transparent);
+    margin: 10px auto;
+  }
+  .profile-bio {
+    font-size: 13px;
+    color: #4a3828;
+    line-height: 1.85;
+    text-align: justify;
+  }
+  .profile-bio strong {
+    color: #9a6210;
+    font-weight: 700;
+  }
+
+  /* ===== 開催形式バッジ ===== */
+  .format-strip {
+    background: linear-gradient(135deg, #1e1206 0%, #2a1a0a 100%);
+    margin: 0 16px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .format-label {
+    font-size: 10px;
+    color: #f0c850;
+    letter-spacing: 2px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .format-items {
+    display: flex;
+    gap: 8px;
+  }
+  .format-tag {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid #c09030;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #f5e8c0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* ===== FEATURES ===== */
+  .features {
+    background: linear-gradient(180deg, #f0ece0 0%, #ede8d4 100%);
+    padding: 22px 16px 24px;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 7px;
+  }
+  .feature-icon-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1.5px solid #c09030;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 2px 8px rgba(160,110,20,0.15);
+  }
+  .feature-text {
+    font-size: 10px;
+    font-weight: 600;
+    color: #3a2818;
+    line-height: 1.55;
+  }
+
+  /* ===== CTA ===== */
+  .cta-section {
+    background: linear-gradient(180deg, #ede8d4 0%, #e8e0cc 100%);
+    padding: 16px 16px 20px;
+  }
+  .cta-inner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .cta-date-badge {
+    flex-shrink: 0;
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #952848 0%, #b03058 50%, #7a2038 100%);
+    border: 3px solid #d4a843;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(140,30,50,0.35);
+    position: relative;
+  }
+  /* ローレル装飾 */
+  .cta-date-badge::before {
+    content: '🌿';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 22px;
+    filter: hue-rotate(30deg) saturate(0.8) brightness(0.9);
+  }
+  .cta-month { font-size: 10px; font-weight: 700; color: #f5e0b0; }
+  .cta-day   { font-size: 34px; font-weight: 900; color: #fff; line-height: 1; }
+  .cta-start { font-size: 10px; font-weight: 700; color: #f5e0b0; letter-spacing: 1px; }
+
+  .cta-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cta-tagline {
+    font-size: 13px;
+    font-weight: 600;
+    color: #5a3820;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  .cta-tagline::before, .cta-tagline::after {
+    content: '❧';
+    color: #b8862a;
+    font-size: 11px;
+  }
+
+  .cta-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #952848 0%, #b03058 60%, #7a2038 100%);
+    color: #fff;
+    border-radius: 50px;
+    padding: 14px 16px 14px 20px;
+    font-size: 14.5px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    box-shadow: 0 4px 18px rgba(140,30,50,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .cta-button:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(140,30,50,0.3);
+  }
+  .cta-arrow {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  .cta-notes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    font-size: 9.5px;
+    color: #7a5840;
+  }
+  .cta-notes span { display: flex; align-items: center; gap: 2px; }
+  .cta-notes .bar { color: #c0a070; font-size: 10px; }
+
+  /* ===== FOOTER ===== */
+  .footer-bar {
+    background: linear-gradient(135deg, #140c04 0%, #22160a 50%, #140c04 100%);
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #d4a843;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .footer-bar::before, .footer-bar::after {
+    content: '✦';
+    font-size: 9px;
+    color: #a07828;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+
+  <!-- 人物写真（右側） -->
+  <div class="hero-photo">
+    <!--
+      この img タグの src に写真ファイルを指定してください
+      例: src="yuusai.jpg"
+    -->
+    <img src="yuusai.jpg" alt="友彩">
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-top-text">頑張るほど<em>空回りする</em>ビジネスから卒業しよう。</p>
+    <p class="hero-divider">─── ∞ ───</p>
+
+    <div class="hero-text">
+      <p class="hero-subtitle">がむしゃらビジネスを</p>
+      <p class="hero-title-main">卒業する</p>
+      <p class="hero-title-sub">オープンカレッジ</p>
+
+      <div class="hero-badge">般若心経 × ビジネス哲学</div>
+
+      <p class="hero-catch">
+        毎日の<em>心の使い方</em>で<br>
+        <span class="sp">✦</span> 現実は変わり始める <span class="sp">✦</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 講師プロフィール ===== -->
+<div class="profile">
+  <p class="profile-label">INSTRUCTOR</p>
+  <div class="profile-name-wrap">
+    <p class="profile-name-jp">友彩</p>
+    <p class="profile-name-ruby">ゆうさい</p>
+  </div>
+  <div class="profile-divider"></div>
+  <p class="profile-bio">
+    祖母の他界を機に<strong>サードアイ開眼</strong>。<br>
+    年商5,000万から<strong>1億達成</strong>・毎月<strong>7桁安定化</strong>・ひとり起業からチーム化拡大など、<strong>女性起業家・経営者</strong>のビジネスサポートを行う。<br>
+    般若心経の教えをビジネスに落とし込み、<strong>「心を整えると、経営が整う」</strong>を体現する。
+  </p>
+</div>
+
+<!-- 開催形式 -->
+<div class="format-strip">
+  <p class="format-label">開催形式</p>
+  <div class="format-items">
+    <span class="format-tag">💬 LINE オープンチャット</span>
+    <span class="format-tag">▶ YouTube LIVE</span>
+  </div>
+</div>
+
+<!-- ===== FEATURES ===== -->
+<section class="features">
+  <div class="features-grid">
+    <div class="feature-item">
+      <div class="feature-icon-wrap">📖</div>
+      <p class="feature-text">般若心経を<br>わかりやすく<br>学べる</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon-wrap">📈</div>
+      <p class="feature-text">経営・お金・<br>人間関係に<br>活かせる</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon-wrap">🩷</div>
+      <p class="feature-text">不安や執着を<br>手放して<br>心が軽くなる</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon-wrap">👥</div>
+      <p class="feature-text">受講生と一緒に<br>深め合える<br>安心の場</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-date-badge">
+      <span class="cta-month">来月</span>
+      <span class="cta-day">1日</span>
+      <span class="cta-start">START!</span>
+    </div>
+    <div class="cta-right">
+      <p class="cta-tagline">一緒に学んで、軽やかな未来へ</p>
+      <a href="https://ws.formzu.net/dist/S5713665/" class="cta-button">
+        オープンチャット無料参加はこちら
+        <span class="cta-arrow">›</span>
+      </a>
+      <div class="cta-notes">
+        <span>💬 見るだけOK</span>
+        <span class="bar">|</span>
+        <span>📱 スマホで簡単参加</span>
+        <span class="bar">|</span>
+        <span>🩷 途中入室・退室自由</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer-bar">
+  心を整え、経営を整え、人生を軽くする新しい学びの時間
+</div>
+
+</body>
+</html>
