@@ -27,8 +27,8 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // 未ログイン → ログインページへ（/login と /register は除外）
-  if (!user && !pathname.startsWith('/login') && !pathname.startsWith('/register') && pathname !== '/') {
+  // 未ログイン → ログインページへ（/login と /register と /lp は除外）
+  if (!user && !pathname.startsWith('/login') && !pathname.startsWith('/register') && !pathname.startsWith('/lp') && pathname !== '/') {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
