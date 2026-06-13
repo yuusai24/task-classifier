@@ -431,7 +431,7 @@
         <div class="desc">統合の属性<br>稀少タイプ</div>
       </div>
     </div>
-    <button class="start-btn" onclick="startQuiz()">診断スタート（全8問）</button>
+    <button class="start-btn" onclick="startQuiz()">診断スタート（全15問）</button>
   </div>
 
   <!-- QUIZ -->
@@ -517,6 +517,55 @@ const questions = [
     choices: [
       { text: "努力が報われた瞬間、恩のある人に助けてもらったとき", type: "fire" },
       { text: "何もしていないのに良い縁や機会が向こうからやってきたとき", type: "water" }
+    ]
+  },
+  {
+    text: "新しいことを始めるとき、どちらに近い？",
+    choices: [
+      { text: "計画を立てて、準備が整ったら動く", type: "fire" },
+      { text: "直感で「これだ！」と感じたらすぐ動く", type: "water" }
+    ]
+  },
+  {
+    text: "友人・仲間との関係について、あなたは？",
+    choices: [
+      { text: "恩義と絆を大切にする。昔からの仲間を大事にする", type: "fire" },
+      { text: "不思議な縁で自然と人が集まってくる", type: "water" }
+    ]
+  },
+  {
+    text: "休日の過ごし方に近いのは？",
+    choices: [
+      { text: "自己投資・スキルアップ・目標に向けた行動をしたい", type: "fire" },
+      { text: "心地よさを最優先。好きなことだけしていたい", type: "water" }
+    ]
+  },
+  {
+    text: "お金を使うとき、どちらが多い？",
+    choices: [
+      { text: "成長・投資・事業など、未来の自分のために使う", type: "fire" },
+      { text: "感動・心地よさ・好きなものに直感で使う", type: "water" }
+    ]
+  },
+  {
+    text: "チャンスが目の前に来たとき、あなたは？",
+    choices: [
+      { text: "自分からつかみにいく。逃さないよう行動する", type: "fire" },
+      { text: "流れに乗る。自然に引き寄せられた感覚がある", type: "water" }
+    ]
+  },
+  {
+    text: "落ち込んだとき、どうやって回復する？",
+    choices: [
+      { text: "行動する・走る・目標を見直す。動いて昇華する", type: "fire" },
+      { text: "好きな音楽・空間・感触に包まれて自然と回復する", type: "water" }
+    ]
+  },
+  {
+    text: "人生の転機や大きな変化を振り返ると？",
+    choices: [
+      { text: "自分で決断し、意志の力で動いた結果だった", type: "fire" },
+      { text: "縁・偶然・タイミングが不思議と重なっていた", type: "water" }
     ]
   }
 ];
@@ -620,8 +669,8 @@ function showResult() {
 
   let typeKey;
   const diff = scores.fire - scores.water;
-  if (diff >= 2) typeKey = "fire";
-  else if (diff <= -2) typeKey = "water";
+  if (diff >= 3) typeKey = "fire";
+  else if (diff <= -3) typeKey = "water";
   else typeKey = "both";
 
   const r = results[typeKey];
