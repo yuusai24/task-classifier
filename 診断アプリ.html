@@ -403,7 +403,7 @@
 
   <!-- COVER -->
   <div id="cover">
-    <div class="cover-icon">✨</div>
+    <img src="line_oa_chat_260613_110628.jpg" alt="表紙" style="width:100%;border-radius:16px;margin-bottom:20px;display:block;">
     <div class="cover-title">あなたの「勇者・姫・魔法使い」<br>タイプ診断</div>
     <div class="cover-sub">
       こうすれば開運する！という生き方は<br>
@@ -453,6 +453,7 @@
 <script>
 const questions = [
   {
+    img: "line_oa_chat_260613_111953.jpg",
     text: "困難な壁にぶつかったとき、あなたはどちらに近いですか？",
     choices: [
       { text: "むしろ燃える。壁があるほどエネルギーが湧いてくる", type: "fire" },
@@ -460,6 +461,7 @@ const questions = [
     ]
   },
   {
+    img: "line_oa_chat_260613_110825.jpg",
     text: "行動を決めるとき、あなたが重視するのは？",
     choices: [
       { text: "「何をやるか」。明確な目標を決めて突き進む", type: "fire" },
@@ -467,6 +469,7 @@ const questions = [
     ]
   },
   {
+    img: "ChatGPT Image 2026年6月13日 11_25_54.png",
     text: "エネルギーが満ちるのはどんなとき？",
     choices: [
       { text: "プレッシャーを乗り越えたとき、使命感が満たされたとき", type: "fire" },
@@ -474,6 +477,7 @@ const questions = [
     ]
   },
   {
+    img: "line_oa_chat_260613_110830.jpg",
     text: "人生でよかったことを振り返ると、どちらが多い？",
     choices: [
       { text: "自分の意志と努力で切り拓いてきた", type: "fire" },
@@ -481,6 +485,7 @@ const questions = [
     ]
   },
   {
+    img: "line_oa_chat_260613_112102.jpg",
     text: "服や寝具などの「肌触り」について、あなたは？",
     choices: [
       { text: "あまり気にしない。機能重視で選ぶ", type: "fire" },
@@ -488,6 +493,7 @@ const questions = [
     ]
   },
   {
+    img: "line_oa_chat_260613_112249.jpg",
     text: "周りからどう見られることが多い？",
     choices: [
       { text: "頼れる、責任感が強い、行動力がある", type: "fire" },
@@ -495,6 +501,7 @@ const questions = [
     ]
   },
   {
+    img: "line_oa_chat_260613_110848.jpg",
     text: "SNSや会話でよくやるアウトプットは？",
     choices: [
       { text: "目標・学び・気づきなど、自分の成長ストーリーを語る", type: "fire" },
@@ -502,6 +509,7 @@ const questions = [
     ]
   },
   {
+    img: "line_oa_chat_260613_110854.jpg",
     text: "「運がいい」と言われるとしたら、それはどんなとき？",
     choices: [
       { text: "努力が報われた瞬間、恩のある人に助けてもらったとき", type: "fire" },
@@ -515,6 +523,7 @@ const results = {
     type: "fire",
     badge: "🔥 勇者タイプ",
     icon: "🔥",
+    img: "line_oa_chat_260613_110648.jpg",
     name: "勇者タイプ",
     sub: "炎の属性 ／ 幸運掴み型",
     desc: "あなたは困難な時期（谷）を自らの力で乗り越え、その過程で深い恩義と感謝を育ててきたタイプです。プレッシャーがあるほど燃え上がり、使命感を持って完遂することにエネルギーを感じます。\n\n松下幸之助が「運が良い人を採用する」と語ったような、人生の困難期に多くの人に助けてもらった経験が、あなたの「運」の源泉となっています。",
@@ -530,6 +539,7 @@ const results = {
     type: "water",
     badge: "💧 お姫様タイプ",
     icon: "💧",
+    img: "line_oa_chat_260613_110637.jpg",
     name: "お姫様タイプ",
     sub: "水の属性 ／ 幸運集まる型",
     desc: "あなたは心の透明度（純度）が高く、自然と良い縁や幸運が引き寄せられるタイプです。地球を「行動の星」ではなく「喜びの星」として捉え、感動や楽しさを周囲に波紋のように広げる力を持っています。\n\n赤ちゃんが誰からも愛されるように、純粋なオーラと高い肌の幸福度が、あなたの「ツキ」を呼ぶ最大の武器です。",
@@ -545,6 +555,7 @@ const results = {
     type: "both",
     badge: "⚡ 魔法使いタイプ",
     icon: "🧙",
+    img: "line_oa_chat_260613_110644.jpg",
     name: "魔法使いタイプ",
     sub: "掴みと集まるを統合する稀少タイプ",
     desc: "あなたはすでに「運（自力開運）」と「ツキ（他力呼び込み）」の両方の資質をバランスよく持っています。これは最終的な目標である「彩幸運」に最も近い状態です。\n\n自力で道を切り拓く力と、幸運を自然に引き寄せる力が統合されるとき、個人のエゴを超えた「魂の覚醒」が巡り始めます。",
@@ -577,6 +588,7 @@ function renderQuestion() {
 
   const card = document.getElementById("question-card");
   card.innerHTML = `
+    ${q.img ? `<img src="${q.img}" alt="Q${current+1}" style="width:100%;border-radius:12px;margin-bottom:16px;display:block;">` : ""}
     <span class="question-num">Q${current + 1}</span>
     <div class="question-text">${q.text}</div>
     <div class="choices">
@@ -625,7 +637,7 @@ function showResult() {
     <div class="result-card ${r.type}">
       <div class="result-glow"></div>
       <div class="result-badge">${r.badge}</div>
-      <span class="result-icon">${r.icon}</span>
+      ${r.img ? `<img src="${r.img}" alt="${r.name}" style="width:100%;border-radius:16px;margin-bottom:16px;display:block;">` : `<span class="result-icon">${r.icon}</span>`}
       <div class="result-type-name">${r.name}</div>
       <div class="result-type-sub">${r.sub}</div>
 
