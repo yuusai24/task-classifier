@@ -70,13 +70,14 @@
 
   .type-card {
     flex: 1;
-    padding: 16px 12px;
+    padding: 12px 8px;
     border-radius: 16px;
     text-align: center;
   }
 
   .type-card.fire { background: rgba(255,107,53,0.15); border: 1px solid rgba(255,107,53,0.3); }
   .type-card.water { background: rgba(79,172,254,0.15); border: 1px solid rgba(79,172,254,0.3); }
+  .type-card.both { background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.3); }
 
   .type-card .emoji { font-size: 28px; margin-bottom: 6px; }
   .type-card .name { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px; }
@@ -420,6 +421,11 @@
         <div class="emoji">💧</div>
         <div class="name">お姫様タイプ</div>
         <div class="desc">水の属性<br>幸運集まる型</div>
+      </div>
+      <div class="type-card both">
+        <div class="emoji">🧙</div>
+        <div class="name">魔法使いタイプ</div>
+        <div class="desc">統合の属性<br>稀少タイプ</div>
       </div>
     </div>
     <button class="start-btn" onclick="startQuiz()">診断スタート（全8問）</button>
