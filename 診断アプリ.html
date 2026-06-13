@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>あなたの「運・ツキ」タイプ診断</title>
+<style>
+  :root {
+    --fire: #ff6b35;
+    --fire-light: #fff0ea;
+    --water: #4facfe;
+    --water-light: #eaf6ff;
+    --both: #a78bfa;
+    --both-light: #f5f0ff;
+    --dark: #1a1a2e;
+    --gray: #6b7280;
+    --card-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  /* === COVER === */
+  #cover {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 24px;
+    padding: 48px 32px 40px;
+    text-align: center;
+    backdrop-filter: blur(12px);
+  }
+
+  .cover-icon { font-size: 64px; margin-bottom: 20px; }
+
+  .cover-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+
+  .cover-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .type-preview {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .type-card {
+    flex: 1;
+    padding: 16px 12px;
+    border-radius: 16px;
+    text-align: center;
+  }
+
+  .type-card.fire { background: rgba(255,107,53,0.15); border: 1px solid rgba(255,107,53,0.3); }
+  .type-card.water { background: rgba(79,172,254,0.15); border: 1px solid rgba(79,172,254,0.3); }
+
+  .type-card .emoji { font-size: 28px; margin-bottom: 6px; }
+  .type-card .name { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .type-card .desc { font-size: 10px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+  .start-btn {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(90deg, #ff6b35, #a78bfa, #4facfe);
+    background-size: 200% auto;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    animation: gradientMove 3s ease infinite;
+  }
+
+  @keyframes gradientMove {
+    0% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+    100% { background-position: 0% center; }
+  }
+
+  .start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(167,139,250,0.4); }
+
+  /* === QUIZ === */
+  #quiz { display: none; }
+
+  .progress-wrap {
+    margin-bottom: 24px;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .progress-label { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .progress-count { font-size: 13px; font-weight: 700; color: #fff; }
+
+  .progress-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b35, #a78bfa, #4facfe);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+
+  .question-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 32px 28px 28px;
+    backdrop-filter: blur(12px);
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-num {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #a78bfa;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .question-text {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  .choices { display: flex; flex-direction: column; gap: 12px; }
+
+  .choice-btn {
+    width: 100%;
+    padding: 16px 20px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.85);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .choice-btn:hover {
+    border-color: #a78bfa;
+    background: rgba(167,139,250,0.1);
+    transform: translateX(4px);
+  }
+
+  .choice-btn.selected-fire {
+    border-color: #ff6b35;
+    background: rgba(255,107,53,0.12);
+    color: #fff;
+  }
+
+  .choice-btn.selected-water {
+    border-color: #4facfe;
+    background: rgba(79,172,254,0.12);
+    color: #fff;
+  }
+
+  .choice-letter {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* === RESULT === */
+  #result { display: none; animation: fadeIn 0.5s ease; }
+
+  .result-card {
+    border-radius: 24px;
+    padding: 40px 28px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-card.fire {
+    background: linear-gradient(145deg, #1a1a2e, #2d1810);
+    border: 1px solid rgba(255,107,53,0.4);
+  }
+
+  .result-card.water {
+    background: linear-gradient(145deg, #0d1b2e, #102040);
+    border: 1px solid rgba(79,172,254,0.4);
+  }
+
+  .result-card.both {
+    background: linear-gradient(145deg, #1a1830, #201535);
+    border: 1px solid rgba(167,139,250,0.4);
+  }
+
+  .result-glow {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    opacity: 0.15;
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  .result-card.fire .result-glow { background: #ff6b35; }
+  .result-card.water .result-glow { background: #4facfe; }
+  .result-card.both .result-glow { background: #a78bfa; }
+
+  .result-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+
+  .result-card.fire .result-badge { background: rgba(255,107,53,0.2); color: #ff6b35; }
+  .result-card.water .result-badge { background: rgba(79,172,254,0.2); color: #4facfe; }
+  .result-card.both .result-badge { background: rgba(167,139,250,0.2); color: #a78bfa; }
+
+  .result-icon { font-size: 80px; margin-bottom: 16px; display: block; }
+
+  .result-type-name {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .result-type-sub {
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  .result-card.fire .result-type-sub { color: rgba(255,107,53,0.8); }
+  .result-card.water .result-type-sub { color: rgba(79,172,254,0.8); }
+  .result-card.both .result-type-sub { color: rgba(167,139,250,0.8); }
+
+  .result-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.8;
+    text-align: left;
+    background: rgba(255,255,255,0.04);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .result-tips {
+    text-align: left;
+    margin-bottom: 28px;
+  }
+
+  .result-tips-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .result-card.fire .result-tips-title { color: #ff6b35; }
+  .result-card.water .result-tips-title { color: #4facfe; }
+  .result-card.both .result-tips-title { color: #a78bfa; }
+
+  .tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+  }
+
+  .tip-item:last-child { border-bottom: none; }
+  .tip-dot { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  .score-bar-wrap {
+    margin-bottom: 28px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 14px;
+    padding: 16px 20px;
+  }
+
+  .score-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .score-label .fire-label { color: #ff6b35; }
+  .score-label .water-label { color: #4facfe; }
+
+  .score-track {
+    height: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .score-fire-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b35, #ff9a5c);
+    border-radius: 8px;
+    transition: width 1s ease;
+  }
+
+  .retry-btn {
+    width: 100%;
+    padding: 16px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 50px;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+
+  .retry-btn:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+
+  .credit {
+    text-align: center;
+    font-size: 10px;
+    color: rgba(255,255,255,0.2);
+    margin-top: 20px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cover-icon">✨</div>
+    <div class="cover-title">あなたの「運・ツキ」<br>タイプ診断</div>
+    <div class="cover-sub">
+      西田文男氏の理論をベースに、<br>
+      あなたが「運」と「ツキ」どちらのチャンネルで<br>
+      人生を加速させるタイプかを診断します。
+    </div>
+    <div class="type-preview">
+      <div class="type-card fire">
+        <div class="emoji">🔥</div>
+        <div class="name">勇者タイプ</div>
+        <div class="desc">炎の属性<br>自力開運型</div>
+      </div>
+      <div class="type-card water">
+        <div class="emoji">💧</div>
+        <div class="name">お姫様タイプ</div>
+        <div class="desc">水の属性<br>他力呼び込み型</div>
+      </div>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">診断スタート（全8問）</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span class="progress-label">QUESTION</span>
+        <span class="progress-count" id="progress-count">1 / 8</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div id="question-card" class="question-card"></div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result"></div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    text: "困難な壁にぶつかったとき、あなたはどちらに近いですか？",
+    choices: [
+      { text: "むしろ燃える。壁があるほどエネルギーが湧いてくる", type: "fire" },
+      { text: "流れに逆らわず、助けや転機が来るのを信じて待つ", type: "water" }
+    ]
+  },
+  {
+    text: "行動を決めるとき、あなたが重視するのは？",
+    choices: [
+      { text: "「何をやるか」。明確な目標を決めて突き進む", type: "fire" },
+      { text: "「何をやらないか」。心地よくないことは手放す", type: "water" }
+    ]
+  },
+  {
+    text: "エネルギーが満ちるのはどんなとき？",
+    choices: [
+      { text: "プレッシャーを乗り越えたとき、使命感が満たされたとき", type: "fire" },
+      { text: "楽しくて感動して、幸せが自然とあふれているとき", type: "water" }
+    ]
+  },
+  {
+    text: "人生でよかったことを振り返ると、どちらが多い？",
+    choices: [
+      { text: "自分の意志と努力で切り拓いてきた", type: "fire" },
+      { text: "不思議なタイミングで助けや縁に恵まれてきた", type: "water" }
+    ]
+  },
+  {
+    text: "服や寝具などの「肌触り」について、あなたは？",
+    choices: [
+      { text: "あまり気にしない。機能重視で選ぶ", type: "fire" },
+      { text: "肌触りはとても大事。心地よさにはこだわりたい", type: "water" }
+    ]
+  },
+  {
+    text: "周りからどう見られることが多い？",
+    choices: [
+      { text: "頼れる、責任感が強い、行動力がある", type: "fire" },
+      { text: "癒される、純粋、なんか気になる存在", type: "water" }
+    ]
+  },
+  {
+    text: "SNSや会話でよくやるアウトプットは？",
+    choices: [
+      { text: "目標・学び・気づきなど、自分の成長ストーリーを語る", type: "fire" },
+      { text: "感動・感謝・うれしかった瞬間を素直にシェアする", type: "water" }
+    ]
+  },
+  {
+    text: "「運がいい」と言われるとしたら、それはどんなとき？",
+    choices: [
+      { text: "努力が報われた瞬間、恩のある人に助けてもらったとき", type: "fire" },
+      { text: "何もしていないのに良い縁や機会が向こうからやってきたとき", type: "water" }
+    ]
+  }
+];
+
+const results = {
+  fire: {
+    type: "fire",
+    badge: "🔥 勇者タイプ",
+    icon: "🔥",
+    name: "勇者タイプ",
+    sub: "炎の属性 ／ 開運掴み型",
+    desc: "あなたは困難な時期（谷）を自らの力で乗り越え、その過程で深い恩義と感謝を育ててきたタイプです。プレッシャーがあるほど燃え上がり、使命感を持って完遂することにエネルギーを感じます。\n\n松下幸之助が「運が良い人を採用する」と語ったような、人生の困難期に多くの人に助けてもらった経験が、あなたの「運」の源泉となっています。",
+    tips: [
+      { icon: "🎯", text: "【考え方】困難は邪魔ではなく燃料。「壁があるから燃える」という捉え方が、あなたの運を開く鍵です" },
+      { icon: "🤝", text: "【捉え方】谷底で助けてくれた人は、あなたの「運」を作ってくれた存在。恩義と感謝を忘れないことが運の総量を増やします" },
+      { icon: "💪", text: "【生き方】「何をやるか」を明確に決め、使命感を持って完遂することに全力を注ぐ。それがあなたの本来のエネルギー回路です" },
+      { icon: "🌊", text: "【進化】純度を高める・感動を大切にする・肌の心地よさを意識するといった「ツキ」の要素も取り入れることで、次のステージへ進めます" },
+      { icon: "✨", text: "【彩幸運へ】自力で切り拓く力に、幸運を引き寄せる感度が加わったとき、「天運」という次元の扉が開きます" }
+    ]
+  },
+  water: {
+    type: "water",
+    badge: "💧 お姫様タイプ",
+    icon: "💧",
+    name: "お姫様タイプ",
+    sub: "水の属性 ／ 開運集まる型",
+    desc: "あなたは心の透明度（純度）が高く、自然と良い縁や幸運が引き寄せられるタイプです。地球を「行動の星」ではなく「喜びの星」として捉え、感動や楽しさを周囲に波紋のように広げる力を持っています。\n\n赤ちゃんが誰からも愛されるように、純粋なオーラと高い肌の幸福度が、あなたの「ツキ」を呼ぶ最大の武器です。",
+    tips: [
+      { icon: "🌊", text: "【考え方】心の純度が「ツキ」の強さを決める。否定・批判・不快を手放すだけで、あなたの引き寄せ力は格段に上がります" },
+      { icon: "🌸", text: "【捉え方】肌触りの良さ・空間の心地よさは贅沢ではなく、ツキを呼ぶ投資。肌の幸福度を高めることが運気の底上げになります" },
+      { icon: "💫", text: "【生き方】「何をやらないか」を選ぶ勇気を持つ。自分の喜びを周りに広げる「喜びの拡張」がツキの現実化を加速させます" },
+      { icon: "🎵", text: "【実践】周波数の高い人のコンテンツを流し聞きするだけでOK。無意識レベルで脳波が同期し、ツキのチャンネルへチューニングされていきます" },
+      { icon: "✨", text: "【彩幸運へ】喜びを波紋のように広げ続けるとき、個人の幸せを超えた「天運」という豊かさの循環が始まります" }
+    ]
+  },
+  both: {
+    type: "both",
+    badge: "⚡ バランス型",
+    icon: "⚡",
+    name: "バランス型",
+    sub: "掴みと集まるを統合する稀少タイプ",
+    desc: "あなたはすでに「運（自力開運）」と「ツキ（他力呼び込み）」の両方の資質をバランスよく持っています。これは最終的な目標である「天運」に最も近い状態です。\n\n自力で道を切り拓く力と、幸運を自然に引き寄せる力が統合されるとき、個人のエゴを超えた「魂の覚醒」が巡り始めます。",
+    tips: [
+      { icon: "🔥", text: "【考え方・炎】困難は燃料と捉え、使命感と恩義を軸に行動する。高い目標への燃焼があなたの「運」を育てます" },
+      { icon: "💧", text: "【考え方・水】心の純度と肌の幸福度を日常から整える。「喜びの星」として感動を広げる視点を忘れないこと" },
+      { icon: "⚡", text: "【捉え方】二つの力は対立ではなく補完関係。火が強いときは水を、水が強いときは火を意識的に足すことでバランスが保たれます" },
+      { icon: "🌟", text: "【生き方】自力の行動力と他力の引き寄せ力が掛け合わさることで、豊かさが自然と循環し始めます" },
+      { icon: "✨", text: "【彩幸運へ】個人のエゴを超え、自身の魂を天のために使うという高次元の視点に立ったとき、真の「天運」が開きます" }
+    ]
+  }
+};
+
+let scores = { fire: 0, water: 0 };
+let current = 0;
+let answered = false;
+
+function startQuiz() {
+  document.getElementById("cover").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = questions[current];
+  const total = questions.length;
+  document.getElementById("progress-count").textContent = `${current + 1} / ${total}`;
+  document.getElementById("progress-fill").style.width = `${(current / total) * 100}%`;
+
+  const card = document.getElementById("question-card");
+  card.innerHTML = `
+    <span class="question-num">Q${current + 1}</span>
+    <div class="question-text">${q.text}</div>
+    <div class="choices">
+      ${q.choices.map((c, i) => `
+        <button class="choice-btn" onclick="selectAnswer('${c.type}', this)">
+          <span class="choice-letter">${String.fromCharCode(65 + i)}</span>
+          <span>${c.text}</span>
+        </button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function selectAnswer(type, btn) {
+  if (answered) return;
+  answered = true;
+
+  scores[type]++;
+  btn.classList.add(`selected-${type}`);
+
+  setTimeout(() => {
+    current++;
+    if (current < questions.length) {
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  }, 350);
+}
+
+function showResult() {
+  document.getElementById("quiz").style.display = "none";
+  const resultEl = document.getElementById("result");
+  resultEl.style.display = "block";
+
+  let typeKey;
+  const diff = scores.fire - scores.water;
+  if (diff >= 2) typeKey = "fire";
+  else if (diff <= -2) typeKey = "water";
+  else typeKey = "both";
+
+  const r = results[typeKey];
+  const firePercent = Math.round((scores.fire / questions.length) * 100);
+
+  resultEl.innerHTML = `
+    <div class="result-card ${r.type}">
+      <div class="result-glow"></div>
+      <div class="result-badge">${r.badge}</div>
+      <span class="result-icon">${r.icon}</span>
+      <div class="result-type-name">${r.name}</div>
+      <div class="result-type-sub">${r.sub}</div>
+
+      <div class="score-bar-wrap">
+        <div class="score-label">
+          <span class="fire-label">🔥 運タイプ ${scores.fire}問</span>
+          <span class="water-label">💧 ツキタイプ ${scores.water}問</span>
+        </div>
+        <div class="score-track">
+          <div class="score-fire-fill" id="score-bar" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="result-desc">${r.desc.replace(/\n/g, "<br>")}</div>
+
+      <div class="result-tips">
+        <div class="result-tips-title">あなたへのアドバイス</div>
+        ${r.tips.map(t => `
+          <div class="tip-item">
+            <span class="tip-dot">${t.icon}</span>
+            <span>${t.text}</span>
+          </div>
+        `).join("")}
+      </div>
+
+      <button class="retry-btn" onclick="retryQuiz()">もう一度診断する</button>
+    </div>
+    <div class="credit">
+      西田文男氏の理論 × 小田真嘉氏の「運とツキ」アプローチをベースに作成
+    </div>
+  `;
+
+  setTimeout(() => {
+    const bar = document.getElementById("score-bar");
+    if (bar) bar.style.width = firePercent + "%";
+  }, 100);
+}
+
+function retryQuiz() {
+  scores = { fire: 0, water: 0 };
+  current = 0;
+  answered = false;
+  document.getElementById("result").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
+  renderQuestion();
+}
+</script>
+</body>
+</html>
