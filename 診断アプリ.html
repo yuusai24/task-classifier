@@ -227,157 +227,243 @@
 
   .result-card {
     border-radius: 24px;
-    padding: 40px 28px 36px;
+    padding: 0 0 32px;
     text-align: center;
     position: relative;
     overflow: hidden;
   }
 
-  .result-card.fire {
-    background: linear-gradient(145deg, #1a1a2e, #2d1810);
-    border: 1px solid rgba(255,107,53,0.4);
-  }
+  .result-card.fire { background: linear-gradient(145deg, #1a1a2e, #2d1810); border: 1px solid rgba(255,107,53,0.4); }
+  .result-card.water { background: linear-gradient(145deg, #0d1b2e, #102040); border: 1px solid rgba(79,172,254,0.4); }
+  .result-card.both { background: linear-gradient(145deg, #1a1830, #201535); border: 1px solid rgba(167,139,250,0.4); }
 
-  .result-card.water {
-    background: linear-gradient(145deg, #0d1b2e, #102040);
-    border: 1px solid rgba(79,172,254,0.4);
+  /* ヒーローエリア */
+  .result-hero {
+    position: relative;
+    margin-bottom: 0;
   }
-
-  .result-card.both {
-    background: linear-gradient(145deg, #1a1830, #201535);
-    border: 1px solid rgba(167,139,250,0.4);
+  .result-hero img {
+    width: 100%;
+    display: block;
+    max-height: 280px;
+    object-fit: cover;
   }
-
-  .result-glow {
+  .result-hero-overlay {
     position: absolute;
-    top: -60px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 240px;
-    height: 240px;
-    border-radius: 50%;
-    opacity: 0.15;
-    filter: blur(60px);
-    pointer-events: none;
+    bottom: 0; left: 0; right: 0;
+    padding: 40px 24px 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
   }
-
-  .result-card.fire .result-glow { background: #ff6b35; }
-  .result-card.water .result-glow { background: #4facfe; }
-  .result-card.both .result-glow { background: #a78bfa; }
-
   .result-badge {
     display: inline-block;
-    padding: 6px 16px;
+    padding: 4px 14px;
     border-radius: 50px;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 2px;
-    margin-bottom: 20px;
-  }
-
-  .result-card.fire .result-badge { background: rgba(255,107,53,0.2); color: #ff6b35; }
-  .result-card.water .result-badge { background: rgba(79,172,254,0.2); color: #4facfe; }
-  .result-card.both .result-badge { background: rgba(167,139,250,0.2); color: #a78bfa; }
-
-  .result-icon { font-size: 80px; margin-bottom: 16px; display: block; }
-
-  .result-type-name {
-    font-size: 26px;
-    font-weight: 900;
-    color: #fff;
-    line-height: 1.3;
     margin-bottom: 8px;
   }
+  .result-card.fire .result-badge { background: rgba(255,107,53,0.3); color: #ff9a5c; }
+  .result-card.water .result-badge { background: rgba(79,172,254,0.3); color: #7dd4ff; }
+  .result-card.both .result-badge { background: rgba(167,139,250,0.3); color: #c4b5fd; }
 
-  .result-type-sub {
-    font-size: 14px;
-    margin-bottom: 28px;
+  .result-type-name {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 4px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
   }
+  .result-type-sub {
+    font-size: 13px;
+    opacity: 0.8;
+  }
+  .result-card.fire .result-type-sub { color: #ff9a5c; }
+  .result-card.water .result-type-sub { color: #7dd4ff; }
+  .result-card.both .result-type-sub { color: #c4b5fd; }
 
-  .result-card.fire .result-type-sub { color: rgba(255,107,53,0.8); }
-  .result-card.water .result-type-sub { color: rgba(79,172,254,0.8); }
-  .result-card.both .result-type-sub { color: rgba(167,139,250,0.8); }
+  .result-body { padding: 24px 20px 0; }
 
+  /* 割合グラフ */
+  .ratio-section {
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .ratio-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .ratio-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .ratio-bar {
+    flex: 1;
+    height: 12px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+  .ratio-fire {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b35, #ff9a5c);
+    border-radius: 12px;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    position: absolute; left: 0; top: 0;
+  }
+  .ratio-water {
+    height: 100%;
+    background: linear-gradient(90deg, #4facfe, #7dd4ff);
+    border-radius: 12px;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    position: absolute; right: 0; top: 0;
+  }
+  .ratio-labels {
+    display: flex;
+    justify-content: space-between;
+  }
+  .ratio-label-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .ratio-dot-fire { width: 10px; height: 10px; border-radius: 50%; background: #ff6b35; }
+  .ratio-dot-water { width: 10px; height: 10px; border-radius: 50%; background: #4facfe; }
+  .ratio-pct-fire { color: #ff9a5c; }
+  .ratio-pct-water { color: #7dd4ff; }
+
+  /* 説明文 */
   .result-desc {
     font-size: 14px;
-    color: rgba(255,255,255,0.75);
-    line-height: 1.8;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.9;
     text-align: left;
     background: rgba(255,255,255,0.04);
     border-radius: 14px;
-    padding: 20px;
-    margin-bottom: 24px;
-  }
-
-  .result-tips {
-    text-align: left;
+    padding: 18px;
     margin-bottom: 20px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 14px;
-    padding: 16px;
   }
 
-  .result-tips-title {
+  /* セクションカード共通 */
+  .sec-card {
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 16px;
+    text-align: left;
+  }
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .sec-icon {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .sec-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+
+  /* 有名人カード */
+  .sec-famous { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
+  .sec-famous .sec-icon { background: rgba(255,215,0,0.15); }
+  .famous-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .famous-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 10px 12px;
     font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.5;
   }
 
-  .result-card.fire .result-tips-title { color: #ff6b35; }
-  .result-card.water .result-tips-title { color: #4facfe; }
-  .result-card.both .result-tips-title { color: #a78bfa; }
+  /* 恋愛・仕事・お金 */
+  .sec-life { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
+  .sec-life .sec-icon { background: rgba(236,72,153,0.15); }
+  .life-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .life-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .life-emoji { font-size: 22px; margin-bottom: 6px; }
+  .life-label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.5); margin-bottom: 6px; letter-spacing: 1px; }
+  .life-text { font-size: 11px; color: rgba(255,255,255,0.8); line-height: 1.5; text-align: left; }
 
-  .tip-item {
+  /* NG */
+  .sec-ng { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); }
+  .sec-ng .sec-icon { background: rgba(239,68,68,0.2); }
+  .sec-ng .sec-title { color: #f87171; }
+  .ng-item {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(239,68,68,0.1);
     font-size: 13px;
     color: rgba(255,255,255,0.8);
     line-height: 1.6;
   }
-
-  .tip-item:last-child { border-bottom: none; }
-  .tip-dot { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-
-  .score-bar-wrap {
-    margin-bottom: 28px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 14px;
-    padding: 16px 20px;
+  .ng-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .ng-badge {
+    flex-shrink: 0;
+    background: rgba(239,68,68,0.2);
+    color: #f87171;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-top: 2px;
   }
 
-  .score-label {
+  /* 実践カード */
+  .sec-practice { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
+  .sec-practice .sec-icon { background: rgba(34,197,94,0.15); }
+  .practice-item {
     display: flex;
-    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+  }
+  .practice-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .practice-num {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(34,197,94,0.2);
+    color: #4ade80;
     font-size: 11px;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-
-  .score-label .fire-label { color: #ff6b35; }
-  .score-label .water-label { color: #4facfe; }
-
-  .score-track {
-    height: 8px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .score-fire-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #ff6b35, #ff9a5c);
-    border-radius: 8px;
-    transition: width 1s ease;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
   }
 
   .retry-btn {
-    width: 100%;
+    width: calc(100% - 40px);
+    margin: 20px 20px 0;
     padding: 16px;
     border: 1.5px solid rgba(255,255,255,0.15);
     border-radius: 50px;
@@ -587,7 +673,11 @@ const results = {
     sub: "炎の属性 ／ 幸運掴み型",
     desc: "あなたは困難な時期（谷）を自らの力で乗り越え、その過程で深い恩義と感謝を育ててきたタイプです。プレッシャーがあるほど燃え上がり、使命感を持って完遂することにエネルギーを感じます。\n\n松下幸之助が「運が良い人を採用する」と語ったような、人生の困難期に多くの人に助けてもらった経験が、あなたの「運」の源泉となっています。",
     famous: { label: "このタイプの有名人", items: ["🗡️ 織田信長 — 時代の壁を炎で突破した天下人", "🚀 イーロン・マスク — 不可能と言われた壁に何度も挑み続ける現代の勇者", "🏎️ 本田宗一郎 — 「失敗は成功のもと」を体現した情熱の人", "⚽ 本田圭佑 — 少年時代の夢を諦めず燃え続けた意志の塊"] },
-    life: { label: "恋愛・仕事・お金の傾向", items: ["❤️ 恋愛：リードしたい・守りたい側。情熱的で一途だが、感謝を言葉にするのが苦手なことも", "💼 仕事：目標達成型のリーダー。使命感が高く、チームを引っ張る力がある。高い山ほど燃える", "💰 お金：稼ぐために使う・事業・自己投資への支出が多い。攻めの姿勢でお金を動かす"] },
+    life: { label: "恋愛・仕事・お金の傾向", items: [
+      { emoji: "❤️", label: "恋愛", text: "リードしたい・守りたい側。情熱的で一途だが、感謝を言葉にするのが苦手なことも" },
+      { emoji: "💼", label: "仕事", text: "目標達成型のリーダー。使命感が高く、チームを引っ張る力がある。高い山ほど燃える" },
+      { emoji: "💰", label: "お金", text: "稼ぐために使う・事業・自己投資への支出が多い。攻めの姿勢でお金を動かす" }
+    ] },
     ng: { label: "やってはいけないNG行動", items: ["🚫 谷底で助けてくれた人への恩を忘れる → 「運」の貯金が一気に減ります", "🚫 感謝を心の中だけにとどめる → 言葉・行動で表現してこそ運は育ちます", "🚫 孤独に突き進みすぎる → 周りの助けを遮断すると運の回路が閉じます"] },
     practice: { label: "今日からできる実践例", items: ["📝 毎朝「今日の使命」を1行書いてから動き始める", "📩 週1回、お世話になった人へ感謝のメッセージを送る", "🔥 困難にぶつかったとき「これは燃料だ」と声に出してみる", "🌊 寝る前に「今日誰かに助けてもらったか」を1つ思い出す"] }
   },
@@ -600,7 +690,11 @@ const results = {
     sub: "水の属性 ／ 幸運集まる型",
     desc: "あなたは心の透明度（純度）が高く、自然と良い縁や幸運が引き寄せられるタイプです。地球を「行動の星」ではなく「喜びの星」として捉え、感動や楽しさを周囲に波紋のように広げる力を持っています。\n\n赤ちゃんが誰からも愛されるように、純粋なオーラと高い肌の幸福度が、あなたの「幸運」を呼ぶ最大の武器です。",
     famous: { label: "このタイプの有名人", items: ["👸 オードリー・ヘプバーン — 存在するだけで人を引き寄せた純粋なオーラの女神", "🌸 マリリン・モンロー — 喜びと感動を周囲に波紋のように広げた幸運の象徴", "🌍 マザー・テレサ — 心の純度の高さで世界中の人と縁と愛を引き寄せた", "✨ 天海祐希 — 自然体の魅力でファンを引き寄せ続けるお姫様オーラの持ち主"] },
-    life: { label: "恋愛・仕事・お金の傾向", items: ["❤️ 恋愛：守られる・愛される側。純粋で素直なため、自然と好かれるが流されやすい面も", "💼 仕事：引き寄せ型のプロデューサー。場の空気を変える力があり、縁とチャンスが向こうから来る", "💰 お金：心地よさへの投資が運気を上げる。「贅沢」ではなく「純度への投資」と捉えることが大切"] },
+    life: { label: "恋愛・仕事・お金の傾向", items: [
+      { emoji: "❤️", label: "恋愛", text: "守られる・愛される側。純粋で素直なため、自然と好かれるが流されやすい面も" },
+      { emoji: "💼", label: "仕事", text: "引き寄せ型のプロデューサー。場の空気を変える力があり、縁とチャンスが向こうから来る" },
+      { emoji: "💰", label: "お金", text: "心地よさへの投資が運気を上げる。「贅沢」ではなく「純度への投資」と捉えることが大切" }
+    ] },
     ng: { label: "やってはいけないNG行動", items: ["🚫 不快な人・環境に我慢して居続ける → 純度が下がり幸運が遠のきます", "🚫 否定的な言葉・批判・愚痴を口にする → 自分の中の「不快」を増幅させる行為です", "🚫 喜びを自分だけにとどめる → 波紋を広げなければ幸運の流れが止まります"] },
     practice: { label: "今日からできる実践例", items: ["🛁 バスタオルや寝具を「肌触りの良いもの」に変える", "📖 毎日1つ感動したことを日記・SNSに書いてシェアする", "🎵 周波数の高い人のコンテンツを作業中にループ再生する", "🌸 「これは心地よいか？」を判断軸にして、不快なことを1つずつ手放す"] }
   },
@@ -613,7 +707,11 @@ const results = {
     sub: "掴みと集まるを統合する稀少タイプ",
     desc: "あなたはすでに「開運を掴む」能力と「開運を集める」能力の両方の資質をバランスよく持っています。これは最終的な目標である「彩幸運」に最も近い状態です。\n\n自力で道を切り拓く力と、幸運を自然に引き寄せる力が統合されるとき、個人のエゴを超えた「魂の覚醒」が巡り始めます。",
     famous: { label: "このタイプの有名人", items: ["🍎 スティーブ・ジョブズ — 情熱で壁を突破しながら、美と感動で人を引き寄せた天才", "🎨 レオナルド・ダ・ヴィンチ — 行動力と感性を統合し、時代を超えた普遍の魔法使い", "🌟 松下幸之助 — 「運のいい人を採用する」と語った、運と幸運を自在に扱った経営の神様", "⚡ 坂本龍馬 — 武士の行動力と人たらしの引き寄せ力を併せ持った幕末最強の魔法使い"] },
-    life: { label: "恋愛・仕事・お金の傾向", items: ["❤️ 恋愛：リードもできて、包容力もある。深い絆を築けるが、器が大きすぎて相手が甘えすぎることも", "💼 仕事：行動力と引き寄せ力を状況に応じて使い分ける。上司にも部下にも信頼されるオールラウンダー", "💰 お金：攻め（投資・事業）と受け（流れに乗る）の両方で豊かさを循環させる。最もお金と相性が良いタイプ"] },
+    life: { label: "恋愛・仕事・お金の傾向", items: [
+      { emoji: "❤️", label: "恋愛", text: "リードもできて、包容力もある。深い絆を築けるが、器が大きすぎて相手が甘えすぎることも" },
+      { emoji: "💼", label: "仕事", text: "行動力と引き寄せ力を状況に応じて使い分ける。上司にも部下にも信頼されるオールラウンダー" },
+      { emoji: "💰", label: "お金", text: "攻め（投資・事業）と受け（流れに乗る）の両方で豊かさを循環させる。最もお金と相性が良いタイプ" }
+    ] },
     ng: { label: "やってはいけないNG行動", items: ["🚫 どちらか一方に偏りすぎる → 燃やしすぎると純度が下がり、流されすぎると目標を見失います", "🚫 「自分はどっちのタイプか」と迷い続ける → 状況に応じて使い分けることがあなたの強みです", "🚫 高い器を持ちながら小さくまとまる → 天運・彩幸運はあなたのために用意されています"] },
     practice: { label: "今日からできる実践例", items: ["🔥 月の前半は「目標・使命・行動」に全力を注ぐ炎の期間にする", "💧 月の後半は「感動・純度・心地よさ」を整える水の期間にする", "⚡ 「今は炎モードか水モードか」を意識するだけで、力が倍になります", "🌟 あなたの統合力を周りのために使い始めたとき、彩幸運の扉が開きます"] }
   }
@@ -683,35 +781,104 @@ function showResult() {
   const r = results[typeKey];
   const firePercent = Math.round((scores.fire / questions.length) * 100);
 
+  const waterPercent = 100 - firePercent;
+
   resultEl.innerHTML = `
     <div class="result-card ${r.type}">
-      <div class="result-glow"></div>
-      <div class="result-badge">${r.badge}</div>
-      ${r.img ? `<img src="${r.img}" alt="${r.name}" style="width:100%;border-radius:16px;margin-bottom:16px;display:block;">` : `<span class="result-icon">${r.icon}</span>`}
-      <div class="result-type-name">${r.name}</div>
-      <div class="result-type-sub">${r.sub}</div>
 
-      <div class="result-desc">${r.desc.replace(/\n/g, "<br>")}</div>
-
-      <div class="result-tips">
-        <div class="result-tips-title">${r.famous.label}</div>
-        ${r.famous.items.map(t => `<div class="tip-item"><span>${t}</span></div>`).join("")}
+      <!-- ヒーローエリア -->
+      <div class="result-hero">
+        ${r.img ? `<img src="${r.img}" alt="${r.name}">` : ""}
+        <div class="result-hero-overlay">
+          <div class="result-badge">${r.badge}</div>
+          <div class="result-type-name">${r.name}</div>
+          <div class="result-type-sub">${r.sub}</div>
+        </div>
       </div>
 
-      <div class="result-tips">
-        <div class="result-tips-title">${r.life.label}</div>
-        ${r.life.items.map(t => `<div class="tip-item"><span>${t}</span></div>`).join("")}
-      </div>
+      <div class="result-body">
 
-      <div class="result-tips">
-        <div class="result-tips-title">⚠️ ${r.ng.label}</div>
-        ${r.ng.items.map(t => `<div class="tip-item"><span>${t}</span></div>`).join("")}
-      </div>
+        <!-- 割合グラフ -->
+        <div class="ratio-section">
+          <div class="ratio-title">あなたの属性バランス</div>
+          <div class="ratio-bar-wrap">
+            <div class="ratio-bar">
+              <div class="ratio-fire" style="width:0%"></div>
+              <div class="ratio-water" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="ratio-labels">
+            <div class="ratio-label-item">
+              <div class="ratio-dot-fire"></div>
+              <span class="ratio-pct-fire">🔥 勇者 ${firePercent}%</span>
+            </div>
+            <div class="ratio-label-item">
+              <span class="ratio-pct-water">💧 姫 ${waterPercent}%</span>
+              <div class="ratio-dot-water"></div>
+            </div>
+          </div>
+        </div>
 
-      <div class="result-tips">
-        <div class="result-tips-title">${r.practice.label}</div>
-        ${r.practice.items.map(t => `<div class="tip-item"><span>${t}</span></div>`).join("")}
-      </div>
+        <!-- タイプ説明 -->
+        <div class="result-desc">${r.desc.replace(/\n/g, "<br>")}</div>
+
+        <!-- 有名人 -->
+        <div class="sec-card sec-famous">
+          <div class="sec-header">
+            <div class="sec-icon">⭐</div>
+            <div class="sec-title">${r.famous.label}</div>
+          </div>
+          <div class="famous-grid">
+            ${r.famous.items.map(t => `<div class="famous-item">${t}</div>`).join("")}
+          </div>
+        </div>
+
+        <!-- 恋愛・仕事・お金 -->
+        <div class="sec-card sec-life">
+          <div class="sec-header">
+            <div class="sec-icon">💖</div>
+            <div class="sec-title">${r.life.label}</div>
+          </div>
+          <div class="life-grid">
+            ${r.life.items.map(item => `
+              <div class="life-item">
+                <div class="life-emoji">${item.emoji}</div>
+                <div class="life-label">${item.label}</div>
+                <div class="life-text">${item.text}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <!-- NG行動 -->
+        <div class="sec-card sec-ng">
+          <div class="sec-header">
+            <div class="sec-icon">⛔</div>
+            <div class="sec-title">${r.ng.label}</div>
+          </div>
+          ${r.ng.items.map(t => `
+            <div class="ng-item">
+              <span class="ng-badge">NG</span>
+              <span>${t.replace(/^🚫\s*/, "")}</span>
+            </div>
+          `).join("")}
+        </div>
+
+        <!-- 実践例 -->
+        <div class="sec-card sec-practice">
+          <div class="sec-header">
+            <div class="sec-icon">✅</div>
+            <div class="sec-title">${r.practice.label}</div>
+          </div>
+          ${r.practice.items.map((t, i) => `
+            <div class="practice-item">
+              <div class="practice-num">${i + 1}</div>
+              <span>${t}</span>
+            </div>
+          `).join("")}
+        </div>
+
+      </div><!-- /result-body -->
 
       <button class="retry-btn" onclick="retryQuiz()">もう一度診断する</button>
     </div>
@@ -721,8 +888,10 @@ function showResult() {
   `;
 
   setTimeout(() => {
-    const bar = document.getElementById("score-bar");
-    if (bar) bar.style.width = firePercent + "%";
+    const fireBar = document.querySelector(".ratio-fire");
+    const waterBar = document.querySelector(".ratio-water");
+    if (fireBar) fireBar.style.width = firePercent + "%";
+    if (waterBar) waterBar.style.width = waterPercent + "%";
   }, 100);
 }
 
