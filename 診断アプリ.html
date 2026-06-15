@@ -80,6 +80,7 @@
   .type-card.both { background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.3); }
 
   .type-card .emoji { font-size: 28px; margin-bottom: 6px; }
+  .type-card .type-img { width: 100%; border-radius: 10px; margin-bottom: 8px; display: block; aspect-ratio: 1/1; object-fit: cover; }
   .type-card .name { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px; }
   .type-card .desc { font-size: 10px; color: rgba(255,255,255,0.5); line-height: 1.5; }
 
@@ -502,22 +503,22 @@
     </div>
     <div class="type-preview">
       <div class="type-card fire">
-        <div class="emoji">🔥</div>
+        <img class="type-img" src="line_oa_chat_260613_110648.jpg" alt="勇者">
         <div class="name">勇者タイプ</div>
         <div class="desc">開運掴み型<br>幸運積み上げ型</div>
       </div>
       <div class="type-card water">
-        <div class="emoji">💧</div>
+        <img class="type-img" src="line_oa_chat_260613_110637.jpg" alt="お姫様">
         <div class="name">お姫様タイプ</div>
         <div class="desc">開運集まる型<br>幸運引き寄せ型</div>
       </div>
       <div class="type-card both">
-        <div class="emoji">🧙</div>
+        <img class="type-img" src="line_oa_chat_260613_110644.jpg" alt="魔法使い">
         <div class="name">魔法使いタイプ</div>
         <div class="desc">統合の属性<br>稀少タイプ</div>
       </div>
     </div>
-    <button class="start-btn" onclick="startQuiz()">診断スタート（全15問）</button>
+    <button class="start-btn" onclick="startQuiz()">診断スタート（全20問）</button>
   </div>
 
   <!-- QUIZ -->
