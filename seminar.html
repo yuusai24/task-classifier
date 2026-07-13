@@ -1,0 +1,871 @@
+
+<title>なぜかお金に愛される1Dayセミナー｜友彩</title>
+<style>
+:root {
+  --bg:        #09090F;
+  --bg2:       #110F1C;
+  --bg3:       #1A1630;
+  --gold:      #C9A84C;
+  --gold-lt:   #E8CC7A;
+  --gold-dim:  rgba(201,168,76,0.15);
+  --rose:      #D4899A;
+  --rose-dim:  rgba(212,137,154,0.12);
+  --pearl:     #F0EAE0;
+  --pearl-dim: rgba(240,234,224,0.55);
+  --muted:     rgba(240,234,224,0.35);
+  --card:      rgba(255,255,255,0.04);
+  --border:    rgba(201,168,76,0.2);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg:        #FAF7F2;
+    --bg2:       #F0EBE1;
+    --bg3:       #E8E0D5;
+    --gold:      #A07828;
+    --gold-lt:   #C09040;
+    --gold-dim:  rgba(160,120,40,0.1);
+    --rose:      #A05060;
+    --rose-dim:  rgba(160,80,96,0.08);
+    --pearl:     #1A1510;
+    --pearl-dim: rgba(26,21,16,0.6);
+    --muted:     rgba(26,21,16,0.38);
+    --card:      rgba(0,0,0,0.03);
+    --border:    rgba(160,120,40,0.25);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#09090F; --bg2:#110F1C; --bg3:#1A1630;
+  --gold:#C9A84C; --gold-lt:#E8CC7A; --gold-dim:rgba(201,168,76,0.15);
+  --rose:#D4899A; --rose-dim:rgba(212,137,154,0.12);
+  --pearl:#F0EAE0; --pearl-dim:rgba(240,234,224,0.55);
+  --muted:rgba(240,234,224,0.35); --card:rgba(255,255,255,0.04);
+  --border:rgba(201,168,76,0.2);
+}
+:root[data-theme="light"] {
+  --bg:#FAF7F2; --bg2:#F0EBE1; --bg3:#E8E0D5;
+  --gold:#A07828; --gold-lt:#C09040; --gold-dim:rgba(160,120,40,0.1);
+  --rose:#A05060; --rose-dim:rgba(160,80,96,0.08);
+  --pearl:#1A1510; --pearl-dim:rgba(26,21,16,0.6);
+  --muted:rgba(26,21,16,0.38); --card:rgba(0,0,0,0.03);
+  --border:rgba(160,120,40,0.25);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--pearl);
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+/* ── Canvas starfield ── */
+#stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px 60px;
+  position: relative;
+}
+
+.hero-eyebrow {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.2s forwards;
+}
+
+.hero-title {
+  font-size: clamp(28px, 7vw, 52px);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--pearl);
+  text-wrap: balance;
+  margin-bottom: 8px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.4s forwards;
+}
+
+.hero-title .gold { color: var(--gold-lt); }
+
+.hero-sparkle {
+  font-size: clamp(18px, 4vw, 28px);
+  color: var(--gold);
+  margin-bottom: 16px;
+  letter-spacing: 8px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.5s forwards;
+}
+
+.hero-sub {
+  font-size: clamp(14px, 3vw, 18px);
+  color: var(--pearl-dim);
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.6s forwards;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.8s forwards;
+}
+
+.meta-pill {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 13px;
+  padding: 8px 20px;
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  background: var(--gold-dim);
+  color: var(--gold-lt);
+  letter-spacing: 0.5px;
+}
+
+.cta-btn {
+  display: inline-block;
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--bg);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 60%, var(--gold) 100%);
+  background-size: 200% auto;
+  padding: 18px 48px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-position 0.4s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 32px rgba(201,168,76,0.35);
+  opacity: 0;
+  animation: fadeUp 0.9s ease 1.0s forwards;
+}
+.cta-btn:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 48px rgba(201,168,76,0.5);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  animation: fadeUp 1s ease 1.4s forwards;
+}
+.hero-scroll span {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--muted);
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+
+/* ── DIVIDER ── */
+.gold-rule {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto;
+  max-width: 320px;
+}
+
+/* ── SECTION ── */
+section { padding: 80px 0; }
+
+.sec-label {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.sec-heading {
+  font-size: clamp(22px, 5vw, 36px);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--pearl);
+  text-wrap: balance;
+  margin-bottom: 32px;
+}
+
+.sec-body {
+  font-size: 15px;
+  color: var(--pearl-dim);
+  line-height: 2;
+}
+
+/* ── FOR WHOM ── */
+.for-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 8px;
+}
+.for-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.for-item:first-child { border-top: 1px solid var(--border); }
+
+.for-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  margin-top: 10px;
+}
+.for-text {
+  font-size: 15px;
+  color: var(--pearl-dim);
+  line-height: 1.8;
+}
+
+/* ── OUTCOME ── */
+.outcome-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+@media (max-width: 500px) {
+  .outcome-grid { grid-template-columns: 1fr; }
+}
+.outcome-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 24px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.outcome-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+}
+.outcome-num {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.outcome-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--pearl);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.outcome-desc {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ── PROGRAM ── */
+.program-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  margin-top: 8px;
+}
+.program-list::before {
+  content: '';
+  position: absolute;
+  left: 28px;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+}
+.program-item {
+  display: flex;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.08);
+}
+.program-item:last-child { border-bottom: none; }
+.prog-time {
+  flex-shrink: 0;
+  width: 56px;
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 12px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  padding-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+.prog-content { flex: 1; }
+.prog-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--pearl);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+.prog-desc {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.prog-tag {
+  display: inline-block;
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  background: var(--rose-dim);
+  color: var(--rose);
+  margin-top: 8px;
+}
+
+/* ── VOICE ── */
+.voice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+.voice-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 24px;
+}
+.voice-text {
+  font-size: 14px;
+  color: var(--pearl-dim);
+  line-height: 2;
+  margin-bottom: 14px;
+  font-style: italic;
+}
+.voice-text::before { content: '「'; color: var(--gold); }
+.voice-text::after  { content: '」'; color: var(--gold); }
+.voice-meta {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* ── PROFILE ── */
+.profile-wrap {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 40px;
+  align-items: start;
+  margin-top: 8px;
+}
+@media (max-width: 500px) {
+  .profile-wrap { grid-template-columns: 1fr; }
+  .profile-img-wrap { text-align: center; }
+}
+.profile-img-wrap {
+  position: relative;
+}
+.profile-img-frame {
+  width: 140px;
+  height: 140px;
+  border-radius: 2px;
+  background: var(--gold-dim);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  position: relative;
+  overflow: hidden;
+}
+.profile-img-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 60%, rgba(201,168,76,0.15));
+}
+.profile-gold-label {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-top: 12px;
+  text-align: center;
+}
+.profile-name {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--pearl);
+  margin-bottom: 4px;
+  letter-spacing: 2px;
+}
+.profile-ruby {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+.profile-catch {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold-lt);
+  margin-bottom: 16px;
+  line-height: 1.6;
+  padding-left: 14px;
+  border-left: 2px solid var(--gold);
+}
+.profile-body {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 13px;
+  color: var(--pearl-dim);
+  line-height: 2;
+}
+
+/* ── OVERVIEW ── */
+.overview-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+.overview-table tr {
+  border-bottom: 1px solid var(--border);
+}
+.overview-table tr:first-child { border-top: 1px solid var(--border); }
+.overview-table th {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-align: left;
+  padding: 18px 0 18px 0;
+  width: 96px;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.overview-table td {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  color: var(--pearl-dim);
+  padding: 18px 0;
+  line-height: 1.8;
+}
+.price-big {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--pearl);
+  font-variant-numeric: tabular-nums;
+}
+.price-unit {
+  font-size: 14px;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+/* ── FINAL CTA ── */
+.final-cta {
+  padding: 80px 0 120px;
+  text-align: center;
+}
+.final-cta-heading {
+  font-size: clamp(20px, 4vw, 30px);
+  font-weight: 700;
+  color: var(--pearl);
+  text-wrap: balance;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.final-cta-sub {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 40px;
+  line-height: 1.8;
+}
+.seats-badge {
+  display: inline-block;
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--rose);
+  border: 1px solid var(--rose);
+  padding: 6px 20px;
+  border-radius: 50px;
+  margin-bottom: 24px;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 40px 24px;
+  border-top: 1px solid var(--border);
+}
+footer p {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(1); opacity: 1; }
+  50%       { transform: scaleY(0.6); opacity: 0.4; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, .reveal { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+</style>
+
+<canvas id="stars"></canvas>
+
+<!-- HERO -->
+<section class="hero">
+  <img src="seminar_hero.jpg" alt="なぜかお金に愛される1Dayセミナー" style="width:100%;max-width:720px;border-radius:12px;margin-bottom:40px;display:block;opacity:0;animation:fadeUp 0.9s ease 0.1s forwards;">
+  <div class="hero-eyebrow">1 Day Seminar — Online</div>
+  <div class="hero-sparkle">✦ ✦ ✦</div>
+  <h1 class="hero-title">
+    なぜか<span class="gold">お金に愛される</span><br>
+    1Dayセミナー
+  </h1>
+  <p class="hero-sub">〜かつかつ卒業。満ち満ち人生のはじまり〜</p>
+  <p style="font-family:'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;font-size:15px;color:var(--pearl-dim);line-height:2;margin-bottom:40px;opacity:0;animation:fadeUp 0.9s ease 0.7s forwards;text-wrap:balance;">守護霊から受け取る、あなただけの豊かさの法則</p>
+  <div class="hero-meta">
+    <span class="meta-pill">8月18日（火）</span>
+    <span class="meta-pill">10:00 〜 13:00</span>
+    <span class="meta-pill">Zoom オンライン</span>
+    <span class="meta-pill">定員 5名</span>
+  </div>
+  <a href="#apply" class="cta-btn">申し込む &rarr;</a>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>SCROLL</span>
+  </div>
+</section>
+
+<hr class="gold-rule">
+
+<!-- FOR WHOM -->
+<section>
+  <div class="wrap reveal">
+    <p class="sec-label">For You</p>
+    <h2 class="sec-heading">こんな方へ</h2>
+    <div class="for-list">
+      <div class="for-item"><div class="for-dot"></div><p class="for-text">「毎月なんとか回しているけど、不安が消えない」</p></div>
+      <div class="for-item"><div class="for-dot"></div><p class="for-text">「頑張っているのに、お金だけが増えない」</p></div>
+      <div class="for-item"><div class="for-dot"></div><p class="for-text">「豊かになりたいのに、罪悪感がある」</p></div>
+      <div class="for-item"><div class="for-dot"></div><p class="for-text">「なぜか豊かな人を見るとモヤモヤする」</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="gold-rule">
+
+<!-- OUTCOME -->
+<section>
+  <div class="wrap reveal">
+    <p class="sec-label">Outcome</p>
+    <h2 class="sec-heading">このセミナーで<br>得られること</h2>
+    <div class="outcome-grid">
+      <div class="outcome-card">
+        <img src="ChatGPT Image 2026年7月13日 15_40_03.png" alt="" style="width:100%;border-radius:4px;margin-bottom:14px;display:block;">
+        <div class="outcome-num">01</div>
+        <div class="outcome-title">お金を受け取れない思考から卒業できる</div>
+        <div class="outcome-desc">努力ではなく「タイプのズレ」が原因だと気づき、思考が変わる</div>
+      </div>
+      <div class="outcome-card">
+        <img src="ChatGPT Image 2026年6月16日 12_33_13.png" alt="" style="width:100%;border-radius:4px;margin-bottom:14px;display:block;">
+        <div class="outcome-num">02</div>
+        <div class="outcome-title">自分に合った豊かさの流れを掴める</div>
+        <div class="outcome-desc">勇者・姫・魔法使い、あなただけの豊かさの受け取り方がわかる</div>
+      </div>
+      <div class="outcome-card">
+        <img src="ChatGPT Image 2026年7月13日 15_40_42.png" alt="" style="width:100%;border-radius:4px;margin-bottom:14px;display:block;">
+        <div class="outcome-num">03</div>
+        <div class="outcome-title">守護霊と繋がる感覚を知る</div>
+        <div class="outcome-desc">守護霊の本当の意味を知り、自分の力で人生を動かせるようになる</div>
+      </div>
+      <div class="outcome-card">
+        <img src="ChatGPT Image 2026年7月13日 15_41_22.png" alt="" style="width:100%;border-radius:4px;margin-bottom:14px;display:block;">
+        <div class="outcome-num">04</div>
+        <div class="outcome-title">明日から動ける具体的な1歩がわかる</div>
+        <div class="outcome-desc">タイプ別「たった1つの行動」で人生が動き始める</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="gold-rule">
+
+<!-- PROGRAM -->
+<section>
+  <div class="wrap reveal">
+    <p class="sec-label">Program</p>
+    <h2 class="sec-heading">当日の流れ</h2>
+    <div class="program-list">
+      <div class="program-item">
+        <div class="prog-time">10:00</div>
+        <div class="prog-content">
+          <div class="prog-title">なぜあなたはお金に愛されないのか</div>
+          <div class="prog-desc">生き方のチャンネルが合っていない、という話。努力が報われない本当の理由を解説します。</div>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">10:30</div>
+        <div class="prog-content">
+          <div class="prog-title">あなたのお金タイプをその場で診断✨</div>
+          <div class="prog-desc">参加者全員でその場で診断。🔥 勇者 / 💧 姫 / 🧙 魔法使い、あなたはどのタイプ？</div>
+          <span class="prog-tag">LIVE 参加型</span>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">11:00</div>
+        <div class="prog-content">
+          <div class="prog-title">タイプ別 お金の受け取り方</div>
+          <div class="prog-desc">勇者・姫・魔法使いそれぞれのお金の法則を深く解説。同じ行動でも「やる人」が違えば結果が変わる。</div>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">11:30</div>
+        <div class="prog-content">
+          <div class="prog-title">お金のブロックを書き換えるワーク</div>
+          <div class="prog-desc">タイプ別に書き出すワーク。自分のパターンを言語化することで、手放しが始まります。</div>
+          <span class="prog-tag">ワーク</span>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">12:00</div>
+        <div class="prog-content">
+          <div class="prog-title">守護霊とは何か</div>
+          <div class="prog-desc">守護霊は「お願いを叶えてくれる存在」ではありません。あなたが自分の力で生きられるよう、そっと支えてくれる存在です。本当の守護霊の意味を知ることで、あなたとお金の関係が根本から変わります。</div>
+          <span class="prog-tag">スペシャル</span>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">12:30</div>
+        <div class="prog-content">
+          <div class="prog-title">未来を書き換える豊かさ宣言</div>
+          <div class="prog-desc">タイプ別「たった1つの行動」を決めて宣言。ここから人生が動き始めます。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="gold-rule">
+
+<!-- VOICE -->
+<section>
+  <div class="wrap reveal">
+    <p class="sec-label">Voice</p>
+    <h2 class="sec-heading">参加者の声</h2>
+    <div class="voice-list">
+      <div class="voice-card">
+        <p class="voice-text">勇者タイプだったのに、ずっと姫の方法でお金を引き寄せようとしていた。だから空回りしていたんだと、全部腑に落ちました。</p>
+        <p class="voice-meta">30代 / 女性起業家</p>
+      </div>
+      <div class="voice-card">
+        <p class="voice-text">守護霊からのメッセージで、ずっと感じていたブレーキの正体がわかった瞬間、涙が止まりませんでした。</p>
+        <p class="voice-meta">40代 / フリーランス</p>
+      </div>
+      <div class="voice-card">
+        <p class="voice-text">診断でお姫様タイプとわかって、「もっと心地よさを大切にしていいんだ」と許可が降りた感覚。セミナー後から不思議とお金の流れが変わりました。</p>
+        <p class="voice-meta">30代 / 会社員</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="gold-rule">
+
+<!-- PROFILE -->
+<section>
+  <div class="wrap reveal">
+    <p class="sec-label">Instructor</p>
+    <h2 class="sec-heading">講師プロフィール</h2>
+    <div class="profile-wrap">
+      <div class="profile-img-wrap">
+        <div class="profile-img-frame" style="background:none;border:none;">
+          <img src="line_oa_chat_260512_115044.jpg" alt="友彩" style="width:140px;height:140px;object-fit:cover;border-radius:2px;border:1px solid var(--border);display:block;">
+        </div>
+        <p class="profile-gold-label">YUSAI</p>
+      </div>
+      <div>
+        <div class="profile-name">友彩</div>
+        <div class="profile-ruby">ゆうさい</div>
+        <p class="profile-catch">守護霊と仲良くなって<br>月商28倍</p>
+        <p class="profile-body">
+          祖母の他界をきっかけに19歳でサードアイ開眼。<br><br>
+          コミュ障 × 鬱 × 引きこもりから、知識0・経験0・人脈0でフォトグラファーとして起業。現在は100万人超えYouTuberの撮影、ギャップジャパン出版「なぜか愛される女性経営者27人の夢を叶えた魔法の言葉Ⅱ」掲載。<br><br>
+          現在は月商7桁・8桁超えの女性起業家が守護霊と仲良くなってビジネスステージを変えるサポートを行う。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="gold-rule">
+
+<!-- OVERVIEW -->
+<section id="apply">
+  <div class="wrap reveal">
+    <p class="sec-label">Overview</p>
+    <h2 class="sec-heading">開催概要</h2>
+    <table class="overview-table">
+      <tr>
+        <th>日時</th>
+        <td>2026年8月18日（火）10:00 〜 13:00</td>
+      </tr>
+      <tr>
+        <th>形式</th>
+        <td>Zoom オンライン<br><span style="font-size:12px;color:var(--muted)">お申し込み後にURLをお送りします</span></td>
+      </tr>
+      <tr>
+        <th>定員</th>
+        <td>5名限定</td>
+      </tr>
+      <tr>
+        <th>料金</th>
+        <td><span class="price-big">8,800</span><span class="price-unit">円（税込）</span></td>
+      </tr>
+      <tr>
+        <th>対象</th>
+        <td>自分の人生を自分で動かしたい方<br>守護霊と繋がり自分軸を取り戻したい方</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div class="final-cta wrap reveal">
+  <div class="seats-badge">残席わずか — 5名限定</div>
+  <h2 class="final-cta-heading">
+    かつかつを卒業して、<br>
+    満ち満ちた人生を始めましょう。
+  </h2>
+  <p class="final-cta-sub">
+    定員に達し次第、募集を締め切ります。<br>
+    気になったら、まず動いてみてください。
+  </p>
+  <a href="YOUR_FORM_URL" class="cta-btn" target="_blank" rel="noopener">今すぐ申し込む &rarr;</a>
+</div>
+
+<footer>
+  <p>&copy; 2026 友彩（ゆうさい）All rights reserved.</p>
+</footer>
+
+<script>
+/* ── Starfield ── */
+(function(){
+  const c = document.getElementById('stars');
+  const ctx = c.getContext('2d');
+  let W, H, stars = [];
+  function resize(){
+    W = c.width = window.innerWidth;
+    H = c.height = window.innerHeight;
+  }
+  function init(){
+    stars = [];
+    for(let i=0;i<120;i++){
+      stars.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: Math.random()*1.2+0.2,
+        a: Math.random(),
+        s: (Math.random()-0.5)*0.003
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      s.a += s.s;
+      if(s.a<=0||s.a>=1) s.s*=-1;
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(201,168,76,${s.a*0.7})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize(); init(); draw();
+  window.addEventListener('resize',()=>{resize();init();});
+})();
+
+/* ── Scroll reveal ── */
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+  });
+},{threshold:0.12});
+reveals.forEach(el=>io.observe(el));
+</script>
