@@ -52,582 +52,192 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
 
+/* ── モバイルファースト基本スタイル ── */
 body {
   background: var(--bg);
-  color: var(--pearl);
+  color: #FFFFFF;
   font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', Georgia, serif;
-  font-size: 20px;
-  line-height: 2;
+  font-size: 36px;
+  line-height: 1.9;
   overflow-x: hidden;
 }
 
-/* ── Canvas starfield ── */
-#stars {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.6;
-}
+#stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.6; }
 
-.wrap {
-  position: relative;
-  z-index: 1;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
+.wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 0; }
 
 /* ── HERO ── */
 .hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 80px 24px 60px;
-  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center;
+  padding: 20px 0 16px; position: relative;
 }
 .hero-scroll { display: none; }
-
-.hero-eyebrow {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 13px;
-  letter-spacing: 4px;
-  color: var(--gold);
-  text-transform: uppercase;
-  margin-bottom: 28px;
-  opacity: 0;
-  animation: fadeUp 0.8s ease 0.2s forwards;
-}
-
-.hero-title {
-  font-size: clamp(28px, 7vw, 52px);
-  font-weight: 700;
-  line-height: 1.35;
-  color: var(--pearl);
-  text-wrap: balance;
-  margin-bottom: 8px;
-  opacity: 0;
-  animation: fadeUp 0.9s ease 0.4s forwards;
-}
-
-.hero-title .gold { color: var(--gold-lt); }
-
-.hero-sparkle {
-  font-size: clamp(18px, 4vw, 28px);
-  color: var(--gold);
-  margin-bottom: 16px;
-  letter-spacing: 8px;
-  opacity: 0;
-  animation: fadeUp 0.9s ease 0.5s forwards;
-}
-
-.hero-sub {
-  font-size: clamp(14px, 3vw, 18px);
-  color: var(--pearl-dim);
-  margin-bottom: 48px;
-  opacity: 0;
-  animation: fadeUp 0.9s ease 0.6s forwards;
-}
+.hero + hr { display: none; }
 
 .hero-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin-bottom: 48px;
-  opacity: 0;
-  animation: fadeUp 0.9s ease 0.8s forwards;
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center; margin: 16px 12px 16px;
+  opacity: 0; animation: fadeUp 0.9s ease 0.8s forwards;
 }
-
 .meta-pill {
   font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 15px;
-  padding: 8px 20px;
-  border: 1px solid var(--border);
-  border-radius: 50px;
-  background: var(--gold-dim);
-  color: var(--gold-lt);
-  letter-spacing: 0.5px;
+  font-size: 28px; padding: 8px 20px;
+  border: 1px solid var(--border); border-radius: 50px;
+  background: var(--gold-dim); color: var(--gold-lt);
 }
 
 .cta-btn {
-  display: inline-block;
+  display: block; width: 100%;
   font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--bg);
+  font-size: 38px; font-weight: 700; letter-spacing: 1.5px;
+  color: var(--bg); text-align: center; text-decoration: none;
   background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 60%, var(--gold) 100%);
   background-size: 200% auto;
-  padding: 18px 48px;
-  border-radius: 4px;
-  text-decoration: none;
+  padding: 22px 0; border-radius: 0;
   transition: background-position 0.4s, transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 32px rgba(201,168,76,0.35);
-  opacity: 0;
-  animation: fadeUp 0.9s ease 1.0s forwards;
-}
-.cta-btn:hover {
-  background-position: right center;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 48px rgba(201,168,76,0.5);
-}
-@media (max-width: 768px) {
-  body { font-size: 38px; color: #FFFFFF; }
-  .wrap { padding: 0 8px; }
-  section { padding: 32px 0; }
-  .hero { padding: 20px 0 16px; }
-  .hero-scroll { display: none; }
-  .hero + hr { display: none; }
-  :root {
-    --pearl: #FFFFFF;
-    --pearl-dim: rgba(255,255,255,0.95);
-    --muted: rgba(255,255,255,0.8);
-    --gold: #FFD050;
-    --gold-lt: #FFE080;
-    --rose: #FF6EA0;
-  }
-  .cta-btn {
-    font-size: 36px;
-    padding: 20px 0;
-    width: 100%;
-    display: block;
-    text-align: center;
-    border-radius: 8px;
-    margin-left: 0;
-    margin-right: 0;
-    box-sizing: border-box;
-  }
-  .sec-heading { font-size: clamp(42px, 10vw, 60px); }
-  .sec-label { font-size: 26px; letter-spacing: 3px; }
-  .sec-body, .for-text, .voice-text, .prog-desc, .outcome-desc,
-  .profile-body, .final-cta-sub { font-size: 36px; }
-  .outcome-title, .prog-title, .profile-catch { font-size: 38px; }
-  .voice-meta, .outcome-num { font-size: 30px; }
-  .prog-time { font-size: 30px; width: 80px; }
-  .meta-pill { font-size: 30px; padding: 10px 24px; }
-  .overview-table th { font-size: 30px; width: 90px; }
-  .overview-table td { font-size: 34px; }
-  .price-big { font-size: 60px; }
-  .price-unit { font-size: 28px; }
-  .seats-badge { font-size: 30px; }
-  .faq-btn p { font-size: 34px; }
-  .faq-body { font-size: 34px; }
-  .faq-icon { font-size: 28px; width: 40px; height: 40px; }
-  .final-cta-heading { font-size: clamp(38px, 9vw, 52px); }
-  .profile-name { font-size: 42px; }
-  .profile-ruby { font-size: 28px; }
-}
-
-.hero-scroll {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  opacity: 0;
-  animation: fadeUp 1s ease 1.4s forwards;
-}
-.hero-scroll span {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: var(--muted);
-}
-.scroll-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, var(--gold), transparent);
-  animation: scrollPulse 2s ease infinite;
+  box-shadow: 0 4px 32px rgba(240,184,64,0.4);
+  opacity: 0; animation: fadeUp 0.9s ease 1.0s forwards;
 }
 
 /* ── DIVIDER ── */
 .gold-rule {
-  border: none;
-  height: 1px;
+  border: none; height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  margin: 0 auto;
-  max-width: 320px;
+  margin: 0 auto; max-width: 320px;
 }
 
 /* ── SECTION ── */
-section { padding: 80px 0; }
+section { padding: 40px 12px; }
 section:nth-of-type(even) { background: rgba(240,184,64,0.04); }
 section:nth-of-type(odd)  { background: rgba(240,96,144,0.04); }
 
-/* ── FAQ ACCORDION ── */
-.faq-item { border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+/* ── FAQ ── */
+.faq-item { border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:12px; }
 .faq-btn {
   width:100%; background:var(--gold-dim); border:none; cursor:pointer;
   display:flex; justify-content:space-between; align-items:center;
-  padding:1.2rem 1.4rem; gap:12px; text-align:left;
+  padding:1rem 1.2rem; gap:12px; text-align:left;
 }
-.faq-btn p { color:var(--gold-lt); font-weight:700; font-size:19px; margin:0; flex:1; }
+.faq-btn p { color:var(--gold-lt); font-weight:700; font-size:32px; margin:0; flex:1; line-height:1.5; }
 .faq-icon {
-  flex-shrink:0; width:28px; height:28px; border-radius:50%;
-  border:1.5px solid var(--gold); color:var(--gold);
+  flex-shrink:0; width:36px; height:36px; border-radius:50%;
+  border:2px solid var(--gold); color:var(--gold);
   display:flex; align-items:center; justify-content:center;
-  font-size:18px; font-weight:700; transition:transform 0.3s;
-  line-height:1;
+  font-size:24px; font-weight:700; transition:transform 0.3s; line-height:1;
 }
 .faq-item.open .faq-icon { transform:rotate(45deg); }
-.faq-body {
-  display:none; padding:1.4rem 1.4rem;
-  font-size:18px; color:var(--pearl-dim); line-height:2;
-}
+.faq-body { display:none; padding:1.2rem; font-size:32px; color:#FFFFFF; line-height:1.9; }
 .faq-item.open .faq-body { display:block; }
 
+/* ── LABELS & HEADINGS ── */
 .sec-label {
   font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 13px;
-  letter-spacing: 4px;
-  color: var(--gold);
-  margin-bottom: 16px;
-  text-transform: uppercase;
+  font-size: 24px; letter-spacing: 4px; color: var(--gold);
+  margin-bottom: 12px; text-transform: uppercase;
 }
-
 .sec-heading {
-  font-size: clamp(22px, 5vw, 36px);
-  font-weight: 700;
-  line-height: 1.4;
-  color: var(--pearl);
-  text-wrap: balance;
-  margin-bottom: 32px;
+  font-size: 46px; font-weight: 700; line-height: 1.35;
+  color: #FFFFFF; text-wrap: balance; margin-bottom: 24px;
 }
-
-.sec-body {
-  font-size: 17px;
-  color: var(--pearl-dim);
-  line-height: 2;
-}
+.sec-body { font-size: 34px; color: #FFFFFF; line-height: 1.9; }
 
 /* ── FOR WHOM ── */
-.for-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin-top: 8px;
-}
-.for-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--border);
-}
+.for-list { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
+.for-item { display: flex; align-items: flex-start; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--border); }
 .for-item:first-child { border-top: 1px solid var(--border); }
-
-.for-dot {
-  flex-shrink: 0;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--gold);
-  margin-top: 10px;
-}
-.for-text {
-  font-size: 17px;
-  color: var(--pearl-dim);
-  line-height: 1.8;
-}
+.for-dot { flex-shrink:0; width:8px; height:8px; border-radius:50%; background:var(--gold); margin-top:14px; }
+.for-text { font-size: 34px; color: #FFFFFF; line-height: 1.8; }
 
 /* ── OUTCOME ── */
-.outcome-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: 8px;
-}
-@media (max-width: 768px) {
-  .outcome-grid { grid-template-columns: 1fr; }
-}
-.outcome-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 24px 20px;
-  position: relative;
-  overflow: hidden;
-}
-.outcome-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 3px; height: 100%;
-  background: linear-gradient(to bottom, var(--gold), transparent);
-}
-.outcome-num {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 13px;
-  color: var(--gold);
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-}
-.outcome-title {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--pearl);
-  margin-bottom: 8px;
-  line-height: 1.5;
-}
-.outcome-desc {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 15px;
-  color: var(--muted);
-  line-height: 1.7;
-}
+.outcome-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 8px; }
+.outcome-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:20px 16px; position:relative; overflow:hidden; }
+.outcome-card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:linear-gradient(to bottom, var(--gold), transparent); }
+.outcome-num { font-size: 26px; color:var(--gold); letter-spacing:2px; margin-bottom:8px; }
+.outcome-title { font-size: 36px; font-weight:700; color:#FFFFFF; margin-bottom:8px; line-height:1.4; }
+.outcome-desc { font-size: 30px; color: rgba(255,255,255,0.85); line-height:1.7; }
 
 /* ── PROGRAM ── */
-.program-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  position: relative;
-  margin-top: 8px;
-}
-.program-list::before {
-  content: '';
-  position: absolute;
-  left: 28px;
-  top: 0; bottom: 0;
-  width: 1px;
-  background: linear-gradient(to bottom, var(--gold), transparent);
-}
-.program-item {
-  display: flex;
-  gap: 24px;
-  padding: 24px 0;
-  border-bottom: 1px solid rgba(201,168,76,0.08);
-}
-.program-item:last-child { border-bottom: none; }
-.prog-time {
-  flex-shrink: 0;
-  width: 56px;
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 15px;
-  color: var(--gold);
-  letter-spacing: 1px;
-  padding-top: 2px;
-  font-variant-numeric: tabular-nums;
-}
-.prog-content { flex: 1; }
-.prog-title {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--pearl);
-  margin-bottom: 6px;
-  line-height: 1.5;
-}
-.prog-desc {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 15px;
-  color: var(--muted);
-  line-height: 1.8;
-}
-.prog-tag {
-  display: inline-block;
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 10px;
-  letter-spacing: 1px;
-  padding: 3px 10px;
-  border-radius: 2px;
-  background: var(--rose-dim);
-  color: var(--rose);
-  margin-top: 8px;
-}
+.program-list { display:flex; flex-direction:column; gap:0; position:relative; margin-top:8px; }
+.program-list::before { content:''; position:absolute; left:32px; top:0; bottom:0; width:1px; background:linear-gradient(to bottom, var(--gold), transparent); }
+.program-item { display:flex; gap:20px; padding:24px 0; border-bottom:1px solid rgba(240,184,64,0.1); }
+.program-item:last-child { border-bottom:none; }
+.prog-time { flex-shrink:0; width:72px; font-size:28px; color:var(--gold); padding-top:4px; }
+.prog-content { flex:1; }
+.prog-title { font-size: 34px; font-weight:700; color:#FFFFFF; margin-bottom:6px; line-height:1.4; }
+.prog-desc { font-size: 28px; color:rgba(255,255,255,0.8); line-height:1.8; }
+.prog-tag { display:inline-block; font-size:24px; padding:4px 12px; border-radius:4px; background:var(--rose-dim); color:var(--rose); margin-top:8px; }
 
 /* ── VOICE ── */
-.voice-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 8px;
-}
-.voice-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 24px;
-}
-.voice-text {
-  font-size: 17px;
-  color: var(--pearl-dim);
-  line-height: 2;
-  margin-bottom: 14px;
-  font-style: italic;
-}
-.voice-text::before { content: '「'; color: var(--gold); }
-.voice-text::after  { content: '」'; color: var(--gold); }
-.voice-meta {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 14px;
-  color: var(--muted);
-  letter-spacing: 1px;
-}
+.voice-list { display:flex; flex-direction:column; gap:16px; margin-top:8px; }
+.voice-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:24px 16px; }
+.voice-text { font-size: 34px; color:#FFFFFF; line-height:1.9; margin-bottom:14px; font-style:italic; }
+.voice-text::before { content:'「'; color:var(--gold); }
+.voice-text::after  { content:'」'; color:var(--gold); }
+.voice-meta { font-size: 26px; color:rgba(255,255,255,0.7); }
 
 /* ── PROFILE ── */
-.profile-wrap {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 40px;
-  align-items: start;
-  margin-top: 8px;
-}
-@media (max-width: 500px) {
-  .profile-wrap { grid-template-columns: 1fr; }
-  .profile-img-wrap { text-align: center; }
-}
-.profile-img-wrap {
-  position: relative;
-}
-.profile-img-frame {
-  width: 140px;
-  height: 140px;
-  border-radius: 2px;
-  background: var(--gold-dim);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 56px;
-  position: relative;
-  overflow: hidden;
-}
-.profile-img-frame::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent 60%, rgba(201,168,76,0.15));
-}
-.profile-gold-label {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--gold);
-  margin-top: 12px;
-  text-align: center;
-}
-.profile-name {
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--pearl);
-  margin-bottom: 4px;
-  letter-spacing: 2px;
-}
-.profile-ruby {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 11px;
-  letter-spacing: 3px;
-  color: var(--gold);
-  margin-bottom: 20px;
-}
-.profile-catch {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--gold-lt);
-  margin-bottom: 16px;
-  line-height: 1.6;
-  padding-left: 14px;
-  border-left: 2px solid var(--gold);
-}
-.profile-body {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 16px;
-  color: var(--pearl-dim);
-  line-height: 2;
-}
+.profile-wrap { display:grid; grid-template-columns:1fr; gap:24px; align-items:start; margin-top:8px; }
+.profile-img-wrap { text-align:center; position:relative; }
+.profile-img-frame { width:140px; height:140px; border-radius:2px; background:var(--gold-dim); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:56px; position:relative; overflow:hidden; margin:0 auto; }
+.profile-gold-label { font-size:22px; letter-spacing:2px; color:var(--gold); margin-top:10px; text-align:center; }
+.profile-name { font-size: 44px; font-weight:700; color:#FFFFFF; margin-bottom:4px; letter-spacing:2px; }
+.profile-ruby { font-size: 26px; letter-spacing:3px; color:var(--gold); margin-bottom:16px; }
+.profile-catch { font-size: 34px; font-weight:700; color:var(--gold-lt); margin-bottom:16px; line-height:1.6; padding-left:14px; border-left:3px solid var(--gold); }
+.profile-body { font-size: 30px; color:#FFFFFF; line-height:1.9; }
 
 /* ── OVERVIEW ── */
-.overview-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 8px;
-}
-.overview-table tr {
-  border-bottom: 1px solid var(--border);
-}
-.overview-table tr:first-child { border-top: 1px solid var(--border); }
-.overview-table th {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 15px;
-  letter-spacing: 2px;
-  color: var(--gold);
-  text-align: left;
-  padding: 18px 0 18px 0;
-  width: 96px;
-  vertical-align: top;
-  white-space: nowrap;
-}
-.overview-table td {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 16px;
-  color: var(--pearl-dim);
-  padding: 18px 0;
-  line-height: 1.8;
-}
-.price-big {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--pearl);
-  font-variant-numeric: tabular-nums;
-}
-.price-unit {
-  font-size: 14px;
-  color: var(--muted);
-  margin-left: 4px;
-}
+.overview-table { width:100%; border-collapse:collapse; margin-top:8px; }
+.overview-table tr { border-bottom:1px solid var(--border); }
+.overview-table tr:first-child { border-top:1px solid var(--border); }
+.overview-table th { font-size:28px; letter-spacing:2px; color:var(--gold); text-align:left; padding:16px 8px 16px 0; width:80px; vertical-align:top; white-space:nowrap; }
+.overview-table td { font-size:30px; color:#FFFFFF; padding:16px 0; line-height:1.8; }
+.price-big { font-size: 56px; font-weight:700; color:#FFFFFF; }
+.price-unit { font-size: 26px; color:rgba(255,255,255,0.7); margin-left:4px; }
 
 /* ── FINAL CTA ── */
-.final-cta {
-  padding: 80px 0 120px;
-  text-align: center;
-}
-.final-cta-heading {
-  font-size: clamp(20px, 4vw, 30px);
-  font-weight: 700;
-  color: var(--pearl);
-  text-wrap: balance;
-  margin-bottom: 16px;
-  line-height: 1.5;
-}
-.final-cta-sub {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 16px;
-  color: var(--muted);
-  margin-bottom: 40px;
-  line-height: 1.8;
-}
-.seats-badge {
-  display: inline-block;
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 15px;
-  letter-spacing: 2px;
-  color: var(--rose);
-  border: 1px solid var(--rose);
-  padding: 6px 20px;
-  border-radius: 50px;
-  margin-bottom: 24px;
-}
+.final-cta { padding:60px 12px 80px; text-align:center; }
+.final-cta-heading { font-size: 44px; font-weight:700; color:#FFFFFF; text-wrap:balance; margin-bottom:16px; line-height:1.4; }
+.final-cta-sub { font-size: 30px; color:rgba(255,255,255,0.8); margin-bottom:32px; line-height:1.9; }
+.seats-badge { display:inline-block; font-size:28px; letter-spacing:2px; color:var(--rose); border:1px solid var(--rose); padding:8px 24px; border-radius:50px; margin-bottom:24px; }
 
 /* ── FOOTER ── */
-footer {
-  text-align: center;
-  padding: 40px 24px;
-  border-top: 1px solid var(--border);
-}
-footer p {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 1px;
+footer { text-align:center; padding:32px 16px; border-top:1px solid var(--border); }
+footer p { font-size:22px; color:rgba(255,255,255,0.5); }
+
+/* ── PC overrides (769px以上) ── */
+@media (min-width: 769px) {
+  body { font-size: 18px; color: var(--pearl); }
+  .wrap { padding: 0 24px; }
+  section { padding: 80px 0; }
+  .hero { padding: 80px 24px 60px; }
+  .meta-pill { font-size: 15px; padding: 8px 20px; }
+  .cta-btn { font-size: 18px; padding: 18px 48px; width: auto; display: inline-block; border-radius: 4px; }
+  .sec-label { font-size: 13px; }
+  .sec-heading { font-size: clamp(22px, 5vw, 36px); }
+  .sec-body, .for-text, .voice-text, .prog-desc, .outcome-desc, .profile-body, .final-cta-sub { font-size: 16px; }
+  .outcome-title, .prog-title { font-size: 17px; }
+  .outcome-num { font-size: 13px; }
+  .outcome-grid { grid-template-columns: 1fr 1fr; }
+  .voice-meta { font-size: 14px; }
+  .prog-time { font-size: 14px; width: 56px; }
+  .profile-wrap { grid-template-columns: 160px 1fr; gap: 40px; }
+  .profile-img-wrap { text-align: left; }
+  .profile-name { font-size: 26px; }
+  .profile-ruby { font-size: 11px; }
+  .profile-catch { font-size: 16px; }
+  .overview-table th { font-size: 14px; width: 96px; }
+  .overview-table td { font-size: 16px; }
+  .price-big { font-size: 28px; }
+  .price-unit { font-size: 14px; }
+  .seats-badge { font-size: 14px; }
+  .faq-btn p { font-size: 18px; }
+  .faq-body { font-size: 17px; }
+  .final-cta-heading { font-size: clamp(22px, 4vw, 32px); }
+  .final-cta-sub { font-size: 15px; }
+  footer p { font-size: 12px; }
 }
 
 /* ── ANIMATIONS ── */
