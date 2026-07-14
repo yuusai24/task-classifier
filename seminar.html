@@ -90,6 +90,9 @@ body {
   justify-content: center;
   text-align: center;
   padding: 80px 24px 60px;
+}
+@media (max-width: 600px) {
+  .hero { padding: 40px 0 40px; }
   position: relative;
 }
 
@@ -179,12 +182,8 @@ body {
 }
 @media (max-width: 600px) {
   body { font-size: 38px; color: #FFFFFF; }
-  .wrap { padding: 0 10px; }
-  .cta-btn {
-    width: calc(100% + 20px);
-    margin-left: -10px;
-    margin-right: -10px;
-  }
+  .wrap { padding: 0; }
+  section { padding: 60px 12px; }
   :root {
     --pearl: #FFFFFF;
     --pearl-dim: rgba(255,255,255,0.95);
