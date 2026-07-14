@@ -59,8 +59,8 @@ body {
   background: var(--bg);
   color: var(--pearl);
   font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', Georgia, serif;
-  font-size: 18px;
-  line-height: 1.9;
+  font-size: 20px;
+  line-height: 2;
   overflow-x: hidden;
 }
 
@@ -214,6 +214,30 @@ body {
 
 /* ── SECTION ── */
 section { padding: 80px 0; }
+section:nth-of-type(even) { background: rgba(240,184,64,0.04); }
+section:nth-of-type(odd)  { background: rgba(240,96,144,0.04); }
+
+/* ── FAQ ACCORDION ── */
+.faq-item { border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.faq-btn {
+  width:100%; background:var(--gold-dim); border:none; cursor:pointer;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1.2rem 1.4rem; gap:12px; text-align:left;
+}
+.faq-btn p { color:var(--gold-lt); font-weight:700; font-size:19px; margin:0; flex:1; }
+.faq-icon {
+  flex-shrink:0; width:28px; height:28px; border-radius:50%;
+  border:1.5px solid var(--gold); color:var(--gold);
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; font-weight:700; transition:transform 0.3s;
+  line-height:1;
+}
+.faq-item.open .faq-icon { transform:rotate(45deg); }
+.faq-body {
+  display:none; padding:1.4rem 1.4rem;
+  font-size:18px; color:var(--pearl-dim); line-height:2;
+}
+.faq-item.open .faq-body { display:block; }
 
 .sec-label {
   font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
@@ -831,76 +855,77 @@ footer p {
   <div class="wrap reveal">
     <p class="sec-label">FAQ</p>
     <h2 class="sec-heading">よくある質問</h2>
-    <div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:1.2rem;">
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
-        <div style="background:var(--gold-dim);padding:1rem 1.4rem;border-bottom:1px solid var(--border);">
-          <p style="color:var(--gold-lt);font-weight:700;font-size:18px;margin:0;">Q1. このセミナーはどんな方におすすめですか？</p>
-        </div>
-        <div style="padding:1.2rem 1.4rem;">
-          <p style="color:var(--pearl-dim);font-size:17px;line-height:2;margin:0;">
-            このセミナーは、<br><br>
-            「いつか変わりたい」ではなく、<br>
-            「今の自分から一歩踏み出したい」<br><br>
-            そんな想いをお持ちの方のためのセミナーです。<br><br>
-            人生は、行動した人から少しずつ流れが変わっていきます。<br><br>
-            時間・お金・エネルギーを、自分の未来のために使うことを選べる方と、ご一緒できたら嬉しいです。
-          </p>
-        </div>
-      </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
-        <div style="background:var(--gold-dim);padding:1rem 1.4rem;border-bottom:1px solid var(--border);">
-          <p style="color:var(--gold-lt);font-weight:700;font-size:18px;margin:0;">Q2. スピリチュアル初心者でも参加できますか？</p>
-        </div>
-        <div style="padding:1.2rem 1.4rem;">
-          <p style="color:var(--pearl-dim);font-size:17px;line-height:2;margin:0;">
-            もちろんです。<br>
-            専門知識は一切必要ありません。<br>
-            初めての方にもわかりやすくお伝えしますので、安心してご参加ください。
-          </p>
+    <div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:1rem;">
+
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <p>Q1. このセミナーはどんな方におすすめですか？</p>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          このセミナーは、<br><br>
+          「いつか変わりたい」ではなく、<br>
+          「今の自分から一歩踏み出したい」<br><br>
+          そんな想いをお持ちの方のためのセミナーです。<br><br>
+          人生は、行動した人から少しずつ流れが変わっていきます。<br><br>
+          時間・お金・エネルギーを、自分の未来のために使うことを選べる方と、ご一緒できたら嬉しいです。
         </div>
       </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
-        <div style="background:var(--gold-dim);padding:1rem 1.4rem;border-bottom:1px solid var(--border);">
-          <p style="color:var(--gold-lt);font-weight:700;font-size:18px;margin:0;">Q3. 起業していなくても参加できますか？</p>
-        </div>
-        <div style="padding:1.2rem 1.4rem;">
-          <p style="color:var(--pearl-dim);font-size:17px;line-height:2;margin:0;">
-            はい、大丈夫です。<br>
-            会社員・主婦・フリーランスなど、どなたでもご参加いただけます。<br>
-            「もっと豊かになりたい」というお気持ちがあれば十分です。
-          </p>
-        </div>
-      </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
-        <div style="background:var(--gold-dim);padding:1rem 1.4rem;border-bottom:1px solid var(--border);">
-          <p style="color:var(--gold-lt);font-weight:700;font-size:18px;margin:0;">Q4. 顔出しは必要ですか？</p>
-        </div>
-        <div style="padding:1.2rem 1.4rem;">
-          <p style="color:var(--pearl-dim);font-size:17px;line-height:2;margin:0;">
-            お一人ずつお顔を拝見しながらエネルギーを視るので、お顔出しをお願いいたします。
-          </p>
+
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <p>Q2. スピリチュアル初心者でも参加できますか？</p>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          もちろんです。<br>
+          専門知識は一切必要ありません。<br>
+          初めての方にもわかりやすくお伝えしますので、安心してご参加ください。
         </div>
       </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
-        <div style="background:var(--gold-dim);padding:1rem 1.4rem;border-bottom:1px solid var(--border);">
-          <p style="color:var(--gold-lt);font-weight:700;font-size:18px;margin:0;">Q5. 録画はありますか？</p>
-        </div>
-        <div style="padding:1.2rem 1.4rem;">
-          <p style="color:var(--pearl-dim);font-size:17px;line-height:2;margin:0;">
-            リアルタイムでのエネルギーやワークを大切にしているため、録画の配布は予定しておりません。
-          </p>
-        </div>
-      </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
-        <div style="background:var(--gold-dim);padding:1rem 1.4rem;border-bottom:1px solid var(--border);">
-          <p style="color:var(--gold-lt);font-weight:700;font-size:18px;margin:0;">Q6. 何か準備するものはありますか？</p>
-        </div>
-        <div style="padding:1.2rem 1.4rem;">
-          <p style="color:var(--pearl-dim);font-size:17px;line-height:2;margin:0;">
-            ノートと筆記用具、お飲み物をご用意いただき、リラックスできる環境でご参加ください。
-          </p>
+
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <p>Q3. 起業していなくても参加できますか？</p>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          はい、大丈夫です。<br>
+          会社員・主婦・フリーランスなど、どなたでもご参加いただけます。<br>
+          「もっと豊かになりたい」というお気持ちがあれば十分です。
         </div>
       </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <p>Q4. 顔出しは必要ですか？</p>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          お一人ずつお顔を拝見しながらエネルギーを視るので、お顔出しをお願いいたします。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <p>Q5. 録画はありますか？</p>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          リアルタイムでのエネルギーやワークを大切にしているため、録画の配布は予定しておりません。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <p>Q6. 何か準備するものはありますか？</p>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          ノートと筆記用具、お飲み物をご用意いただき、リラックスできる環境でご参加ください。
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -926,6 +951,12 @@ footer p {
 </footer>
 
 <script>
+/* ── FAQ Accordion ── */
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  item.classList.toggle('open');
+}
+
 /* ── Starfield ── */
 (function(){
   const c = document.getElementById('stars');
