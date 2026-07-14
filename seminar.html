@@ -178,13 +178,28 @@ body {
   box-shadow: 0 8px 48px rgba(201,168,76,0.5);
 }
 @media (max-width: 600px) {
+  body { font-size: 26px; }
   .cta-btn {
-    font-size: 20px;
-    padding: 22px 0;
+    font-size: 24px;
+    padding: 24px 0;
     width: 100%;
     text-align: center;
     border-radius: 8px;
   }
+  .sec-heading { font-size: clamp(30px, 8vw, 42px); }
+  .sec-label { font-size: 16px; }
+  .sec-body, .for-text, .voice-text, .prog-desc, .outcome-desc,
+  .profile-body, .final-cta-sub { font-size: 24px; }
+  .outcome-title, .prog-title, .profile-catch { font-size: 26px; }
+  .voice-meta, .outcome-num, .prog-time { font-size: 20px; }
+  .meta-pill { font-size: 20px; padding: 10px 24px; }
+  .overview-table th { font-size: 20px; }
+  .overview-table td { font-size: 22px; }
+  .price-big { font-size: 40px; }
+  .seats-badge { font-size: 20px; }
+  .faq-btn p { font-size: 22px; }
+  .faq-body { font-size: 22px; }
+  .final-cta-heading { font-size: clamp(26px, 7vw, 36px); }
 }
 
 .hero-scroll {
