@@ -27,7 +27,7 @@ body {
   background: var(--bg);
   color: #1A1010;
   font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', Georgia, serif;
-  font-size: 36px;
+  font-size: 33px;
   line-height: 1.9;
   overflow-x: hidden;
 }
@@ -52,7 +52,7 @@ body {
 }
 .meta-pill {
   font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 28px; padding: 8px 20px;
+  font-size: 25px; padding: 8px 20px;
   border: 1px solid var(--border); border-radius: 50px;
   background: var(--gold-dim); color: var(--gold-lt);
 }
@@ -60,7 +60,7 @@ body {
 .cta-btn {
   display: block; width: 100%;
   font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 38px; font-weight: 700; letter-spacing: 1.5px;
+  font-size: 35px; font-weight: 700; letter-spacing: 1.5px;
   color: var(--bg); text-align: center; text-decoration: none;
   background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 60%, var(--gold) 100%);
   background-size: 200% auto;
@@ -89,91 +89,91 @@ section:nth-of-type(odd)  { background: rgba(240,96,144,0.04); }
   display:flex; justify-content:space-between; align-items:center;
   padding:1rem 1.2rem; gap:12px; text-align:left;
 }
-.faq-btn p { color:var(--gold-lt); font-weight:700; font-size:32px; margin:0; flex:1; line-height:1.5; }
+.faq-btn p { color:var(--gold-lt); font-weight:700; font-size: 29px; margin:0; flex:1; line-height:1.5; }
 .faq-icon {
   flex-shrink:0; width:36px; height:36px; border-radius:50%;
   border:2px solid var(--gold); color:var(--gold);
   display:flex; align-items:center; justify-content:center;
-  font-size:24px; font-weight:700; transition:transform 0.3s; line-height:1;
+  font-size: 21px; font-weight:700; transition:transform 0.3s; line-height:1;
 }
 .faq-item.open .faq-icon { transform:rotate(45deg); }
-.faq-body { display:none; padding:1.2rem; font-size:32px; color:#FFFFFF; line-height:1.9; }
+.faq-body { display:none; padding:1.2rem; font-size: 29px; color:#1A1010; line-height:1.9; }
 .faq-item.open .faq-body { display:block; }
 
 /* ── LABELS & HEADINGS ── */
 .sec-label {
   font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  font-size: 24px; letter-spacing: 4px; color: var(--gold);
+  font-size: 21px; letter-spacing: 4px; color: var(--gold);
   margin-bottom: 12px; text-transform: uppercase;
 }
 .sec-heading {
-  font-size: 46px; font-weight: 700; line-height: 1.35;
+  font-size: 43px; font-weight: 700; line-height: 1.35;
   color: #1A1010; text-wrap: balance; margin-bottom: 24px;
 }
-.sec-body { font-size: 34px; color: #1A1010; line-height: 1.9; }
+.sec-body { font-size: 31px; color: #1A1010; line-height: 1.9; }
 
 /* ── FOR WHOM ── */
 .for-list { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
 .for-item { display: flex; align-items: flex-start; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--border); }
 .for-item:first-child { border-top: 1px solid var(--border); }
 .for-dot { flex-shrink:0; width:8px; height:8px; border-radius:50%; background:var(--gold); margin-top:14px; }
-.for-text { font-size: 34px; color: #1A1010; line-height: 1.8; }
+.for-text { font-size: 31px; color: #1A1010; line-height: 1.8; }
 
 /* ── OUTCOME ── */
 .outcome-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 8px; }
 .outcome-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:20px 16px; position:relative; overflow:hidden; }
 .outcome-card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:linear-gradient(to bottom, var(--gold), transparent); }
-.outcome-num { font-size: 26px; color:var(--gold); letter-spacing:2px; margin-bottom:8px; }
-.outcome-title { font-size: 36px; font-weight:700; color:#FFFFFF; margin-bottom:8px; line-height:1.4; }
-.outcome-desc { font-size: 30px; color: rgba(26,16,16,0.7); line-height:1.7; }
+.outcome-num { font-size: 23px; color:var(--gold); letter-spacing:2px; margin-bottom:8px; }
+.outcome-title { font-size: 33px; font-weight:700; color:#1A1010; margin-bottom:8px; line-height:1.4; }
+.outcome-desc { font-size: 27px; color: rgba(26,16,16,0.7); line-height:1.7; }
 
 /* ── PROGRAM ── */
 .program-list { display:flex; flex-direction:column; gap:0; position:relative; margin-top:8px; }
 .program-list::before { content:''; position:absolute; left:32px; top:0; bottom:0; width:1px; background:linear-gradient(to bottom, var(--gold), transparent); }
 .program-item { display:flex; gap:20px; padding:24px 0; border-bottom:1px solid rgba(240,184,64,0.1); }
 .program-item:last-child { border-bottom:none; }
-.prog-time { flex-shrink:0; width:72px; font-size:28px; color:var(--gold); padding-top:4px; }
+.prog-time { flex-shrink:0; width:72px; font-size: 25px; color:var(--gold); padding-top:4px; }
 .prog-content { flex:1; }
-.prog-title { font-size: 34px; font-weight:700; color:#FFFFFF; margin-bottom:6px; line-height:1.4; }
-.prog-desc { font-size: 28px; color:rgba(26,16,16,0.7); line-height:1.8; }
-.prog-tag { display:inline-block; font-size:24px; padding:4px 12px; border-radius:4px; background:var(--rose-dim); color:var(--rose); margin-top:8px; }
+.prog-title { font-size: 31px; font-weight:700; color:#1A1010; margin-bottom:6px; line-height:1.4; }
+.prog-desc { font-size: 25px; color:rgba(26,16,16,0.7); line-height:1.8; }
+.prog-tag { display:inline-block; font-size: 21px; padding:4px 12px; border-radius:4px; background:var(--rose-dim); color:var(--rose); margin-top:8px; }
 
 /* ── VOICE ── */
 .voice-list { display:flex; flex-direction:column; gap:16px; margin-top:8px; }
 .voice-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:24px 16px; }
-.voice-text { font-size: 34px; color:#FFFFFF; line-height:1.9; margin-bottom:14px; font-style:italic; }
+.voice-text { font-size: 31px; color:#1A1010; line-height:1.9; margin-bottom:14px; font-style:italic; }
 .voice-text::before { content:'「'; color:var(--gold); }
 .voice-text::after  { content:'」'; color:var(--gold); }
-.voice-meta { font-size: 26px; color:rgba(26,16,16,0.6); }
+.voice-meta { font-size: 23px; color:rgba(26,16,16,0.6); }
 
 /* ── PROFILE ── */
 .profile-wrap { display:grid; grid-template-columns:1fr; gap:24px; align-items:start; margin-top:8px; }
 .profile-img-wrap { text-align:center; position:relative; }
-.profile-img-frame { width:140px; height:140px; border-radius:2px; background:var(--gold-dim); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:56px; position:relative; overflow:hidden; margin:0 auto; }
-.profile-gold-label { font-size:22px; letter-spacing:2px; color:var(--gold); margin-top:10px; text-align:center; }
-.profile-name { font-size: 44px; font-weight:700; color:#FFFFFF; margin-bottom:4px; letter-spacing:2px; }
-.profile-ruby { font-size: 26px; letter-spacing:3px; color:var(--gold); margin-bottom:16px; }
-.profile-catch { font-size: 34px; font-weight:700; color:var(--gold-lt); margin-bottom:16px; line-height:1.6; padding-left:14px; border-left:3px solid var(--gold); }
-.profile-body { font-size: 30px; color:#FFFFFF; line-height:1.9; }
+.profile-img-frame { width:140px; height:140px; border-radius:2px; background:var(--gold-dim); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size: 53px; position:relative; overflow:hidden; margin:0 auto; }
+.profile-gold-label { font-size: 22px; letter-spacing:2px; color:var(--gold); margin-top:10px; text-align:center; }
+.profile-name { font-size: 41px; font-weight:700; color:#1A1010; margin-bottom:4px; letter-spacing:2px; }
+.profile-ruby { font-size: 23px; letter-spacing:3px; color:var(--gold); margin-bottom:16px; }
+.profile-catch { font-size: 31px; font-weight:700; color:var(--gold-lt); margin-bottom:16px; line-height:1.6; padding-left:14px; border-left:3px solid var(--gold); }
+.profile-body { font-size: 27px; color:#1A1010; line-height:1.9; }
 
 /* ── OVERVIEW ── */
 .overview-table { width:100%; border-collapse:collapse; margin-top:8px; }
 .overview-table tr { border-bottom:1px solid var(--border); }
 .overview-table tr:first-child { border-top:1px solid var(--border); }
-.overview-table th { font-size:28px; letter-spacing:2px; color:var(--gold); text-align:left; padding:16px 8px 16px 0; width:80px; vertical-align:top; white-space:nowrap; }
-.overview-table td { font-size:30px; color:#FFFFFF; padding:16px 0; line-height:1.8; }
-.price-big { font-size: 56px; font-weight:700; color:#FFFFFF; }
-.price-unit { font-size: 26px; color:rgba(26,16,16,0.6); margin-left:4px; }
+.overview-table th { font-size: 25px; letter-spacing:2px; color:var(--gold); text-align:left; padding:16px 8px 16px 0; width:80px; vertical-align:top; white-space:nowrap; }
+.overview-table td { font-size: 27px; color:#1A1010; padding:16px 0; line-height:1.8; }
+.price-big { font-size: 53px; font-weight:700; color:#1A1010; }
+.price-unit { font-size: 23px; color:rgba(26,16,16,0.6); margin-left:4px; }
 
 /* ── FINAL CTA ── */
 .final-cta { padding:60px 12px 80px; text-align:center; }
-.final-cta-heading { font-size: 44px; font-weight:700; color:#FFFFFF; text-wrap:balance; margin-bottom:16px; line-height:1.4; }
-.final-cta-sub { font-size: 30px; color:rgba(26,16,16,0.7); margin-bottom:32px; line-height:1.9; }
-.seats-badge { display:inline-block; font-size:28px; letter-spacing:2px; color:var(--rose); border:1px solid var(--rose); padding:8px 24px; border-radius:50px; margin-bottom:24px; }
+.final-cta-heading { font-size: 41px; font-weight:700; color:#1A1010; text-wrap:balance; margin-bottom:16px; line-height:1.4; }
+.final-cta-sub { font-size: 27px; color:rgba(26,16,16,0.7); margin-bottom:32px; line-height:1.9; }
+.seats-badge { display:inline-block; font-size: 25px; letter-spacing:2px; color:var(--rose); border:1px solid var(--rose); padding:8px 24px; border-radius:50px; margin-bottom:24px; }
 
 /* ── FOOTER ── */
 footer { text-align:center; padding:32px 16px; border-top:1px solid var(--border); }
-footer p { font-size:22px; color:rgba(26,16,16,0.5); }
+footer p { font-size: 22px; color:rgba(26,16,16,0.5); }
 
 /* ── PC overrides (769px以上) ── */
 @media (min-width: 769px) {
@@ -192,12 +192,12 @@ footer p { font-size:22px; color:rgba(26,16,16,0.5); }
   .prog-time { font-size: 14px; width: 56px; }
   .profile-wrap { grid-template-columns: 160px 1fr; gap: 40px; }
   .profile-img-wrap { text-align: left; }
-  .profile-name { font-size: 26px; }
+  .profile-name { font-size: 23px; }
   .profile-ruby { font-size: 11px; }
   .profile-catch { font-size: 16px; }
   .overview-table th { font-size: 14px; width: 96px; }
   .overview-table td { font-size: 16px; }
-  .price-big { font-size: 28px; }
+  .price-big { font-size: 25px; }
   .price-unit { font-size: 14px; }
   .seats-badge { font-size: 14px; }
   .faq-btn p { font-size: 18px; }
@@ -393,9 +393,9 @@ footer p { font-size:22px; color:rgba(26,16,16,0.5); }
           <span style="font-size:1rem;vertical-align:top;margin-top:10px;display:inline-block;">¥</span>3,300
           <span style="font-size:1rem;color:var(--muted);">（税込）</span>
         </p>
-        <p style="color:var(--rose);font-size:13px;font-weight:600;">▶ 先着3名様 特別価格</p>
+        <p style="color:var(--rose);font-size: 13px;font-weight:600;">▶ 先着3名様 特別価格</p>
       </div>
-      <p style="color:var(--pearl-dim);font-size:14px;line-height:1.8;">
+      <p style="color:var(--pearl-dim);font-size: 14px;line-height:1.8;">
         定員に達し次第、特別価格での受付を終了します。<br>
         「気になった」その感覚が、もうサインです。
       </p>
@@ -446,7 +446,7 @@ footer p { font-size:22px; color:rgba(26,16,16,0.5); }
       </tr>
       <tr>
         <th>形式</th>
-        <td>Zoom オンライン<br><span style="font-size:12px;color:var(--muted)">お申し込み後にURLをお送りします</span></td>
+        <td>Zoom オンライン<br><span style="font-size: 12px;color:var(--muted)">お申し込み後にURLをお送りします</span></td>
       </tr>
       <tr>
         <th>定員</th>
@@ -455,7 +455,7 @@ footer p { font-size:22px; color:rgba(26,16,16,0.5); }
       <tr>
         <th>料金</th>
         <td>
-          <span style="font-size:11px;color:var(--rose);font-weight:600;">先着3名様 特別価格</span><br>
+          <span style="font-size: 11px;color:var(--rose);font-weight:600;">先着3名様 特別価格</span><br>
           <span class="price-big">3,300</span><span class="price-unit">円（税込）</span>
         </td>
       </tr>
