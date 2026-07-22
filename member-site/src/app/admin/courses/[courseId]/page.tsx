@@ -1,87 +1,119 @@
-import { createClient } from '@/lib/supabase/server'
-import { notFound } from 'next/navigation'
-import { LessonForm } from '@/components/admin/LessonForm'
-import { CoursePublishToggle } from '@/components/admin/CoursePublishToggle'
+import { notFound } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { updateCourse, createLesson, updateLesson } from "./actions";
+import { LessonPublishToggle, LessonDeleteButton } from "./LessonControls";
 
-export default async function CourseDetailPage({
+export default async function AdminCourseDetailPage({
   params,
 }: {
-  params: Promise<{ courseId: string }>
+  params: Promise<{ courseId: string }>;
 }) {
-  const { courseId } = await params
-  const supabase = await createClient()
+  const { courseId } = await params;
+  const supabase = await createClient();
 
-  const { data: course } = await supabase
-    .from('courses')
-    .select('*')
-    .eq('id', courseId)
-    .single()
-
-  if (!course) notFound()
+  const { data: course } = await supabase.from("courses").select("*").eq("id", courseId).single();
+  if (!course) notFound();
 
   const { data: lessons } = await supabase
-    .from('lessons')
-    .select('*')
-    .eq('course_id', courseId)
-    .order('sort_order')
+    .from("lessons")
+    .select("*")
+    .eq("course_id", courseId)
+    .order("position");
 
   return (
-    <div className="p-8">
-      <div className="flex items-center gap-3 text-sm text-gray-500 mb-6">
-        <a href="/admin/courses" className="hover:text-gray-900">コース一覧</a>
-        <span>›</span>
-        <span className="text-gray-900">{course.title}</span>
-      </div>
+    <div>
+      <h1 className="mb-6 text-xl font-semibold">コース編集</h1>
 
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">{course.title}</h2>
-          {course.description && (
-            <p className="text-gray-500 mt-1">{course.description}</p>
-          )}
-        </div>
-        <div className="flex items-center gap-3">
-          <CoursePublishToggle courseId={course.id} published={course.published} />
-          <LessonForm courseId={course.id} />
-        </div>
-      </div>
+      <form action={updateCourse.bind(null, courseId)} className="mb-8 flex flex-col gap-2 rounded-lg border p-4">
+        <input name="title" defaultValue={course.title} required className="rounded-md border px-3 py-2" />
+        <textarea
+          name="description"
+          defaultValue={course.description ?? ""}
+          className="rounded-md border px-3 py-2"
+          rows={2}
+        />
+        <button
+          type="submit"
+          className="self-start rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background"
+        >
+          保存
+        </button>
+      </form>
 
-      {/* レッスン一覧 */}
-      <div className="space-y-2">
-        <h3 className="font-semibold text-gray-700 mb-3">レッスン一覧</h3>
-        {lessons?.length === 0 && (
-          <div className="text-center py-12 text-gray-400 bg-white rounded-xl border border-dashed border-gray-200">
-            <div className="text-3xl mb-2">🎬</div>
-            <p className="text-sm">レッスンを追加してください</p>
-          </div>
-        )}
-        {lessons?.map((lesson, index) => (
-          <div
+      <h2 className="mb-3 font-medium">レッスン</h2>
+      <div className="flex flex-col gap-3">
+        {(lessons ?? []).map((lesson) => (
+          <form
             key={lesson.id}
-            className="flex items-center gap-4 bg-white rounded-xl border border-gray-200 p-4"
+            action={updateLesson.bind(null, lesson.id, courseId)}
+            className="flex flex-col gap-2 rounded-lg border p-3"
           >
-            <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-sm font-medium text-gray-500">
-              {index + 1}
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <span className="font-medium text-gray-900 text-sm">{lesson.title}</span>
-                {lesson.published ? (
-                  <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">公開</span>
-                ) : (
-                  <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">非公開</span>
-                )}
+            <div className="flex items-center justify-between">
+              <input
+                name="title"
+                defaultValue={lesson.title}
+                required
+                className="flex-1 rounded-md border px-2 py-1 text-sm"
+              />
+              <div className="ml-3 flex items-center gap-2">
+                <LessonPublishToggle lessonId={lesson.id} courseId={courseId} isPublished={lesson.is_published} />
+                <LessonDeleteButton lessonId={lesson.id} courseId={courseId} />
               </div>
-              {lesson.youtube_url && (
-                <p className="text-xs text-gray-400 mt-0.5 truncate">{lesson.youtube_url}</p>
-              )}
             </div>
-            {lesson.duration_minutes && (
-              <span className="text-sm text-gray-400">{lesson.duration_minutes}分</span>
-            )}
-          </div>
+            <input
+              name="video_url"
+              defaultValue={lesson.video_url ?? ""}
+              placeholder="動画URL（YouTube）"
+              className="rounded-md border px-2 py-1 text-sm"
+            />
+            <div className="flex gap-2">
+              <input
+                name="duration_minutes"
+                type="number"
+                defaultValue={lesson.duration_minutes ?? ""}
+                placeholder="分数"
+                className="w-24 rounded-md border px-2 py-1 text-sm"
+              />
+              <textarea
+                name="description"
+                defaultValue={lesson.description ?? ""}
+                placeholder="説明"
+                className="flex-1 rounded-md border px-2 py-1 text-sm"
+                rows={1}
+              />
+            </div>
+            <button type="submit" className="self-start text-xs underline">
+              このレッスンを保存
+            </button>
+          </form>
         ))}
       </div>
+
+      <form action={createLesson.bind(null, courseId)} className="mt-6 flex flex-col gap-2 rounded-lg border p-4">
+        <p className="text-sm font-medium">レッスンを追加</p>
+        <input name="title" placeholder="レッスン名" required className="rounded-md border px-3 py-2" />
+        <input name="video_url" placeholder="動画URL（YouTube）" className="rounded-md border px-3 py-2" />
+        <div className="flex gap-2">
+          <input
+            name="duration_minutes"
+            type="number"
+            placeholder="分数"
+            className="w-24 rounded-md border px-3 py-2"
+          />
+          <textarea
+            name="description"
+            placeholder="説明（任意）"
+            className="flex-1 rounded-md border px-3 py-2"
+            rows={1}
+          />
+        </div>
+        <button
+          type="submit"
+          className="self-start rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background"
+        >
+          追加
+        </button>
+      </form>
     </div>
-  )
+  );
 }

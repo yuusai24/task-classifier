@@ -1,100 +1,49 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
-import { LiveBanner } from '@/components/dashboard/LiveBanner'
-import { CourseProgress } from '@/components/dashboard/CourseProgress'
-import { Announcement, Course, Lesson, LessonProgress } from '@/types/database'
+import { createClient } from "@/lib/supabase/server";
+import { AnnouncementList } from "@/components/dashboard/AnnouncementList";
+import { CourseCard } from "@/components/dashboard/CourseCard";
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('display_name, role')
-    .eq('id', user.id)
-    .single()
+  const [{ data: announcements }, { data: courses }, { data: lessons }, { data: progress }] =
+    await Promise.all([
+      supabase
+        .from("announcements")
+        .select("*")
+        .eq("is_published", true)
+        .order("starts_at", { ascending: true })
+        .limit(5),
+      supabase.from("courses").select("*").eq("is_published", true).order("position"),
+      supabase.from("lessons").select("id, course_id").eq("is_published", true),
+      supabase.from("lesson_progress").select("lesson_id").eq("member_id", user!.id).eq("is_completed", true),
+    ]);
 
-  // ライブ中 or 近日開催のアナウンスを取得
-  const now = new Date().toISOString()
-  const soon = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24時間以内
-
-  const { data: announcements } = await supabase
-    .from('announcements')
-    .select('*')
-    .eq('published', true)
-    .gte('scheduled_at', new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString()) // 4時間前から
-    .lte('scheduled_at', soon)
-    .order('scheduled_at')
-
-  // コースと進捗を取得
-  const { data: courses } = await supabase
-    .from('courses')
-    .select('*, lessons(*, lesson_progress(*))')
-    .eq('published', true)
-    .order('sort_order')
-
-  // 進捗をユーザーでフィルタ
-  const coursesWithProgress = courses?.map((course: Course & { lessons: (Lesson & { lesson_progress: LessonProgress[] })[] }) => {
-    const lessons = course.lessons.map((lesson) => ({
-      ...lesson,
-      progress: lesson.lesson_progress.find((p) => p.user_id === user.id),
-    }))
-    const completedCount = lessons.filter((l) => l.progress?.completed).length
-    return { ...course, lessons, completedCount, totalCount: lessons.length }
-  }) ?? []
+  const completedIds = new Set((progress ?? []).map((p) => p.lesson_id));
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* ヘッダー */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
-          <h1 className="font-bold text-gray-900">受講生ポータル</h1>
-          <div className="flex items-center gap-4">
-            {profile?.role === 'admin' && (
-              <a href="/admin" className="text-sm text-indigo-600 hover:underline">管理画面</a>
-            )}
-            <span className="text-sm text-gray-500">{profile?.display_name}</span>
-            <form action="/auth/signout" method="post">
-              <button type="submit" className="text-sm text-gray-400 hover:text-gray-600">ログアウト</button>
-            </form>
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
-        {/* 挨拶 */}
-        <div>
-          <h2 className="text-xl font-bold text-gray-900">
-            こんにちは、{profile?.display_name}さん 👋
-          </h2>
-          <p className="text-sm text-gray-500 mt-1">今日も学習を続けましょう</p>
-        </div>
-
-        {/* ライブバナー */}
-        {announcements && announcements.length > 0 && (
-          <div className="space-y-3">
-            {(announcements as Announcement[]).map((ann) => (
-              <LiveBanner key={ann.id} announcement={ann} now={now} />
-            ))}
-          </div>
+    <div>
+      <AnnouncementList announcements={announcements ?? []} />
+      <h1 className="mb-4 text-xl font-semibold">コース一覧</h1>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {(courses ?? []).map((course) => {
+          const courseLessons = (lessons ?? []).filter((l) => l.course_id === course.id);
+          const completed = courseLessons.filter((l) => completedIds.has(l.id)).length;
+          return (
+            <CourseCard
+              key={course.id}
+              course={course}
+              totalLessons={courseLessons.length}
+              completedLessons={completed}
+            />
+          );
+        })}
+        {(courses ?? []).length === 0 && (
+          <p className="text-sm text-zinc-500">まだ公開中のコースがありません。</p>
         )}
-
-        {/* コース進捗 */}
-        <div className="space-y-4">
-          <h3 className="font-semibold text-gray-900">あなたのコース</h3>
-          {coursesWithProgress.length === 0 ? (
-            <div className="text-center py-16 text-gray-400 bg-white rounded-2xl border border-gray-200">
-              <div className="text-4xl mb-3">📚</div>
-              <p>受講中のコースはまだありません</p>
-            </div>
-          ) : (
-            coursesWithProgress.map((course) => (
-              <CourseProgress key={course.id} course={course} userId={user.id} />
-            ))
-          )}
-        </div>
       </div>
     </div>
-  )
+  );
 }
