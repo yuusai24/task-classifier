@@ -128,6 +128,19 @@ create table google_calendar_connection (
 );
 
 -- ============================================================
+-- Zoom録画からVimeoへ自動取り込みした動画（管理者がコースへ割り当てるまでの一時置き場）
+-- ============================================================
+create table recording_imports (
+  id uuid primary key default gen_random_uuid(),
+  zoom_file_id text unique,
+  zoom_meeting_topic text,
+  vimeo_video_id text not null,
+  vimeo_uri text not null,
+  status text not null default 'pending' check (status in ('pending', 'assigned')),
+  created_at timestamptz not null default now()
+);
+
+-- ============================================================
 -- 新規ユーザー登録時に profiles を自動作成（承認待ち状態で作成される）
 -- ============================================================
 create function public.handle_new_user()
@@ -160,7 +173,8 @@ alter table session_slots enable row level security;
 alter table session_bookings enable row level security;
 alter table booking_settings enable row level security;
 alter table google_calendar_connection enable row level security;
--- booking_settings / google_calendar_connection はポリシーを作らず、
+alter table recording_imports enable row level security;
+-- booking_settings / google_calendar_connection / recording_imports はポリシーを作らず、
 -- サーバー側のservice roleからのみアクセスする（クライアントからは常に拒否）。
 
 create function public.is_admin()

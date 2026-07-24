@@ -96,6 +96,18 @@ export type GoogleCalendarConnection = {
   connected_at: string;
 };
 
+export type RecordingImportStatus = "pending" | "assigned";
+
+export type RecordingImport = {
+  id: string;
+  zoom_file_id: string | null;
+  zoom_meeting_topic: string | null;
+  vimeo_video_id: string;
+  vimeo_uri: string;
+  status: RecordingImportStatus;
+  created_at: string;
+};
+
 export type SessionBooking = {
   id: string;
   slot_id: string;
@@ -190,6 +202,12 @@ export type Database = {
         Row: GoogleCalendarConnection;
         Insert: Partial<GoogleCalendarConnection>;
         Update: Partial<GoogleCalendarConnection>;
+        Relationships: [];
+      };
+      recording_imports: {
+        Row: RecordingImport;
+        Insert: Partial<RecordingImport>;
+        Update: Partial<RecordingImport>;
         Relationships: [];
       };
     };

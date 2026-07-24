@@ -11,7 +11,8 @@ UTAGEから移行するための会員サイトです。Next.js + Supabase で�
 - 個別セッションの予約枠管理・予約
 - Googleカレンダー連携による予約可能枠の自動生成（平日の空き時間を毎日自動同期）
 - Zoom連携による予約確定時のミーティングURL自動発行
-- 管理画面（コース・レッスン・お知らせ・招待コード・予約枠・予約状況・カレンダー連携）
+- Zoomクラウド録画のVimeo自動アップロード・レッスンへの取り込み
+- 管理画面（コース・レッスン・お知らせ・招待コード・予約枠・予約状況・カレンダー連携・録画取り込み）
 
 ## 技術構成と運用コスト
 
@@ -72,6 +73,16 @@ update profiles set role = 'admin' where email = 'you@example.com';
 2. スコープに `meeting:write:meeting` を追加
 3. 発行された `Account ID` / `Client ID` / `Client Secret` を環境変数 `ZOOM_ACCOUNT_ID` / `ZOOM_CLIENT_ID` / `ZOOM_CLIENT_SECRET` に設定
 
+### 7. Zoom録画→Vimeo自動アップロード（任意・Vimeo Pro以上のプランが必要）
+
+1. [Vimeo Developer](https://developer.vimeo.com/apps) でアプリを作成し、`Upload` `Edit` スコープ付きのアクセストークンを発行 → 環境変数 `VIMEO_ACCESS_TOKEN` に設定
+2. Zoom App Marketplaceの、手順6で作ったアプリの「Feature」→「Event Subscriptions」を有効化
+   - Event notification endpoint URL に `https://<your-domain>/api/webhooks/zoom` を設定（保存時にURL検証が走る。先にデプロイしてVercel環境変数を設定しておくこと）
+   - Event typesに `Recording Completed` を追加
+   - 発行された「Secret Token」を環境変数 `ZOOM_WEBHOOK_SECRET_TOKEN` に設定
+3. Zoomでクラウド録画を使って講座を行うと、録画完了後に自動でVimeoへアップロードされ、`/admin/recordings` に表示される
+4. `/admin/recordings` でコースを選んでレッスンとして取り込む（取り込み後は非公開状態なので、コース編集画面から公開に切り替える）
+
 ## デプロイ（Vercel）
 
 1. このリポジトリをVercelにインポート（Root Directoryを `member-site` に設定）
@@ -91,6 +102,9 @@ src/lib/google-calendar.ts  Google Calendar APIラッパー
 src/lib/availability.ts     稼働時間設定から候補枠を計算
 src/lib/sync-availability.ts 候補枠とGoogleカレンダーの空き時間を突き合わせてsession_slotsに反映
 src/lib/zoom.ts              Zoom Server-to-Server OAuth・ミーティング作成
+src/lib/vimeo.ts             Vimeoへのpull upload
+src/lib/zoom-webhook.ts      Zoom Webhookの署名検証
+src/app/api/webhooks/zoom/   Zoom録画完了Webhook受信→Vimeoへ自動アップロード
 src/proxy.ts                 セッション更新・未ログイン時のリダイレクト（旧middleware.ts）
 src/types/database.ts        DBの型定義
 supabase/schema.sql          テーブル定義・RLSポリシー
