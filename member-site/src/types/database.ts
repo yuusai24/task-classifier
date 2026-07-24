@@ -9,6 +9,7 @@ export type Profile = {
   email: string;
   display_name: string | null;
   role: Role;
+  is_approved: boolean;
   created_at: string;
 };
 

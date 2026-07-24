@@ -22,6 +22,8 @@ export default async function DashboardLayout({
     .eq("id", user.id)
     .single();
 
+  const isApproved = profile?.role === "admin" || profile?.is_approved === true;
+
   return (
     <div className="flex flex-1 flex-col">
       <header className="border-b">
@@ -30,8 +32,8 @@ export default async function DashboardLayout({
             会員サイト
           </Link>
           <nav className="flex items-center gap-4 text-sm">
-            <Link href="/dashboard">コース</Link>
-            <Link href="/dashboard/booking">個別セッション</Link>
+            {isApproved && <Link href="/dashboard">コース</Link>}
+            {isApproved && <Link href="/dashboard/booking">個別セッション</Link>}
             {profile?.role === "admin" && <Link href="/admin">管理画面</Link>}
             <span className="text-zinc-500">
               {profile?.display_name || user.email}
@@ -45,7 +47,16 @@ export default async function DashboardLayout({
         </div>
       </header>
       <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8">
-        {children}
+        {isApproved ? (
+          children
+        ) : (
+          <div className="rounded-lg border p-6 text-center">
+            <p className="font-medium">承認待ちです</p>
+            <p className="mt-2 text-sm text-zinc-500">
+              管理者が登録内容を確認後、ご利用いただけるようになります。しばらくお待ちください。
+            </p>
+          </div>
+        )}
       </main>
     </div>
   );

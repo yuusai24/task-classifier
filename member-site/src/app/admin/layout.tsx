@@ -29,6 +29,7 @@ export default async function AdminLayout({
             管理画面
           </Link>
           <nav className="flex items-center gap-4 text-sm">
+            <Link href="/admin/members">会員承認</Link>
             <Link href="/admin/courses">コース</Link>
             <Link href="/admin/announcements">アナウンス</Link>
             <Link href="/admin/invite-codes">招待コード</Link>

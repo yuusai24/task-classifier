@@ -11,6 +11,7 @@ create table profiles (
   email text not null,
   display_name text,
   role text not null default 'member' check (role in ('member', 'admin')),
+  is_approved boolean not null default false,
   created_at timestamptz not null default now()
 );
 
@@ -102,7 +103,7 @@ create table session_bookings (
 );
 
 -- ============================================================
--- 新規ユーザー登録時に profiles を自動作成
+-- 新規ユーザー登録時に profiles を自動作成（承認待ち状態で作成される）
 -- ============================================================
 create function public.handle_new_user()
 returns trigger
@@ -145,11 +146,43 @@ as $$
   );
 $$;
 
+create function public.is_approved_member()
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select exists (
+    select 1 from public.profiles where id = auth.uid() and is_approved = true
+  );
+$$;
+
+-- 自分の role / is_approved は自分では変更できないようにする（なりすまし承認・自己昇格の防止）
+create function public.protect_profile_privileges()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if not public.is_admin() then
+    new.role := old.role;
+    new.is_approved := old.is_approved;
+  end if;
+  return new;
+end;
+$$;
+
+create trigger protect_profile_privileges_trigger
+  before update on profiles
+  for each row execute function public.protect_profile_privileges();
+
 -- profiles
 create policy "profiles_select_own_or_admin" on profiles for select
   using (auth.uid() = id or public.is_admin());
 create policy "profiles_update_own" on profiles for update
-  using (auth.uid() = id);
+  using (auth.uid() = id or public.is_admin());
 create policy "profiles_admin_all" on profiles for all
   using (public.is_admin());
 
@@ -157,16 +190,17 @@ create policy "profiles_admin_all" on profiles for all
 create policy "invite_codes_admin_all" on invite_codes for all
   using (public.is_admin());
 
--- courses
+-- courses: 承認済み会員のみ閲覧可
 create policy "courses_select_published" on courses for select
-  using (is_published = true or public.is_admin());
+  using ((is_published = true and public.is_approved_member()) or public.is_admin());
 create policy "courses_admin_write" on courses for all
   using (public.is_admin());
 
--- lessons
+-- lessons: 承認済み会員のみ閲覧可
 create policy "lessons_select_published" on lessons for select
   using (
-    (is_published = true and exists (select 1 from courses c where c.id = course_id and c.is_published = true))
+    (is_published = true and public.is_approved_member()
+      and exists (select 1 from courses c where c.id = course_id and c.is_published = true))
     or public.is_admin()
   );
 create policy "lessons_admin_write" on lessons for all
@@ -176,23 +210,23 @@ create policy "lessons_admin_write" on lessons for all
 create policy "progress_own" on lesson_progress for all
   using (auth.uid() = member_id or public.is_admin());
 
--- announcements
+-- announcements: 承認済み会員のみ閲覧可
 create policy "announcements_select_published" on announcements for select
-  using (is_published = true or public.is_admin());
+  using ((is_published = true and public.is_approved_member()) or public.is_admin());
 create policy "announcements_admin_write" on announcements for all
   using (public.is_admin());
 
--- session_slots: 全会員が閲覧可、管理者のみ作成/編集
+-- session_slots: 承認済み会員のみ閲覧可、管理者のみ作成/編集
 create policy "slots_select_all_members" on session_slots for select
-  using (exists (select 1 from profiles where id = auth.uid()));
+  using (public.is_approved_member() or public.is_admin());
 create policy "slots_admin_write" on session_slots for all
   using (public.is_admin());
 
--- session_bookings: 本人と管理者のみ
+-- session_bookings: 承認済み本人と管理者のみ
 create policy "bookings_own" on session_bookings for select
   using (auth.uid() = member_id or public.is_admin());
 create policy "bookings_insert_own" on session_bookings for insert
-  with check (auth.uid() = member_id);
+  with check (auth.uid() = member_id and public.is_approved_member());
 create policy "bookings_update_admin" on session_bookings for update
   using (public.is_admin());
 create policy "bookings_delete_own_or_admin" on session_bookings for delete
@@ -203,6 +237,6 @@ create policy "bookings_delete_own_or_admin" on session_bookings for delete
 -- ============================================================
 -- 1. 最初の招待コードを発行して1人目のアカウントを登録する:
 --    insert into invite_codes (code, max_uses) values ('WELCOME1', 1);
--- 2. 登録後、そのユーザーを管理者に昇格する:
---    update profiles set role = 'admin' where email = 'you@example.com';
--- 3. 以降の招待コード発行は管理画面（/admin/invite-codes）から行える。
+-- 2. 登録後、そのユーザーを管理者かつ承認済みにする:
+--    update profiles set role = 'admin', is_approved = true where email = 'you@example.com';
+-- 3. 以降の招待コード発行・会員承認は管理画面（/admin）から行える。
