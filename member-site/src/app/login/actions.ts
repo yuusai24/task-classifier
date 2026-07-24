@@ -15,10 +15,17 @@ export async function login(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     return { error: "メールアドレスまたはパスワードが違います。" };
+  }
+
+  if (data.user) {
+    await supabase
+      .from("profiles")
+      .update({ last_sign_in_at: new Date().toISOString() })
+      .eq("id", data.user.id);
   }
 
   redirect("/dashboard");

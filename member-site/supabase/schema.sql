@@ -12,6 +12,7 @@ create table profiles (
   display_name text,
   role text not null default 'member' check (role in ('member', 'admin')),
   is_approved boolean not null default false,
+  last_sign_in_at timestamptz,
   created_at timestamptz not null default now()
 );
 
