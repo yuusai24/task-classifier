@@ -24,7 +24,7 @@ export default async function AdminCourseDetailPage({
     <div>
       <h1 className="mb-6 text-xl font-semibold">コース編集</h1>
 
-      <form action={updateCourse.bind(null, courseId)} className="mb-8 flex flex-col gap-2 rounded-lg border p-4">
+      <form action={updateCourse.bind(null, courseId)} className="mb-8 flex flex-col gap-2 rounded-lg border border-white/10 bg-white/5 p-4">
         <input name="title" defaultValue={course.title} required className="rounded-md border px-3 py-2" />
         <textarea
           name="description"
@@ -34,7 +34,7 @@ export default async function AdminCourseDetailPage({
         />
         <button
           type="submit"
-          className="self-start rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background"
+          className="self-start rounded-md bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(217,70,239,0.3)] transition hover:brightness-110"
         >
           保存
         </button>
@@ -46,7 +46,7 @@ export default async function AdminCourseDetailPage({
           <form
             key={lesson.id}
             action={updateLesson.bind(null, lesson.id, courseId)}
-            className="flex flex-col gap-2 rounded-lg border p-3"
+            className="flex flex-col gap-2 rounded-lg border border-white/10 bg-white/5 p-3"
           >
             <div className="flex items-center justify-between">
               <input
@@ -89,7 +89,7 @@ export default async function AdminCourseDetailPage({
         ))}
       </div>
 
-      <form action={createLesson.bind(null, courseId)} className="mt-6 flex flex-col gap-2 rounded-lg border p-4">
+      <form action={createLesson.bind(null, courseId)} className="mt-6 flex flex-col gap-2 rounded-lg border border-white/10 bg-white/5 p-4">
         <p className="text-sm font-medium">レッスンを追加</p>
         <input name="title" placeholder="レッスン名" required className="rounded-md border px-3 py-2" />
         <input name="video_url" placeholder="動画URL（YouTube/Vimeo）" className="rounded-md border px-3 py-2" />
@@ -109,7 +109,7 @@ export default async function AdminCourseDetailPage({
         </div>
         <button
           type="submit"
-          className="self-start rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background"
+          className="self-start rounded-md bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(217,70,239,0.3)] transition hover:brightness-110"
         >
           追加
         </button>

@@ -27,8 +27,8 @@ export function CompleteButton({
       disabled={isPending}
       className={`rounded-md px-4 py-2 text-sm font-medium disabled:opacity-50 ${
         completed
-          ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-          : "bg-foreground text-background"
+          ? "bg-emerald-500/20 text-emerald-300"
+          : "bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-white"
       }`}
     >
       {completed ? "受講完了 ✓" : "受講完了にする"}

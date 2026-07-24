@@ -42,14 +42,14 @@ export default async function CourseDetailPage({
     <div>
       <h1 className="mb-1 text-xl font-semibold">{course.title}</h1>
       {course.description && (
-        <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">{course.description}</p>
+        <p className="mb-6 text-sm text-zinc-400">{course.description}</p>
       )}
       <ul className="flex flex-col gap-2">
         {(lessons ?? []).map((lesson, i) => (
           <li key={lesson.id}>
             <Link
               href={`/dashboard/lessons/${lesson.id}`}
-              className="flex items-center justify-between rounded-lg border p-3 hover:bg-zinc-50 dark:hover:bg-zinc-900"
+              className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3 hover:bg-white/10"
             >
               <span>
                 {i + 1}. {lesson.title}
@@ -63,7 +63,7 @@ export default async function CourseDetailPage({
           </li>
         ))}
         {(lessons ?? []).length === 0 && (
-          <p className="text-sm text-zinc-500">レッスンがまだありません。</p>
+          <p className="text-sm text-zinc-400">レッスンがまだありません。</p>
         )}
       </ul>
     </div>

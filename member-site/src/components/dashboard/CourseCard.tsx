@@ -15,22 +15,22 @@ export function CourseCard({
   return (
     <Link
       href={`/dashboard/courses/${course.id}`}
-      className="block rounded-lg border p-4 hover:bg-zinc-50 dark:hover:bg-zinc-900"
+      className="block rounded-lg border border-white/10 bg-white/5 p-4 hover:bg-white/10"
     >
       <p className="font-medium">{course.title}</p>
       {course.description && (
-        <p className="mt-1 line-clamp-2 text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="mt-1 line-clamp-2 text-sm text-zinc-400">
           {course.description}
         </p>
       )}
       <div className="mt-3 flex items-center gap-2">
-        <div className="h-2 flex-1 rounded-full bg-zinc-100 dark:bg-zinc-800">
+        <div className="h-2 flex-1 rounded-full bg-white/10">
           <div
-            className="h-2 rounded-full bg-foreground"
+            className="h-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-indigo-400"
             style={{ width: `${percent}%` }}
           />
         </div>
-        <span className="text-xs text-zinc-500">
+        <span className="text-xs text-zinc-400">
           {completedLessons}/{totalLessons}
         </span>
       </div>

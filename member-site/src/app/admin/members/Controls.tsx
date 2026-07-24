@@ -10,7 +10,7 @@ export function ApproveButton({ memberId }: { memberId: string }) {
     <button
       onClick={() => startTransition(() => approveMember(memberId))}
       disabled={isPending}
-      className="rounded-md bg-foreground px-3 py-1 text-xs font-medium text-background disabled:opacity-50"
+      className="rounded-md bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-3 py-1 text-xs font-medium text-white transition hover:brightness-110 disabled:opacity-50"
     >
       承認する
     </button>
@@ -28,7 +28,7 @@ export function RevokeButton({ memberId }: { memberId: string }) {
         }
       }}
       disabled={isPending}
-      className="text-xs text-red-600 underline disabled:opacity-50"
+      className="text-xs text-red-400 underline disabled:opacity-50"
     >
       承認を取り消す
     </button>

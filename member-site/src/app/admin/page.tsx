@@ -21,8 +21,8 @@ export default async function AdminHomePage() {
   return (
     <div className="grid gap-4 sm:grid-cols-3">
       {cards.map((c) => (
-        <Link key={c.label} href={c.href} className="rounded-lg border p-4">
-          <p className="text-sm text-zinc-500">{c.label}</p>
+        <Link key={c.label} href={c.href} className="rounded-lg border border-white/10 bg-white/5 p-4">
+          <p className="text-sm text-zinc-400">{c.label}</p>
           <p className="mt-1 text-2xl font-semibold">{c.value}</p>
         </Link>
       ))}

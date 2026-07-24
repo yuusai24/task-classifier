@@ -41,7 +41,7 @@ export default async function DashboardPage() {
           );
         })}
         {(courses ?? []).length === 0 && (
-          <p className="text-sm text-zinc-500">まだ公開中のコースがありません。</p>
+          <p className="text-sm text-zinc-400">まだ公開中のコースがありません。</p>
         )}
       </div>
     </div>

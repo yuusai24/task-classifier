@@ -20,8 +20,8 @@ export function LessonPublishToggle({
       disabled={isPending}
       className={`rounded px-2 py-1 text-xs disabled:opacity-50 ${
         isPublished
-          ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-          : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800"
+          ? "bg-emerald-500/20 text-emerald-300"
+          : "bg-white/10 text-zinc-300"
       }`}
     >
       {isPublished ? "公開中" : "非公開"}
@@ -40,7 +40,7 @@ export function LessonDeleteButton({ lessonId, courseId }: { lessonId: string; c
         }
       }}
       disabled={isPending}
-      className="text-xs text-red-600 underline disabled:opacity-50"
+      className="text-xs text-red-400 underline disabled:opacity-50"
     >
       削除
     </button>
