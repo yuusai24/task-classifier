@@ -29,63 +29,78 @@ export async function syncAvailability(): Promise<{
     return { ok: false, message: "Googleカレンダーが連携されていません。", created: 0, removed: 0 };
   }
 
-  const accessToken = await refreshAccessToken(connection.refresh_token);
+  try {
+    const accessToken = await refreshAccessToken(connection.refresh_token);
 
-  const now = new Date();
-  const { year, month, day } = getZonedNowParts(settings.timezone);
-  const candidates = generateCandidateSlots(settings, { year, month, day }).filter(
-    (c) => new Date(c.starts_at) > now
-  );
+    const now = new Date();
+    const { year, month, day } = getZonedNowParts(settings.timezone);
+    const candidates = generateCandidateSlots(settings, { year, month, day }).filter(
+      (c) => new Date(c.starts_at) > now
+    );
 
-  if (candidates.length === 0) {
-    return { ok: true, message: "対象期間に候補枠がありません。", created: 0, removed: 0 };
-  }
+    if (candidates.length === 0) {
+      return { ok: true, message: "対象期間に候補枠がありません。", created: 0, removed: 0 };
+    }
 
-  const timeMin = now.toISOString();
-  const timeMax = candidates[candidates.length - 1].ends_at;
-  const busyPeriods = await getBusyPeriods(accessToken, timeMin, timeMax);
+    const timeMin = now.toISOString();
+    const timeMax = candidates[candidates.length - 1].ends_at;
+    const busyPeriods = await getBusyPeriods(accessToken, timeMin, timeMax);
 
-  const available = candidates.filter(
-    (c) => !busyPeriods.some((b) => overlaps(c, { starts_at: b.start, ends_at: b.end }))
-  );
+    const available = candidates.filter(
+      (c) => !busyPeriods.some((b) => overlaps(c, { starts_at: b.start, ends_at: b.end }))
+    );
 
-  const { data: existingSlots } = await service
-    .from("session_slots")
-    .select("id, starts_at, ends_at, source")
-    .gt("starts_at", now.toISOString());
-  const existing = existingSlots ?? [];
-
-  const { data: activeBookingRows } = await service
-    .from("session_bookings")
-    .select("slot_id")
-    .neq("status", "cancelled");
-  const bookedSlotIds = new Set((activeBookingRows ?? []).map((b) => b.slot_id));
-
-  const toInsert = available.filter((a) => !existing.some((e) => overlaps(a, e)));
-
-  const toRemove = existing.filter(
-    (s) =>
-      s.source === "google_sync" &&
-      !bookedSlotIds.has(s.id) &&
-      !available.some((a) => a.starts_at === s.starts_at && a.ends_at === s.ends_at)
-  );
-
-  let created = 0;
-  if (toInsert.length > 0) {
-    const { error } = await service
+    const { data: existingSlots } = await service
       .from("session_slots")
-      .insert(toInsert.map((s) => ({ starts_at: s.starts_at, ends_at: s.ends_at, source: "google_sync" as const })));
-    if (!error) created = toInsert.length;
-  }
+      .select("id, starts_at, ends_at, source")
+      .gt("starts_at", now.toISOString());
+    const existing = existingSlots ?? [];
 
-  let removed = 0;
-  if (toRemove.length > 0) {
-    const { error } = await service
-      .from("session_slots")
-      .delete()
-      .in("id", toRemove.map((s) => s.id));
-    if (!error) removed = toRemove.length;
-  }
+    const { data: activeBookingRows } = await service
+      .from("session_bookings")
+      .select("slot_id")
+      .neq("status", "cancelled");
+    const bookedSlotIds = new Set((activeBookingRows ?? []).map((b) => b.slot_id));
 
-  return { ok: true, message: "同期しました。", created, removed };
+    const toInsert = available.filter((a) => !existing.some((e) => overlaps(a, e)));
+
+    const toRemove = existing.filter(
+      (s) =>
+        s.source === "google_sync" &&
+        !bookedSlotIds.has(s.id) &&
+        !available.some((a) => a.starts_at === s.starts_at && a.ends_at === s.ends_at)
+    );
+
+    let created = 0;
+    if (toInsert.length > 0) {
+      const { error } = await service
+        .from("session_slots")
+        .insert(toInsert.map((s) => ({ starts_at: s.starts_at, ends_at: s.ends_at, source: "google_sync" as const })));
+      if (error) {
+        return { ok: false, message: `枠の追加に失敗しました: ${error.message}`, created: 0, removed: 0 };
+      }
+      created = toInsert.length;
+    }
+
+    let removed = 0;
+    if (toRemove.length > 0) {
+      const { error } = await service
+        .from("session_slots")
+        .delete()
+        .in("id", toRemove.map((s) => s.id));
+      if (error) {
+        return { ok: false, message: `枠の削除に失敗しました: ${error.message}`, created, removed: 0 };
+      }
+      removed = toRemove.length;
+    }
+
+    return { ok: true, message: "同期しました。", created, removed };
+  } catch (err) {
+    return {
+      ok: false,
+      message: err instanceof Error ? err.message : "同期中に不明なエラーが発生しました。",
+      created: 0,
+      removed: 0,
+    };
+  }
 }
