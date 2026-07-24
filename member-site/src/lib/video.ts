@@ -14,6 +14,18 @@ export function toEmbedUrl(url: string): string | null {
         return url;
       }
     }
+    if (u.hostname.includes("vimeo.com")) {
+      if (u.hostname.includes("player.vimeo.com")) {
+        return url;
+      }
+      const segments = u.pathname.split("/").filter(Boolean);
+      const id = segments[0];
+      const hash = segments[1];
+      if (!id) return null;
+      return hash
+        ? `https://player.vimeo.com/video/${id}?h=${hash}`
+        : `https://player.vimeo.com/video/${id}`;
+    }
     return null;
   } catch {
     return null;

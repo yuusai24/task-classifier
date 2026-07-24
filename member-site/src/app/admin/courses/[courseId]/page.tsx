@@ -63,7 +63,7 @@ export default async function AdminCourseDetailPage({
             <input
               name="video_url"
               defaultValue={lesson.video_url ?? ""}
-              placeholder="動画URL（YouTube）"
+              placeholder="動画URL（YouTube/Vimeo）"
               className="rounded-md border px-2 py-1 text-sm"
             />
             <div className="flex gap-2">
@@ -92,7 +92,7 @@ export default async function AdminCourseDetailPage({
       <form action={createLesson.bind(null, courseId)} className="mt-6 flex flex-col gap-2 rounded-lg border p-4">
         <p className="text-sm font-medium">レッスンを追加</p>
         <input name="title" placeholder="レッスン名" required className="rounded-md border px-3 py-2" />
-        <input name="video_url" placeholder="動画URL（YouTube）" className="rounded-md border px-3 py-2" />
+        <input name="video_url" placeholder="動画URL（YouTube/Vimeo）" className="rounded-md border px-3 py-2" />
         <div className="flex gap-2">
           <input
             name="duration_minutes"
