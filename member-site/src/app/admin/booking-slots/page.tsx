@@ -42,6 +42,9 @@ export default async function AdminBookingSlotsPage() {
               {new Date(slot.starts_at).toLocaleString("ja-JP")} 〜{" "}
               {new Date(slot.ends_at).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })}
               ・定員{slot.capacity}
+              {slot.source === "google_sync" && (
+                <span className="ml-2 rounded bg-white/10 px-2 py-0.5 text-xs text-zinc-300">自動</span>
+              )}
             </span>
             <DeleteSlotButton id={slot.id} />
           </li>

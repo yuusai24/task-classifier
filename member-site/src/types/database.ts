@@ -66,12 +66,32 @@ export type Announcement = {
   created_at: string;
 };
 
+export type SlotSource = "manual" | "google_sync";
+
 export type SessionSlot = {
   id: string;
   starts_at: string;
   ends_at: string;
   capacity: number;
+  source: SlotSource;
   created_at: string;
+};
+
+export type BookingSettings = {
+  id: boolean;
+  weekday_start_hour: number;
+  weekday_end_hour: number;
+  slot_duration_minutes: number;
+  sync_weeks_ahead: number;
+  timezone: string;
+  updated_at: string;
+};
+
+export type GoogleCalendarConnection = {
+  id: boolean;
+  refresh_token: string;
+  connected_email: string | null;
+  connected_at: string;
 };
 
 export type SessionBooking = {
@@ -157,6 +177,18 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      booking_settings: {
+        Row: BookingSettings;
+        Insert: Partial<BookingSettings>;
+        Update: Partial<BookingSettings>;
+        Relationships: [];
+      };
+      google_calendar_connection: {
+        Row: GoogleCalendarConnection;
+        Insert: Partial<GoogleCalendarConnection>;
+        Update: Partial<GoogleCalendarConnection>;
+        Relationships: [];
       };
     };
     Views: Record<string, never>;

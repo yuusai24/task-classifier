@@ -89,6 +89,7 @@ create table session_slots (
   starts_at timestamptz not null,
   ends_at timestamptz not null,
   capacity int not null default 1,
+  source text not null default 'manual' check (source in ('manual', 'google_sync')),
   created_at timestamptz not null default now()
 );
 
@@ -101,6 +102,27 @@ create table session_bookings (
   note text,
   created_at timestamptz not null default now(),
   unique (slot_id, member_id)
+);
+
+-- ============================================================
+-- 予約枠の自動同期設定・Googleカレンダー連携（管理者は1人分のみ・サーバー専用）
+-- ============================================================
+create table booking_settings (
+  id boolean primary key default true check (id),
+  weekday_start_hour int not null default 10,
+  weekday_end_hour int not null default 18,
+  slot_duration_minutes int not null default 60,
+  sync_weeks_ahead int not null default 4,
+  timezone text not null default 'Asia/Tokyo',
+  updated_at timestamptz not null default now()
+);
+insert into booking_settings (id) values (true);
+
+create table google_calendar_connection (
+  id boolean primary key default true check (id),
+  refresh_token text not null,
+  connected_email text,
+  connected_at timestamptz not null default now()
 );
 
 -- ============================================================
@@ -134,6 +156,10 @@ alter table lesson_progress enable row level security;
 alter table announcements enable row level security;
 alter table session_slots enable row level security;
 alter table session_bookings enable row level security;
+alter table booking_settings enable row level security;
+alter table google_calendar_connection enable row level security;
+-- booking_settings / google_calendar_connection はポリシーを作らず、
+-- サーバー側のservice roleからのみアクセスする（クライアントからは常に拒否）。
 
 create function public.is_admin()
 returns boolean

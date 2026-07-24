@@ -37,6 +37,7 @@ export default async function AdminLayout({
             <Link href="/admin/announcements">アナウンス</Link>
             <Link href="/admin/invite-codes">招待コード</Link>
             <Link href="/admin/booking-slots">予約枠</Link>
+            <Link href="/admin/calendar-settings">カレンダー連携</Link>
             <Link href="/admin/bookings">予約一覧</Link>
             <Link href="/dashboard">会員画面へ</Link>
           </nav>
