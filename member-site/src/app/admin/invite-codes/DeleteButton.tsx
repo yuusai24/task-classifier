@@ -10,7 +10,7 @@ export function DeleteInviteCodeButton({ id }: { id: string }) {
     <button
       onClick={() => startTransition(() => deleteInviteCode(id))}
       disabled={isPending}
-      className="text-xs text-red-400 underline disabled:opacity-50"
+      className="text-xs text-red-600 underline disabled:opacity-50"
     >
       削除
     </button>

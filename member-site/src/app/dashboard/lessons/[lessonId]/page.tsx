@@ -48,7 +48,7 @@ export default async function LessonPage({
           動画を開く
         </a>
       ) : (
-        <p className="text-sm text-zinc-400">動画は準備中です。</p>
+        <p className="text-sm text-zinc-500">動画は準備中です。</p>
       )}
       {lesson.description && <p className="mt-4 text-sm">{lesson.description}</p>}
       <div className="mt-6">

@@ -30,18 +30,18 @@ export default async function AdminMembersPage() {
         <h2 className="mb-3 font-medium">承認待ち（{pending.length}）</h2>
         <ul className="flex flex-col gap-2">
           {pending.map((m) => (
-            <li key={m.id} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3 text-sm">
+            <li key={m.id} className="flex items-center justify-between rounded-lg border border-purple-200/60 bg-white/60 p-3 text-sm">
               <div>
                 <p className="font-medium">{m.display_name || "(名前未設定)"}</p>
-                <p className="text-zinc-400">{m.email}</p>
-                <p className="text-xs text-zinc-400">
+                <p className="text-zinc-500">{m.email}</p>
+                <p className="text-xs text-zinc-500">
                   最終ログイン: {formatLastSignIn(m.last_sign_in_at)}
                 </p>
               </div>
               <ApproveButton memberId={m.id} />
             </li>
           ))}
-          {pending.length === 0 && <p className="text-sm text-zinc-400">承認待ちの会員はいません。</p>}
+          {pending.length === 0 && <p className="text-sm text-zinc-500">承認待ちの会員はいません。</p>}
         </ul>
       </section>
 
@@ -49,14 +49,14 @@ export default async function AdminMembersPage() {
         <h2 className="mb-3 font-medium">承認済み・管理者</h2>
         <ul className="flex flex-col gap-2">
           {approved.map((m) => (
-            <li key={m.id} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3 text-sm">
+            <li key={m.id} className="flex items-center justify-between rounded-lg border border-purple-200/60 bg-white/60 p-3 text-sm">
               <div>
                 <p className="font-medium">
                   {m.display_name || "(名前未設定)"}
-                  {m.role === "admin" && <span className="ml-2 text-xs text-zinc-400">管理者</span>}
+                  {m.role === "admin" && <span className="ml-2 text-xs text-zinc-500">管理者</span>}
                 </p>
-                <p className="text-zinc-400">{m.email}</p>
-                <p className="text-xs text-zinc-400">
+                <p className="text-zinc-500">{m.email}</p>
+                <p className="text-xs text-zinc-500">
                   最終ログイン: {formatLastSignIn(m.last_sign_in_at)}
                   {" ・ "}
                   受講進捗: {completedCountByMember.get(m.id) ?? 0}/{totalLessons ?? 0} レッスン完了
@@ -65,7 +65,7 @@ export default async function AdminMembersPage() {
               {m.role !== "admin" && <RevokeButton memberId={m.id} />}
             </li>
           ))}
-          {approved.length === 0 && <p className="text-sm text-zinc-400">まだ会員がいません。</p>}
+          {approved.length === 0 && <p className="text-sm text-zinc-500">まだ会員がいません。</p>}
         </ul>
       </section>
     </div>

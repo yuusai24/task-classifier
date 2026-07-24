@@ -43,13 +43,13 @@ export default async function DashboardPage() {
       {nextUp && (
         <Link
           href={`/dashboard/lessons/${nextUp.lessonId}`}
-          className="mb-8 block rounded-2xl border border-fuchsia-400/20 bg-gradient-to-r from-fuchsia-500/15 via-purple-500/10 to-indigo-500/15 p-5 shadow-[0_0_40px_rgba(168,85,247,0.15)] transition hover:brightness-110"
+          className="mb-8 block rounded-2xl border border-purple-300/50 bg-gradient-to-r from-purple-200/60 via-pink-100/60 to-purple-200/60 p-5 shadow-[0_0_40px_rgba(196,148,233,0.25)] transition hover:brightness-105"
         >
-          <span className="text-xs font-medium tracking-wide text-fuchsia-300">
+          <span className="text-xs font-medium tracking-wide text-purple-600">
             次に見るレッスン
           </span>
-          <p className="mt-1 text-lg font-semibold text-white">{nextUp.lessonTitle}</p>
-          <p className="mt-1 text-sm text-zinc-400">{nextUp.courseTitle}</p>
+          <p className="mt-1 text-lg font-semibold text-zinc-800">{nextUp.lessonTitle}</p>
+          <p className="mt-1 text-sm text-zinc-500">{nextUp.courseTitle}</p>
         </Link>
       )}
       <AnnouncementList announcements={announcements ?? []} />
@@ -68,7 +68,7 @@ export default async function DashboardPage() {
           );
         })}
         {(courses ?? []).length === 0 && (
-          <p className="text-sm text-zinc-400">まだ公開中のコースがありません。</p>
+          <p className="text-sm text-zinc-500">まだ公開中のコースがありません。</p>
         )}
       </div>
     </div>

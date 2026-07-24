@@ -21,31 +21,31 @@ export default async function CalendarSettingsPage({
       <h1 className="mb-6 text-xl font-semibold">予約枠の自動連携</h1>
 
       {google_connected && (
-        <p className="mb-4 rounded-lg border border-emerald-400/20 bg-emerald-500/10 p-3 text-sm text-emerald-300">
+        <p className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
           Googleカレンダーと連携しました。
         </p>
       )}
       {google_error && (
-        <p className="mb-4 rounded-lg border border-red-400/20 bg-red-500/10 p-3 text-sm text-red-300">
+        <p className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
           連携に失敗しました。もう一度お試しください。
         </p>
       )}
 
-      <section className="mb-8 rounded-lg border border-white/10 bg-white/5 p-4">
+      <section className="mb-8 rounded-lg border border-purple-200/60 bg-white/60 p-4">
         <h2 className="mb-3 font-medium">Googleカレンダー連携</h2>
         {connection ? (
           <div className="flex items-center justify-between text-sm">
-            <p className="text-zinc-300">
-              連携中: <span className="text-white">{connection.connected_email ?? "(メール取得不可)"}</span>
+            <p className="text-zinc-600">
+              連携中: <span className="text-zinc-800">{connection.connected_email ?? "(メール取得不可)"}</span>
             </p>
             <DisconnectButton />
           </div>
         ) : (
           <div className="flex items-center justify-between text-sm">
-            <p className="text-zinc-400">まだ連携されていません。</p>
+            <p className="text-zinc-500">まだ連携されていません。</p>
             <a
               href="/api/google/connect"
-              className="rounded-md bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(217,70,239,0.3)] transition hover:brightness-110"
+              className="rounded-md bg-gradient-to-r from-purple-400 to-pink-400 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(196,148,233,0.35)] transition hover:brightness-110"
             >
               Googleカレンダーと連携する
             </a>
@@ -53,11 +53,11 @@ export default async function CalendarSettingsPage({
         )}
       </section>
 
-      <section className="mb-8 rounded-lg border border-white/10 bg-white/5 p-4">
+      <section className="mb-8 rounded-lg border border-purple-200/60 bg-white/60 p-4">
         <h2 className="mb-3 font-medium">稼働時間の設定</h2>
         <form action={updateBookingSettings} className="flex flex-col gap-3">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <label className="flex flex-col gap-1 text-xs text-zinc-400">
+            <label className="flex flex-col gap-1 text-xs text-zinc-500">
               開始時刻（時）
               <input
                 name="weekday_start_hour"
@@ -68,7 +68,7 @@ export default async function CalendarSettingsPage({
                 className="rounded-md border px-3 py-2 text-sm"
               />
             </label>
-            <label className="flex flex-col gap-1 text-xs text-zinc-400">
+            <label className="flex flex-col gap-1 text-xs text-zinc-500">
               終了時刻（時）
               <input
                 name="weekday_end_hour"
@@ -79,7 +79,7 @@ export default async function CalendarSettingsPage({
                 className="rounded-md border px-3 py-2 text-sm"
               />
             </label>
-            <label className="flex flex-col gap-1 text-xs text-zinc-400">
+            <label className="flex flex-col gap-1 text-xs text-zinc-500">
               1枠の長さ（分）
               <input
                 name="slot_duration_minutes"
@@ -90,7 +90,7 @@ export default async function CalendarSettingsPage({
                 className="rounded-md border px-3 py-2 text-sm"
               />
             </label>
-            <label className="flex flex-col gap-1 text-xs text-zinc-400">
+            <label className="flex flex-col gap-1 text-xs text-zinc-500">
               何週間先まで
               <input
                 name="sync_weeks_ahead"
@@ -102,30 +102,30 @@ export default async function CalendarSettingsPage({
               />
             </label>
           </div>
-          <p className="text-xs text-zinc-400">
+          <p className="text-xs text-zinc-500">
             平日（月〜金）の指定時間帯を、{settings?.slot_duration_minutes ?? 60}
             分刻みで予約可能枠にします。すでにGoogleカレンダーで予定が入っている時間は自動で除外されます。
           </p>
           <button
             type="submit"
-            className="self-start rounded-md bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(217,70,239,0.3)] transition hover:brightness-110"
+            className="self-start rounded-md bg-gradient-to-r from-purple-400 to-pink-400 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(196,148,233,0.35)] transition hover:brightness-110"
           >
             設定を保存
           </button>
         </form>
       </section>
 
-      <section className="mb-8 rounded-lg border border-white/10 bg-white/5 p-4">
+      <section className="mb-8 rounded-lg border border-purple-200/60 bg-white/60 p-4">
         <h2 className="mb-3 font-medium">同期</h2>
-        <p className="mb-3 text-sm text-zinc-400">
+        <p className="mb-3 text-sm text-zinc-500">
           毎日自動で同期されますが、設定を変えた直後などはここから今すぐ反映できます。
         </p>
         <SyncNowButton />
       </section>
 
-      <section className="rounded-lg border border-white/10 bg-white/5 p-4">
+      <section className="rounded-lg border border-purple-200/60 bg-white/60 p-4">
         <h2 className="mb-3 font-medium">Zoom連携</h2>
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-zinc-500">
           {hasZoomCredentials()
             ? "Zoom連携が設定されています。予約が入ると自動でZoom URLが発行されます。"
             : "Zoom連携が未設定です。Vercelの環境変数（ZOOM_ACCOUNT_ID / ZOOM_CLIENT_ID / ZOOM_CLIENT_SECRET）を設定してください。"}

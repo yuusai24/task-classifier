@@ -42,14 +42,14 @@ export default async function CourseDetailPage({
     <div>
       <h1 className="mb-1 text-xl font-semibold">{course.title}</h1>
       {course.description && (
-        <p className="mb-6 text-sm text-zinc-400">{course.description}</p>
+        <p className="mb-6 text-sm text-zinc-500">{course.description}</p>
       )}
       <ul className="flex flex-col gap-2">
         {(lessons ?? []).map((lesson, i) => (
           <li key={lesson.id}>
             <Link
               href={`/dashboard/lessons/${lesson.id}`}
-              className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3 hover:bg-white/10"
+              className="flex items-center justify-between rounded-lg border border-purple-200/60 bg-white/60 p-3 hover:bg-purple-50"
             >
               <span>
                 {i + 1}. {lesson.title}
@@ -57,13 +57,13 @@ export default async function CourseDetailPage({
               {completedIds.has(lesson.id) ? (
                 <span className="text-xs text-green-600">完了</span>
               ) : (
-                <span className="text-xs text-zinc-400">未受講</span>
+                <span className="text-xs text-zinc-500">未受講</span>
               )}
             </Link>
           </li>
         ))}
         {(lessons ?? []).length === 0 && (
-          <p className="text-sm text-zinc-400">レッスンがまだありません。</p>
+          <p className="text-sm text-zinc-500">レッスンがまだありません。</p>
         )}
       </ul>
     </div>

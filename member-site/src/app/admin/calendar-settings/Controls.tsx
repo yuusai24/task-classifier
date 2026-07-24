@@ -14,7 +14,7 @@ export function DisconnectButton() {
         }
       }}
       disabled={isPending}
-      className="text-xs text-red-400 underline disabled:opacity-50"
+      className="text-xs text-red-600 underline disabled:opacity-50"
     >
       連携を解除
     </button>
@@ -39,11 +39,11 @@ export function SyncNowButton() {
           })
         }
         disabled={isPending}
-        className="rounded-md bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(217,70,239,0.3)] transition hover:brightness-110 disabled:opacity-50"
+        className="rounded-md bg-gradient-to-r from-purple-400 to-pink-400 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(196,148,233,0.35)] transition hover:brightness-110 disabled:opacity-50"
       >
         {isPending ? "同期中..." : "今すぐ同期する"}
       </button>
-      {message && <p className="text-sm text-zinc-400">{message}</p>}
+      {message && <p className="text-sm text-zinc-500">{message}</p>}
     </div>
   );
 }

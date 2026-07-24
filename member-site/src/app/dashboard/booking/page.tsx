@@ -51,7 +51,7 @@ export default async function BookingPage() {
       <section className="mb-8">
         <h2 className="mb-3 font-medium">予約可能な枠</h2>
         {availableSlots.length === 0 ? (
-          <p className="text-sm text-zinc-400">現在予約可能な枠がありません。</p>
+          <p className="text-sm text-zinc-500">現在予約可能な枠がありません。</p>
         ) : (
           <BookingForm slots={availableSlots} bookedCountBySlot={bookedCountBySlot} />
         )}
@@ -61,14 +61,14 @@ export default async function BookingPage() {
         <h2 className="mb-3 font-medium">予約状況</h2>
         <ul className="flex flex-col gap-2">
           {(myBookings ?? []).map((b) => (
-            <li key={b.id} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3 text-sm">
+            <li key={b.id} className="flex items-center justify-between rounded-lg border border-purple-200/60 bg-white/60 p-3 text-sm">
               <div>
                 <p>
                   {b.session_slots
                     ? new Date(b.session_slots.starts_at).toLocaleString("ja-JP")
                     : "-"}
                 </p>
-                <p className="text-zinc-400">{STATUS_LABEL[b.status]}</p>
+                <p className="text-zinc-500">{STATUS_LABEL[b.status]}</p>
                 {b.meeting_url && (
                   <a href={b.meeting_url} target="_blank" rel="noopener noreferrer" className="underline">
                     参加リンク
@@ -79,7 +79,7 @@ export default async function BookingPage() {
             </li>
           ))}
           {(myBookings ?? []).length === 0 && (
-            <p className="text-sm text-zinc-400">予約はまだありません。</p>
+            <p className="text-sm text-zinc-500">予約はまだありません。</p>
           )}
         </ul>
       </section>

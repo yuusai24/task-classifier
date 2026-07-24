@@ -52,14 +52,14 @@ export function BookingForm({
             }}
             className={`flex flex-col items-center rounded-lg border px-3 py-2 text-sm transition ${
               selectedDay === day.key
-                ? "border-fuchsia-400/60 bg-gradient-to-r from-fuchsia-500/20 to-indigo-500/20 text-white"
-                : "border-white/10 bg-white/5 text-zinc-300 hover:border-white/25"
+                ? "border-purple-400 bg-gradient-to-r from-purple-200 to-pink-200 text-purple-900"
+                : "border-purple-200/60 bg-white/60 text-zinc-600 hover:border-purple-300"
             }`}
           >
             <span>
               {day.date.getMonth() + 1}/{day.date.getDate()}
             </span>
-            <span className="text-xs text-zinc-400">({WEEKDAY_JA[day.date.getDay()]})</span>
+            <span className="text-xs text-zinc-500">({WEEKDAY_JA[day.date.getDay()]})</span>
           </button>
         ))}
       </div>
@@ -76,8 +76,8 @@ export function BookingForm({
                 onClick={() => setSelectedSlotId(slot.id)}
                 className={`rounded-lg border px-4 py-2 text-sm transition ${
                   isSelected
-                    ? "border-fuchsia-400/60 bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-white"
-                    : "border-white/10 bg-white/5 text-zinc-200 hover:border-white/25"
+                    ? "border-purple-400 bg-gradient-to-r from-purple-400 to-pink-400 text-white"
+                    : "border-purple-200/60 bg-white/60 text-zinc-600 hover:border-purple-300"
                 }`}
               >
                 {new Date(slot.starts_at).toLocaleTimeString("ja-JP", {
@@ -98,11 +98,11 @@ export function BookingForm({
         className="rounded-md border px-3 py-2 text-sm"
         rows={3}
       />
-      {state.error && <p className="text-sm text-red-400">{state.error}</p>}
+      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
       <button
         type="submit"
         disabled={pending || !selectedSlotId}
-        className="self-start rounded-md bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(217,70,239,0.3)] transition hover:brightness-110 disabled:opacity-50"
+        className="self-start rounded-md bg-gradient-to-r from-purple-400 to-pink-400 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(196,148,233,0.35)] transition hover:brightness-110 disabled:opacity-50"
       >
         {pending ? "予約中..." : "この枠で予約する"}
       </button>

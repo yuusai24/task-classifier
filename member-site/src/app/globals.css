@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #07040f;
-  --foreground: #f4f2fb;
+  --background: #f6f2fb;
+  --foreground: #372f4d;
 }
 
 @theme inline {
@@ -21,14 +21,14 @@ body {
 input,
 textarea,
 select {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.6);
+  border-color: rgba(140, 110, 180, 0.25);
   color: var(--foreground);
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: #8b8698;
+  color: #8f84a8;
 }
 
 a {

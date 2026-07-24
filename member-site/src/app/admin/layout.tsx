@@ -23,15 +23,15 @@ export default async function AdminLayout({
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="border-b border-white/10 bg-white/5 backdrop-blur-sm">
+      <header className="border-b border-purple-200/60 bg-white/60 backdrop-blur-sm">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
           <Link
             href="/admin"
-            className="bg-gradient-to-r from-fuchsia-400 via-purple-300 to-indigo-300 bg-clip-text font-semibold text-transparent"
+            className="bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 bg-clip-text font-semibold text-transparent"
           >
             管理画面
           </Link>
-          <nav className="flex flex-wrap items-center gap-4 text-sm text-zinc-200">
+          <nav className="flex flex-wrap items-center gap-4 text-sm text-zinc-700">
             <Link href="/admin/members">会員承認</Link>
             <Link href="/admin/courses">コース</Link>
             <Link href="/admin/announcements">アナウンス</Link>

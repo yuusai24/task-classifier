@@ -18,8 +18,8 @@ export function PublishToggle({
       disabled={isPending}
       className={`rounded px-2 py-1 text-xs disabled:opacity-50 ${
         isPublished
-          ? "bg-emerald-500/20 text-emerald-300"
-          : "bg-white/10 text-zinc-300"
+          ? "bg-emerald-100 text-emerald-700"
+          : "bg-purple-100 text-zinc-600"
       }`}
     >
       {isPublished ? "公開中" : "非公開"}

@@ -13,7 +13,7 @@ export default async function AdminBookingSlotsPage() {
     <div>
       <h1 className="mb-6 text-xl font-semibold">個別セッション予約枠</h1>
 
-      <form action={createSlot} className="mb-8 flex flex-col gap-2 rounded-lg border border-white/10 bg-white/5 p-4">
+      <form action={createSlot} className="mb-8 flex flex-col gap-2 rounded-lg border border-purple-200/60 bg-white/60 p-4">
         <p className="text-sm font-medium">予約枠を追加</p>
         <div className="flex gap-2">
           <input name="starts_at" type="datetime-local" required className="rounded-md border px-3 py-2" />
@@ -29,7 +29,7 @@ export default async function AdminBookingSlotsPage() {
         </div>
         <button
           type="submit"
-          className="self-start rounded-md bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(217,70,239,0.3)] transition hover:brightness-110"
+          className="self-start rounded-md bg-gradient-to-r from-purple-400 to-pink-400 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(196,148,233,0.35)] transition hover:brightness-110"
         >
           追加
         </button>
@@ -37,19 +37,19 @@ export default async function AdminBookingSlotsPage() {
 
       <ul className="flex flex-col gap-2">
         {(slots ?? []).map((slot) => (
-          <li key={slot.id} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3 text-sm">
+          <li key={slot.id} className="flex items-center justify-between rounded-lg border border-purple-200/60 bg-white/60 p-3 text-sm">
             <span>
               {new Date(slot.starts_at).toLocaleString("ja-JP")} 〜{" "}
               {new Date(slot.ends_at).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })}
               ・定員{slot.capacity}
               {slot.source === "google_sync" && (
-                <span className="ml-2 rounded bg-white/10 px-2 py-0.5 text-xs text-zinc-300">自動</span>
+                <span className="ml-2 rounded bg-purple-100 px-2 py-0.5 text-xs text-zinc-600">自動</span>
               )}
             </span>
             <DeleteSlotButton id={slot.id} />
           </li>
         ))}
-        {(slots ?? []).length === 0 && <p className="text-sm text-zinc-400">予約枠がありません。</p>}
+        {(slots ?? []).length === 0 && <p className="text-sm text-zinc-500">予約枠がありません。</p>}
       </ul>
     </div>
   );

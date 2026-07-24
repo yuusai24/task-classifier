@@ -12,7 +12,7 @@ export function DeleteSlotButton({ id }: { id: string }) {
         if (confirm("この枠を削除しますか？")) startTransition(() => deleteSlot(id));
       }}
       disabled={isPending}
-      className="text-xs text-red-400 underline disabled:opacity-50"
+      className="text-xs text-red-600 underline disabled:opacity-50"
     >
       削除
     </button>
