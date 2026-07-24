@@ -1,6 +1,6 @@
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
-const FREEBUSY_URL = "https://www.googleapis.com/calendar/v3/freebusy";
+const FREEBUSY_URL = "https://www.googleapis.com/calendar/v3/freeBusy";
 const USERINFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo";
 
 const SCOPE = "https://www.googleapis.com/auth/calendar.freebusy";
