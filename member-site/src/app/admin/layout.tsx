@@ -25,7 +25,10 @@ export default async function AdminLayout({
     <div className="flex flex-1 flex-col">
       <header className="border-b">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
-          <Link href="/admin" className="font-semibold">
+          <Link
+            href="/admin"
+            className="bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 bg-clip-text font-semibold text-transparent"
+          >
             管理画面
           </Link>
           <nav className="flex items-center gap-4 text-sm">
