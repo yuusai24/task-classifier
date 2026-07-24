@@ -30,6 +30,8 @@ export async function createLesson(courseId: string, formData: FormData) {
     duration_minutes: formData.get("duration_minutes")
       ? Number(formData.get("duration_minutes"))
       : null,
+    summary: String(formData.get("summary") ?? "").trim() || null,
+    material_url: String(formData.get("material_url") ?? "").trim() || null,
   });
 
   revalidatePath(`/admin/courses/${courseId}`);
@@ -46,6 +48,8 @@ export async function updateLesson(lessonId: string, courseId: string, formData:
       duration_minutes: formData.get("duration_minutes")
         ? Number(formData.get("duration_minutes"))
         : null,
+      summary: String(formData.get("summary") ?? "").trim() || null,
+      material_url: String(formData.get("material_url") ?? "").trim() || null,
     })
     .eq("id", lessonId);
 

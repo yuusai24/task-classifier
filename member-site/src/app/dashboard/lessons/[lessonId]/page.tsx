@@ -51,6 +51,22 @@ export default async function LessonPage({
         <p className="text-sm text-zinc-500">動画は準備中です。</p>
       )}
       {lesson.description && <p className="mt-4 text-sm">{lesson.description}</p>}
+      {lesson.summary && (
+        <div className="mt-4 rounded-lg border border-purple-200/60 bg-white/60 p-4">
+          <p className="mb-1 text-xs font-medium text-purple-600">要約</p>
+          <p className="whitespace-pre-line text-sm text-zinc-700">{lesson.summary}</p>
+        </div>
+      )}
+      {lesson.material_url && (
+        <a
+          href={lesson.material_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex items-center gap-1 text-sm text-purple-600 underline"
+        >
+          資料を見る
+        </a>
+      )}
       <div className="mt-6">
         <CompleteButton
           lessonId={lesson.id}

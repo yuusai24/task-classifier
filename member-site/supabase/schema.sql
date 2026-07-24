@@ -50,6 +50,8 @@ create table lessons (
   description text,
   video_url text,
   duration_minutes int,
+  summary text,
+  material_url text,
   is_published boolean not null default false,
   position int not null default 0,
   created_at timestamptz not null default now()

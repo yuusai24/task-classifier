@@ -42,6 +42,8 @@ export type Lesson = {
   description: string | null;
   video_url: string | null;
   duration_minutes: number | null;
+  summary: string | null;
+  material_url: string | null;
   is_published: boolean;
   position: number;
   created_at: string;

@@ -82,6 +82,19 @@ export default async function AdminCourseDetailPage({
                 rows={1}
               />
             </div>
+            <textarea
+              name="summary"
+              defaultValue={lesson.summary ?? ""}
+              placeholder="動画の要約（視聴しなくても内容がわかるまとめ）"
+              className="rounded-md border px-2 py-1 text-sm"
+              rows={2}
+            />
+            <input
+              name="material_url"
+              defaultValue={lesson.material_url ?? ""}
+              placeholder="資料URL（PDFやスライドへのリンク）"
+              className="rounded-md border px-2 py-1 text-sm"
+            />
             <button type="submit" className="self-start text-xs underline">
               このレッスンを保存
             </button>
@@ -107,6 +120,17 @@ export default async function AdminCourseDetailPage({
             rows={1}
           />
         </div>
+        <textarea
+          name="summary"
+          placeholder="動画の要約（任意・視聴しなくても内容がわかるまとめ）"
+          className="rounded-md border px-3 py-2"
+          rows={2}
+        />
+        <input
+          name="material_url"
+          placeholder="資料URL（任意・PDFやスライドへのリンク）"
+          className="rounded-md border px-3 py-2"
+        />
         <button
           type="submit"
           className="self-start rounded-md bg-gradient-to-r from-purple-400 to-pink-400 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(196,148,233,0.35)] transition hover:brightness-110"
