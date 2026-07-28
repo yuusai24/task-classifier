@@ -14,7 +14,7 @@ export default async function AdminHomePage() {
 
   const cards = [
     { label: "会員数", value: members ?? 0, href: "/admin" },
-    { label: "コース数", value: courses ?? 0, href: "/admin/courses" },
+    { label: "カテゴリ数", value: courses ?? 0, href: "/admin/courses" },
     { label: "未確定の予約", value: pendingBookings ?? 0, href: "/admin/bookings" },
   ];
 

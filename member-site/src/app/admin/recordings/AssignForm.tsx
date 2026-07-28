@@ -26,7 +26,7 @@ export function AssignForm({
       </p>
       <div className="flex flex-wrap gap-2">
         <select name="course_id" required className="rounded-md border px-3 py-2 text-sm">
-          <option value="">コースを選択</option>
+          <option value="">カテゴリを選択</option>
           {courses.map((c) => (
             <option key={c.id} value={c.id}>
               {c.title}

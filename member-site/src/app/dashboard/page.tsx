@@ -53,7 +53,7 @@ export default async function DashboardPage() {
         </Link>
       )}
       <AnnouncementList announcements={announcements ?? []} />
-      <h1 className="mb-4 text-xl font-semibold">コース一覧</h1>
+      <h1 className="mb-4 text-xl font-semibold">カテゴリ一覧</h1>
       <div className="grid gap-4 sm:grid-cols-2">
         {(courses ?? []).map((course) => {
           const courseLessons = (lessons ?? []).filter((l) => l.course_id === course.id);
@@ -68,7 +68,7 @@ export default async function DashboardPage() {
           );
         })}
         {(courses ?? []).length === 0 && (
-          <p className="text-sm text-zinc-500">まだ公開中のコースがありません。</p>
+          <p className="text-sm text-zinc-500">まだ公開中のカテゴリがありません。</p>
         )}
       </div>
     </div>

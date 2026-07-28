@@ -9,7 +9,7 @@ export function DeleteCourseButton({ courseId }: { courseId: string }) {
   return (
     <button
       onClick={() => {
-        if (confirm("このコースを削除しますか？レッスンも全て削除されます。")) {
+        if (confirm("このカテゴリを削除しますか？レッスンも全て削除されます。")) {
           startTransition(() => deleteCourse(courseId));
         }
       }}

@@ -35,7 +35,7 @@ export default async function DashboardLayout({
             会員サイト
           </Link>
           <nav className="flex items-center gap-4 text-sm text-zinc-700">
-            {isApproved && <Link href="/dashboard">コース</Link>}
+            {isApproved && <Link href="/dashboard">カテゴリ</Link>}
             {isApproved && <Link href="/dashboard/booking">個別セッション</Link>}
             {profile?.role === "admin" && <Link href="/admin">管理画面</Link>}
             <span className="text-zinc-500">

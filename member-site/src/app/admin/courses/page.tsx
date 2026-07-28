@@ -10,11 +10,11 @@ export default async function AdminCoursesPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-xl font-semibold">コース管理</h1>
+      <h1 className="mb-6 text-xl font-semibold">カテゴリ管理</h1>
 
       <form action={createCourse} className="mb-8 flex flex-col gap-2 rounded-lg border border-purple-200/60 bg-white/60 p-4">
-        <p className="text-sm font-medium">新しいコースを作成</p>
-        <input name="title" placeholder="コース名" required className="rounded-md border px-3 py-2" />
+        <p className="text-sm font-medium">新しいカテゴリを作成</p>
+        <input name="title" placeholder="カテゴリ名" required className="rounded-md border px-3 py-2" />
         <textarea name="description" placeholder="説明（任意）" className="rounded-md border px-3 py-2" rows={2} />
         <button
           type="submit"
@@ -36,7 +36,7 @@ export default async function AdminCoursesPage() {
             </div>
           </li>
         ))}
-        {(courses ?? []).length === 0 && <p className="text-sm text-zinc-500">コースがありません。</p>}
+        {(courses ?? []).length === 0 && <p className="text-sm text-zinc-500">カテゴリがありません。</p>}
       </ul>
     </div>
   );

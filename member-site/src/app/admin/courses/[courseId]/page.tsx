@@ -22,7 +22,7 @@ export default async function AdminCourseDetailPage({
 
   return (
     <div>
-      <h1 className="mb-6 text-xl font-semibold">コース編集</h1>
+      <h1 className="mb-6 text-xl font-semibold">カテゴリ編集</h1>
 
       <form action={updateCourse.bind(null, courseId)} className="mb-8 flex flex-col gap-2 rounded-lg border border-purple-200/60 bg-white/60 p-4">
         <input name="title" defaultValue={course.title} required className="rounded-md border px-3 py-2" />

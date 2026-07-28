@@ -19,7 +19,7 @@ export default async function AdminRecordingsPage() {
     <div>
       <h1 className="mb-2 text-xl font-semibold">取り込み済み録画</h1>
       <p className="mb-6 text-sm text-zinc-500">
-        Zoomのクラウド録画が完了すると自動でVimeoにアップロードされ、ここに表示されます。コースを選んでレッスンとして取り込んでください。
+        Zoomのクラウド録画が完了すると自動でVimeoにアップロードされ、ここに表示されます。カテゴリを選んでレッスンとして取り込んでください。
       </p>
       <div className="flex flex-col gap-3">
         {(recordings ?? []).map((recording) => (
