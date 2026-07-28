@@ -25,7 +25,10 @@ export async function POST(request: NextRequest) {
   };
 
   if (body.event === "endpoint.url_validation") {
-    return NextResponse.json(buildUrlValidationResponse(body.payload.plainToken!));
+    return new Response(JSON.stringify(buildUrlValidationResponse(body.payload.plainToken!)), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   const signature = request.headers.get("x-zm-signature");
