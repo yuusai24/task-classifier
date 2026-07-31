@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>「魂の覚醒プログラム」友彩（ゆうさい）</title>
+<style>
+  :root{
+    --purple:#6A5CF5;
+    --purple-deep:#5847E8;
+    --navy:#12123A;
+    --navy-2:#1B1B52;
+    --lime:#C6FA3E;
+    --magenta:#FF3DA6;
+    --green:#22B14C;
+    --green-deep:#1B9440;
+    --red:#FF2D2D;
+    --pale-blue:#E9F3FF;
+    --pale-pink:#FDE7F0;
+    --ink:#333333;
+    --ink-soft:#666666;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    font-family:'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;
+    background:#fff;
+    color:var(--ink);
+    max-width:720px;
+    margin:0 auto;
+    line-height:1.9;
+  }
+  img{ max-width:100%; display:block; }
+  .pad{ padding:28px 20px; }
+  .center{ text-align:center; }
+
+  /* ---- purple banner ---- */
+  .banner-purple{
+    background:linear-gradient(135deg, var(--purple), var(--purple-deep));
+    color:#fff;
+    text-align:center;
+    padding:26px 20px;
+    font-size:20px;
+    font-weight:800;
+    line-height:1.6;
+  }
+  .banner-purple.small{ font-size:16px; padding:18px 16px; }
+
+  .disclaimer{
+    text-align:right;
+    font-size:11px;
+    color:#999;
+    padding:8px 16px 0;
+  }
+
+  /* ---- highlighter phrases ---- */
+  .lead-block{ padding:36px 20px; text-align:center; }
+  .hl{
+    display:inline-block;
+    font-size:21px;
+    font-weight:800;
+    padding:6px 10px;
+    margin:6px 0;
+    line-height:1.5;
+  }
+  .hl.blue{ background:var(--pale-blue); }
+  .hl.pink{ background:var(--pale-pink); }
+
+  /* ---- starry visual card ---- */
+  .starry-card{
+    background:
+      radial-gradient(circle at 10% 20%, rgba(255,255,255,.9) 0, rgba(255,255,255,0) 1%),
+      radial-gradient(circle at 80% 30%, rgba(255,255,255,.8) 0, rgba(255,255,255,0) 1%),
+      radial-gradient(circle at 50% 70%, rgba(255,255,255,.8) 0, rgba(255,255,255,0) 1%),
+      radial-gradient(circle at 30% 85%, rgba(255,255,255,.7) 0, rgba(255,255,255,0) 1%),
+      radial-gradient(circle at 90% 80%, rgba(255,255,255,.7) 0, rgba(255,255,255,0) 1%),
+      linear-gradient(160deg, var(--navy), var(--navy-2));
+    padding:28px 20px 0;
+  }
+  .starry-card .pill{
+    background:#fff;
+    color:var(--purple-deep);
+    font-weight:800;
+    font-size:13px;
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:4px;
+    margin-bottom:18px;
+  }
+  .circle-row{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+  }
+  .circle{
+    width:96px; height:96px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #a97cf0, #6a2fd6 70%);
+    box-shadow:0 0 18px rgba(169,124,240,.7);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:13px;
+    font-weight:800;
+    line-height:1.35;
+  }
+  .starry-card h2{
+    color:#fff;
+    text-align:center;
+    font-size:26px;
+    margin:0 0 24px;
+  }
+  .starry-card .img-frame{
+    aspect-ratio:16/10;
+    background:linear-gradient(135deg,#2a2a63,#181850);
+    border-radius:4px;
+    position:relative;
+    display:flex; align-items:flex-end;
+  }
+  .starry-card .img-frame .cap{
+    background:rgba(255,255,255,.9);
+    color:#444;
+    font-size:11px;
+    padding:5px 10px;
+    margin:12px;
+    border-radius:2px;
+  }
+
+  /* ---- plain story text ---- */
+  .story{ padding:36px 20px; }
+  .story p{ margin:0 0 22px; font-size:15px; }
+  .navy-tag{
+    display:inline-block;
+    background:var(--navy-2);
+    color:#fff;
+    font-weight:800;
+    padding:6px 14px;
+    font-size:15px;
+    margin:4px 0 20px;
+  }
+
+  /* ---- pink result checklist ---- */
+  .result-block{ padding:8px 20px 36px; }
+  .result-item{
+    background:var(--pale-pink);
+    font-weight:800;
+    font-size:16px;
+    padding:12px 14px;
+    margin-bottom:14px;
+    line-height:1.6;
+  }
+  .result-note{
+    font-size:13px;
+    color:var(--ink-soft);
+    text-align:center;
+    margin-top:10px;
+  }
+
+  /* ---- restatement ---- */
+  .restate{ padding:8px 20px 40px; text-align:center; }
+  .restate .em-red{ color:var(--red); font-weight:800; font-size:19px; }
+  .restate .body{ font-size:15px; margin:20px 0 0; text-align:left; }
+  .restate .body b{ font-weight:800; }
+
+  /* ---- cta button ---- */
+  .btn-green{
+    display:block;
+    background:var(--green);
+    color:#fff !important;
+    text-decoration:none;
+    text-align:center;
+    font-weight:800;
+    font-size:17px;
+    padding:20px 14px;
+    margin:24px 20px;
+    border-radius:6px;
+    box-shadow:0 8px 18px rgba(34,177,76,.35);
+  }
+  .btn-green:active{ background:var(--green-deep); }
+
+  /* ---- voice cards ---- */
+  .voice-intro{ padding:0 20px 8px; text-align:center; }
+  .voice-card{
+    background:linear-gradient(160deg, var(--navy), var(--navy-2));
+    margin:0 20px 22px;
+    border-radius:6px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .voice-card .top{
+    display:flex;
+    align-items:stretch;
+  }
+  .voice-card .txt{
+    flex:1;
+    padding:18px 16px;
+  }
+  .voice-card .photo{
+    width:38%;
+    background:linear-gradient(160deg,#3a3a8a,#20204f);
+    flex:none;
+    display:flex; align-items:flex-end; justify-content:center;
+  }
+  .voice-card .photo .cap{
+    font-size:10px;
+    color:rgba(255,255,255,.75);
+    padding:8px;
+    text-align:center;
+  }
+  .voice-card .label{
+    display:inline-block;
+    background:var(--lime);
+    color:#1a1a1a;
+    font-size:11px;
+    font-weight:800;
+    padding:4px 8px;
+    margin-bottom:10px;
+    border-radius:2px;
+  }
+  .voice-card .headline{
+    color:#fff;
+    font-weight:800;
+    font-size:17px;
+    line-height:1.5;
+    margin-bottom:10px;
+  }
+  .voice-card .detail{
+    color:var(--magenta);
+    font-size:13px;
+    font-weight:700;
+    line-height:1.6;
+  }
+
+  /* ---- profile ---- */
+  .profile-photo{
+    aspect-ratio:4/5;
+    margin:0 20px;
+    border-radius:4px;
+    background:linear-gradient(160deg,#bfe0ff,#f2f8ff 70%);
+    position:relative;
+    display:flex; align-items:flex-end;
+  }
+  .profile-photo .cap{
+    background:rgba(255,255,255,.9);
+    color:#444;
+    font-size:11px;
+    padding:5px 10px;
+    margin:12px;
+    border-radius:2px;
+  }
+  .profile-bio{ padding:24px 20px 4px; font-size:14.5px; }
+  .profile-bio p{ margin:0 0 20px; }
+
+  /* ---- footer ---- */
+  footer{
+    background:var(--purple-deep);
+    color:#EDE9FF;
+    text-align:center;
+    padding:32px 20px;
+    margin-top:20px;
+    font-size:12px;
+  }
+  footer a{ color:#fff; margin:0 10px; text-decoration:underline; }
+  footer .copy{ margin-top:16px; color:#C9C2F5; }
+</style>
+</head>
+<body>
+
+<!-- ヘッダーバナー -->
+<div class="banner-purple">これは本当のお話です…</div>
+<p class="disclaimer">※個人の感想であって成果を保証するものではありません</p>
+
+<!-- リード（ハイライトコピー） -->
+<div class="lead-block">
+  <div class="hl blue">心が付いていかない</div><br>
+  <div class="hl blue">ビジネスモデルを手放し</div><br>
+  <div class="hl pink">守護霊をビジネスパートナーにしたら</div><br>
+  <div class="hl pink">わずか数か月で劇的に変わった</div><br>
+  <div class="hl pink">…その理由とは？</div>
+</div>
+
+<!-- 星空ビジュアル：魂の覚醒プログラム -->
+<div class="starry-card">
+  <div class="center"><span class="pill">守護霊と仲良くなるだけで望むもの全てが入ってくる</span></div>
+  <div class="circle-row">
+    <div class="circle">巡る<br>お金</div>
+    <div class="circle">ストレスフリー<br>人間関係</div>
+    <div class="circle">想像超えた<br>幸運</div>
+  </div>
+  <h2>魂の覚醒プログラム</h2>
+  <div class="img-frame"><span class="cap">Photo: 守護霊と繋がる女性 × 狼のビジュアル</span></div>
+  <div style="height:24px;"></div>
+</div>
+
+<!-- ストーリー本文 -->
+<div class="story">
+  <p>「好きなことを仕事にしたい！」という思いで始めたビジネス。</p>
+  <p>それなのに、気づけば男性的なビジネスで自分を追い込みすぎて、本当の自分を見失っていました。</p>
+  <p>起業塾に入って、教わったノウハウを愚直に実践し、コンサルタントのアドバイスを信じて行動を続け、成果が出る方法だとわかっていても、どこか心が苦しい…。</p>
+  <p>ほんまは「やりたくない」と感じていても、「これが成功への近道」と思い込んで、自分に言い聞かせながら取り組んでいました。</p>
+  <p>毎日感じる焦りや「何のためにこの仕事をしてるんやろう」という虚無感が、私の心を静かに蝕んできました。</p>
+  <p>ビジネスは一見進んでいるように見えました。でも、その裏ではいつも心はギリギリの状態。</p>
+  <p>受講生さんへアドバイスした言葉で傷つけたかもしれない気がして、不安も募るばかり。「言い過ぎたかも」「私が間違っていたかも」とモヤモヤで夜も眠れなくなることもありました。</p>
+  <p>神社に参拝したり、風水を気にしたりもしました。でも、それらが根本的な解決になるわけではないこともわかっていました。</p>
+  <p>ある日、私は思い切って「もう男性的なビジネスはしない」と決めて、守護霊の導きのまま自分の魂の声を聴くことを中心にした、女性性を活かす新しいメソッドに変えました。</p>
+  <p>それが</p>
+  <div class="navy-tag">「魂の覚醒プログラム」</div>
+  <p>です。</p>
+  <p>最初は半信半疑でしたが、このメソッドを実践する中で、私は少しずつ心の奥底から変わっていきました。</p>
+  <p>このプログラムでは、無茶な行動や外部のアドバイスに頼るのではなく、自分の内側にある本当の望みを観測し、守護霊の導きの方向に進むだけでいいのです。</p>
+  <p>このメソッドを取り入れてから、私のビジネスは一変しました。</p>
+  <p>例えば…</p>
+</div>
+
+<!-- 変化の結果（ハイライト） -->
+<div class="result-block">
+  <div class="result-item">🌸 守護霊の導きを選択するだけで、<br>4か月で1000万超え！8か月で法人化✨</div>
+  <div class="result-item">🌸 受講生から<br>「あなたのおかげで人生が変わりました」<br>と感謝される毎日✨</div>
+  <div class="result-item">🌸 自分自身だけでなく、<br>受講生さんのビジネスも<br>スムーズに成功するように✨</div>
+  <p class="result-note">（もっと早くこれをやってたらあんなにがむしゃらに頑張らなくても……🥺）</p>
+</div>
+
+<!-- 再訴求 -->
+<div class="restate">
+  <div class="navy-tag">「魂の覚醒プログラム」</div>
+  <p style="margin:0 0 4px;">この新しいメソッドは、、、</p>
+  <p class="em-red">守護霊をビジネスパートナーにするだけで</p>
+  <div class="body">
+    お金が豊かに巡り<br>
+    ストレスフリーな人間関係を築くことができ<br>
+    想像以上の幸運が手に入り<br><br>
+    自分自身だけでなく<br>
+    周りの大切な人へも<br>
+    幸せの循環を渡しながら<br>
+    <b>ビジネスステージをするっと上げることができます🕊️</b>
+  </div>
+  <div class="body">
+    もし、あなたも私と同じように…<br><br>
+    <b>100の労力をかけなくても<br>
+    1の実行で100の成果を得たい！</b><br><br>
+    <b>男性的なビジネスで<br>
+    やりたくないことを続け<br>
+    本当に大切なことを見失いたくない！</b><br><br>
+    そう思うなら<br>
+    下のボタンを押して<br>
+    LINEメルマガに登録してください😊
+  </div>
+</div>
+
+<a class="btn-green" href="#">守護霊をビジネスパートナーにする！</a>
+
+<!-- 受講生の成果 -->
+<div class="banner-purple small">「魂の覚醒プログラム」受講生の成果</div>
+
+<div class="voice-intro" style="padding-top:20px;">
+  <p class="disclaimer" style="text-align:center; padding:0 0 12px;">※個人の感想であり、成果を保証するものではありません</p>
+</div>
+
+<div class="voice-card">
+  <div class="top">
+    <div class="txt">
+      <div class="label">渡辺みゆさん / 億女の自動化プロデュース</div>
+      <div class="headline">学びの投資で自転車操業から<br>6か月で1億達成</div>
+      <div class="detail">セッション翌日695万売り上げ、守護霊が1柱から4柱に増えて最高月商300万が2,050万円へ</div>
+    </div>
+    <div class="photo"><span class="cap">Photo</span></div>
+  </div>
+</div>
+
+<div class="voice-card">
+  <div class="top">
+    <div class="txt">
+      <div class="label">松本ゆうこさん / インド刺繍リボン講座代表</div>
+      <div class="headline">メンタル落ちて収入不安定から<br>年商800万超え</div>
+      <div class="detail">見えない殻を破って本来の自分を解放！強靭な守護霊とも繋がり家族みんなで守護霊会議も</div>
+    </div>
+    <div class="photo"><span class="cap">Photo</span></div>
+  </div>
+</div>
+
+<div class="voice-card">
+  <div class="top">
+    <div class="txt">
+      <div class="label">大塚香澄さん / オンライン秘書</div>
+      <div class="headline">ひとりで起業から<br>3か月でチーム化</div>
+      <div class="detail">新案件5件獲得後もぞくぞくと依頼殺到</div>
+    </div>
+    <div class="photo"><span class="cap">Photo</span></div>
+  </div>
+</div>
+
+<div class="voice-card">
+  <div class="top">
+    <div class="txt">
+      <div class="label">俵木真紀さん / 笑顔で"わたし"を整えるノートの先生</div>
+      <div class="headline">不安から卒業して<br>3か月で高額講座成約</div>
+      <div class="detail">守護霊と対話を重ねて自分を導けるようになり次期講座も満席予約！</div>
+    </div>
+    <div class="photo"><span class="cap">Photo</span></div>
+  </div>
+</div>
+
+<a class="btn-green" href="#">守護霊をビジネスパートナーにする！</a>
+
+<!-- プロフィール -->
+<div class="banner-purple small">
+  守護霊と仲良くなって月商28倍<br>
+  友彩（ゆうさい）
+</div>
+
+<div class="profile-photo"><span class="cap">Photo: 友彩（ゆうさい）さん</span></div>
+
+<div class="profile-bio">
+  <p>祖母の他界をきっかけに19歳でサードアイ開眼。</p>
+  <p>コミュ障×鬱×引きこもりから、知識0経験0人脈0でもフォトグラファーとして起業し、現在100万人超えYouTuberの撮影、ギャップジャパン出版「なぜか愛される女性経営者27人の夢を叶えた魔法の言葉II」掲載。</p>
+  <p>現在は月商7桁、8桁超えの女性起業家が守護霊と仲良くなって、ビジネスステージを変えるサポートを行なう。</p>
+</div>
+
+<a class="btn-green" href="#">守護霊をビジネスパートナーにする！</a>
+
+<footer>
+  <a href="#">プライバシーポリシー</a> | <a href="#">特定商取引法に基づく表記</a>
+  <div class="copy">Copyright(c) 2026 yuusai All Rights Reserved.</div>
+</footer>
+
+</body>
+</html>
