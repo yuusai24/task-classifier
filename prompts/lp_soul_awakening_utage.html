@@ -385,9 +385,9 @@
   /* ---- voice cards ---- */
   .voice-intro{ padding:0 20px 8px; text-align:center; }
   .voice-grid{
-    display:flex;
-    flex-direction:column;
-    gap:22px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:12px;
     padding:0 20px 22px;
   }
   .voice-card{
@@ -400,7 +400,7 @@
   }
   .voice-card .photo{
     width:100%;
-    aspect-ratio:16/10;
+    aspect-ratio:4/5;
     background:linear-gradient(160deg,#332850,#17111F);
     flex:none;
   }
@@ -411,33 +411,39 @@
     display:block;
   }
   .voice-card .txt{
-    padding:22px 18px;
+    padding:14px 12px;
   }
   .voice-card .label{
     display:inline-block;
     background:transparent;
     border:1px solid var(--gold);
     color:var(--gold-soft);
-    font-size:11px;
+    font-size:9.5px;
     font-weight:600;
-    letter-spacing:.02em;
-    padding:4px 9px;
-    margin-bottom:14px;
+    letter-spacing:.01em;
+    padding:3px 6px;
+    margin-bottom:10px;
     border-radius:2px;
+  }
+  @media (max-width:520px){
+    .voice-grid{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:340px){
+    .voice-grid{ grid-template-columns:1fr; }
   }
   .voice-card .headline{
     font-family:'Shippori Mincho', serif;
     color:#F3ECD9;
     font-weight:600;
-    font-size:17px;
-    line-height:1.6;
-    margin-bottom:14px;
+    font-size:13px;
+    line-height:1.5;
+    margin-bottom:8px;
   }
   .voice-card .detail{
     color:#BBA9C4;
-    font-size:13px;
+    font-size:10.5px;
     font-weight:500;
-    line-height:1.7;
+    line-height:1.6;
   }
   .voice-card .story p{
     color:#BBA9C4;
