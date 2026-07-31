@@ -384,60 +384,63 @@
 
   /* ---- voice cards ---- */
   .voice-intro{ padding:0 20px 8px; text-align:center; }
+  .voice-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    padding:0 20px 22px;
+  }
   .voice-card{
     background:linear-gradient(160deg, var(--plum), var(--navy));
     border:1px solid rgba(201,166,107,.2);
-    margin:0 20px 22px;
     border-radius:4px;
     overflow:hidden;
     display:flex;
     flex-direction:column;
   }
-  .voice-card .top{
-    display:flex;
-    align-items:stretch;
-  }
-  .voice-card .txt{
-    flex:1;
-    padding:20px 16px;
-  }
   .voice-card .photo{
-    width:36%;
+    width:100%;
+    aspect-ratio:4/3;
     background:linear-gradient(160deg,#332850,#17111F);
     flex:none;
-    display:flex; align-items:flex-end; justify-content:center;
   }
-  .voice-card .photo .cap{
-    font-size:10px;
-    color:rgba(232,226,240,.6);
-    padding:8px;
-    text-align:center;
+  .voice-card .photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .voice-card .txt{
+    padding:16px 14px;
   }
   .voice-card .label{
     display:inline-block;
     background:transparent;
     border:1px solid var(--gold);
     color:var(--gold-soft);
-    font-size:11px;
+    font-size:10.5px;
     font-weight:600;
     letter-spacing:.02em;
-    padding:4px 9px;
-    margin-bottom:12px;
+    padding:3px 8px;
+    margin-bottom:10px;
     border-radius:2px;
   }
   .voice-card .headline{
     font-family:'Shippori Mincho', serif;
     color:#F3ECD9;
     font-weight:600;
-    font-size:17px;
-    line-height:1.6;
-    margin-bottom:12px;
+    font-size:15px;
+    line-height:1.5;
+    margin-bottom:10px;
   }
   .voice-card .detail{
     color:#BBA9C4;
-    font-size:13px;
+    font-size:12px;
     font-weight:500;
-    line-height:1.7;
+    line-height:1.65;
+  }
+  @media (max-width:420px){
+    .voice-grid{ grid-template-columns:1fr; }
   }
 
   .voice-photo-grid{
@@ -643,36 +646,32 @@
   <p class="disclaimer" style="text-align:center; padding:0 0 12px;">※個人の感想であり、成果を保証するものではありません</p>
 </div>
 
-<div class="voice-card">
-  <div class="top">
+<div class="voice-grid">
+  <div class="voice-card">
+    <div class="photo"><img src="https://drive.google.com/thumbnail?id=1qvDrkn1iO7O5WEDPn-hRzEUsKMDzGgao&sz=w1000" alt="渡辺みゆさん"></div>
     <div class="txt">
       <div class="label">渡辺みゆさん / 億女の自動化プロデュース</div>
       <div class="headline">学びの投資で自転車操業から<br>6か月で1億達成</div>
       <div class="detail">セッション翌日695万売り上げ、守護霊が1柱から4柱に増えて最高月商300万が2,050万円へ</div>
     </div>
-    <div class="photo"><img src="https://drive.google.com/thumbnail?id=1qvDrkn1iO7O5WEDPn-hRzEUsKMDzGgao&sz=w1000" alt="渡辺みゆさん" style="width:100%; height:100%; object-fit:cover; display:block;"></div>
   </div>
-</div>
 
-<div class="voice-card">
-  <div class="top">
+  <div class="voice-card">
+    <div class="photo"><img src="https://drive.google.com/thumbnail?id=1OVt5YICWHbWXFN-cL7guZPpNpVFBAOtq&sz=w1000" alt="松本ゆうこさん"></div>
     <div class="txt">
       <div class="label">松本ゆうこさん / インド刺繍リボン講座代表</div>
       <div class="headline">メンタル落ちて収入不安定から<br>年商800万超え</div>
       <div class="detail">見えない殻を破って本来の自分を解放！強靭な守護霊とも繋がり家族みんなで守護霊会議も</div>
     </div>
-    <div class="photo"><img src="https://drive.google.com/thumbnail?id=1OVt5YICWHbWXFN-cL7guZPpNpVFBAOtq&sz=w1000" alt="松本ゆうこさん" style="width:100%; height:100%; object-fit:cover; display:block;"></div>
   </div>
-</div>
 
-<div class="voice-card">
-  <div class="top">
+  <div class="voice-card">
+    <div class="photo"><img src="https://drive.google.com/thumbnail?id=1K6_J9UlABXkL8rMuXApiJyCBH0tZ67jK&sz=w1000" alt="大塚香澄さん"></div>
     <div class="txt">
       <div class="label">大塚香澄さん / オンライン秘書</div>
       <div class="headline">ひとりで起業から<br>3か月でチーム化</div>
       <div class="detail">新案件5件獲得後もぞくぞくと依頼殺到</div>
     </div>
-    <div class="photo"><img src="https://drive.google.com/thumbnail?id=1K6_J9UlABXkL8rMuXApiJyCBH0tZ67jK&sz=w1000" alt="大塚香澄さん" style="width:100%; height:100%; object-fit:cover; display:block;"></div>
   </div>
 </div>
 
