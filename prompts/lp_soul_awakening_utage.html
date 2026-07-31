@@ -8,26 +8,36 @@
   @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
 
   :root{
-    --plum:#2A2038;
-    --plum-deep:#150F1F;
-    --navy:#14101F;
-    --navy-2:#221A34;
+    --plum:#241C3E;
+    --plum-deep:#0F0B1D;
+    --navy:#100C22;
+    --navy-2:#1E1840;
+    --nebula:#7C6FC4;
+    --nebula-soft:#A79BE0;
     --gold:#C9A66B;
     --gold-soft:#E3CD9E;
     --gold-deep:#A9824C;
     --mauve:#9C8FBF;
     --rose-soft:#B9A2B6;
-    --pearl:#FAF7F0;
-    --parchment:#F1E9D6;
-    --line:#E4DFD1;
-    --ink:#2B2636;
+    --pearl:#F4F2FA;
+    --parchment:#E9E5F5;
+    --line:#DEDAEC;
+    --ink:#241F38;
     --ink-soft:#6B6478;
   }
   *{ box-sizing:border-box; }
   body{
     margin:0;
     font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN',sans-serif;
-    background:var(--pearl);
+    background:
+      radial-gradient(circle at 12% 8%, rgba(124,111,196,.16) 0, rgba(124,111,196,0) 2%),
+      radial-gradient(circle at 82% 14%, rgba(201,166,107,.14) 0, rgba(201,166,107,0) 2%),
+      radial-gradient(circle at 30% 34%, rgba(124,111,196,.13) 0, rgba(124,111,196,0) 1.5%),
+      radial-gradient(circle at 68% 52%, rgba(201,166,107,.12) 0, rgba(201,166,107,0) 1.5%),
+      radial-gradient(circle at 14% 68%, rgba(124,111,196,.14) 0, rgba(124,111,196,0) 1.5%),
+      radial-gradient(circle at 90% 78%, rgba(124,111,196,.12) 0, rgba(124,111,196,0) 1.5%),
+      radial-gradient(circle at 48% 92%, rgba(201,166,107,.12) 0, rgba(201,166,107,0) 1.5%),
+      var(--pearl);
     color:var(--ink);
     max-width:720px;
     margin:0 auto;
@@ -312,19 +322,20 @@
   /* ---- cta button ---- */
   .btn-green{
     display:block;
-    background:linear-gradient(135deg, var(--gold), var(--gold-deep));
-    color:#241A12 !important;
+    background:linear-gradient(135deg, var(--nebula), var(--plum-deep) 75%);
+    border:1px solid var(--gold);
+    color:var(--gold-soft) !important;
     text-decoration:none;
     text-align:center;
     font-weight:700;
     letter-spacing:.03em;
     font-size:16px;
-    padding:20px 14px;
+    padding:19px 14px;
     margin:26px 20px;
     border-radius:2px;
-    box-shadow:0 10px 22px rgba(169,130,76,.3);
+    box-shadow:0 10px 26px rgba(76,60,140,.35);
   }
-  .btn-green:active{ background:var(--gold-deep); }
+  .btn-green:active{ background:var(--plum-deep); }
 
   /* ---- voice cards ---- */
   .voice-intro{ padding:0 20px 8px; text-align:center; }
@@ -389,7 +400,7 @@
     aspect-ratio:4/5;
     margin:0 20px;
     border-radius:2px;
-    background:linear-gradient(160deg,#EFE3C8,#F8F5EE 75%);
+    background:linear-gradient(160deg,#DCD5EE,#F4F2FA 75%);
     position:relative;
     display:flex; align-items:flex-end;
   }
