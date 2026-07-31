@@ -385,9 +385,9 @@
   /* ---- voice cards ---- */
   .voice-intro{ padding:0 20px 8px; text-align:center; }
   .voice-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
     padding:0 20px 22px;
   }
   .voice-card{
@@ -400,7 +400,7 @@
   }
   .voice-card .photo{
     width:100%;
-    aspect-ratio:4/3;
+    aspect-ratio:16/10;
     background:linear-gradient(160deg,#332850,#17111F);
     flex:none;
   }
@@ -411,37 +411,41 @@
     display:block;
   }
   .voice-card .txt{
-    padding:16px 14px;
+    padding:22px 18px;
   }
   .voice-card .label{
     display:inline-block;
     background:transparent;
     border:1px solid var(--gold);
     color:var(--gold-soft);
-    font-size:10.5px;
+    font-size:11px;
     font-weight:600;
     letter-spacing:.02em;
-    padding:3px 8px;
-    margin-bottom:10px;
+    padding:4px 9px;
+    margin-bottom:14px;
     border-radius:2px;
   }
   .voice-card .headline{
     font-family:'Shippori Mincho', serif;
     color:#F3ECD9;
     font-weight:600;
-    font-size:15px;
-    line-height:1.5;
-    margin-bottom:10px;
+    font-size:17px;
+    line-height:1.6;
+    margin-bottom:14px;
   }
   .voice-card .detail{
     color:#BBA9C4;
-    font-size:12px;
+    font-size:13px;
     font-weight:500;
-    line-height:1.65;
+    line-height:1.7;
   }
-  @media (max-width:420px){
-    .voice-grid{ grid-template-columns:1fr; }
+  .voice-card .story p{
+    color:#BBA9C4;
+    font-size:13.5px;
+    line-height:1.9;
+    margin:0 0 16px;
   }
+  .voice-card .story p:last-child{ margin-bottom:0; }
 
   .voice-photo-grid{
     display:grid;
@@ -651,8 +655,21 @@
     <div class="photo"><img src="https://drive.google.com/thumbnail?id=1qvDrkn1iO7O5WEDPn-hRzEUsKMDzGgao&sz=w1000" alt="渡辺みゆさん"></div>
     <div class="txt">
       <div class="label">渡辺みゆさん / 億女の自動化プロデュース</div>
-      <div class="headline">学びの投資で自転車操業から<br>6か月で1億達成</div>
-      <div class="detail">セッション翌日695万売り上げ、守護霊が1柱から4柱に増えて最高月商300万が2,050万円へ</div>
+      <div class="headline">学びへの投資で自転車操業に。<br>そこからわずか6か月で、売上1億円を達成</div>
+      <div class="story">
+        <p>学び続ければ、もっと売上が上がる。もっと成長できる。</p>
+        <p>そう信じて、講座やコンサルへ投資を重ねてきました。</p>
+        <p>けれど、売上が上がっても、次の学びへの支払いに消えていく。気づけば資金は常にギリギリで、ビジネスは自転車操業の状態になっていました。</p>
+        <p>努力も行動もしている。実績だってある。</p>
+        <p>それなのに、なぜか豊かさが残らない——。</p>
+        <p>必要だったのは、新しいノウハウを増やすことではなく、魂とビジネスのズレを整え、本来の力を目覚めさせることでした。</p>
+        <p>セッションで守護霊からのメッセージを受け取り、自分の使命と進むべき方向が明確になると、翌日には695万円の売上を達成。</p>
+        <p>さらに、これまで1柱だった守護霊が4柱へと増え、サポート体制も大きく変化しました。</p>
+        <p>その後、ビジネスの流れは一気に加速。それまでの最高月商300万円から、月商2,050万円へ。</p>
+        <p>そして、わずか6か月で売上1億円を達成しました。</p>
+        <p>がむしゃらに学び、頑張り続けるステージから、自分の感覚と直観を信じ、魂の使命に沿って豊かさを受け取るステージへ。</p>
+        <p>目に見えない世界が整ったとき、目に見える現実も、大きく動き始めたのです。</p>
+      </div>
     </div>
   </div>
 
