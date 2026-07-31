@@ -432,6 +432,29 @@
     line-height:1.7;
   }
 
+  .voice-photo-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:12px;
+    padding:0 20px;
+  }
+  .voice-photo{
+    aspect-ratio:4/5;
+    border-radius:4px;
+    overflow:hidden;
+    border:1px solid rgba(201,166,107,.3);
+    background:linear-gradient(160deg,#332850,#17111F);
+  }
+  .voice-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  @media (max-width:480px){
+    .voice-photo-grid{ grid-template-columns:1fr 1fr; }
+  }
+
   /* ---- profile ---- */
   .profile-photo{
     aspect-ratio:4/5;
@@ -611,37 +634,10 @@
   <p class="disclaimer" style="text-align:center; padding:0 0 12px;">※個人の感想であり、成果を保証するものではありません</p>
 </div>
 
-<div class="voice-card">
-  <div class="top">
-    <div class="txt">
-      <div class="label">渡辺みゆさん / 億女の自動化プロデュース</div>
-      <div class="headline">学びの投資で自転車操業から<br>6か月で1億達成</div>
-      <div class="detail">セッション翌日695万売り上げ、守護霊が1柱から4柱に増えて最高月商300万が2,050万円へ</div>
-    </div>
-    <div class="photo"><img src="https://drive.google.com/thumbnail?id=1chOaKcpL0gCe1VIAFO_iHKizmqG-wfPx&sz=w1000" alt="渡辺みゆさん" style="width:100%; height:100%; object-fit:cover; display:block;"></div>
-  </div>
-</div>
-
-<div class="voice-card">
-  <div class="top">
-    <div class="txt">
-      <div class="label">松本ゆうこさん / インド刺繍リボン講座代表</div>
-      <div class="headline">メンタル落ちて収入不安定から<br>年商800万超え</div>
-      <div class="detail">見えない殻を破って本来の自分を解放！強靭な守護霊とも繋がり家族みんなで守護霊会議も</div>
-    </div>
-    <div class="photo"><img src="https://drive.google.com/thumbnail?id=1oaEAfhSr12i4vtkKwvq9fT6nyOd6jF-t&sz=w1000" alt="松本ゆうこさん" style="width:100%; height:100%; object-fit:cover; display:block;"></div>
-  </div>
-</div>
-
-<div class="voice-card">
-  <div class="top">
-    <div class="txt">
-      <div class="label">大塚香澄さん / オンライン秘書</div>
-      <div class="headline">ひとりで起業から<br>3か月でチーム化</div>
-      <div class="detail">新案件5件獲得後もぞくぞくと依頼殺到</div>
-    </div>
-    <div class="photo"><img src="https://drive.google.com/thumbnail?id=14_T_n0j_xRqL0LQlDHfZgt0jy6DA-wW3&sz=w1000" alt="大塚香澄さん" style="width:100%; height:100%; object-fit:cover; display:block;"></div>
-  </div>
+<div class="voice-photo-grid">
+  <div class="voice-photo"><img src="https://drive.google.com/thumbnail?id=1chOaKcpL0gCe1VIAFO_iHKizmqG-wfPx&sz=w1000" alt="渡辺みゆさん"></div>
+  <div class="voice-photo"><img src="https://drive.google.com/thumbnail?id=1oaEAfhSr12i4vtkKwvq9fT6nyOd6jF-t&sz=w1000" alt="松本ゆうこさん"></div>
+  <div class="voice-photo"><img src="https://drive.google.com/thumbnail?id=14_T_n0j_xRqL0LQlDHfZgt0jy6DA-wW3&sz=w1000" alt="大塚香澄さん"></div>
 </div>
 
 <a class="btn-green" href="#">守護霊をビジネスパートナーにする！</a>
