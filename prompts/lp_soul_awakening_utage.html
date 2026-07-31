@@ -274,18 +274,30 @@
   }
   .about-section p{
     text-align:left;
-    font-size:14px;
-    line-height:1.95;
+    font-size:13px;
+    line-height:1.9;
     color:#C7BED8;
-    margin:0 0 20px;
+    margin:0 0 16px;
+  }
+  .about-section .about-wrap{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    text-align:left;
   }
   .about-section .about-img{
-    width:100%;
-    aspect-ratio:4/3;
+    flex:none;
+    width:38%;
+    aspect-ratio:4/5;
     object-fit:cover;
     border-radius:4px;
     border:1px solid rgba(201,166,107,.3);
-    margin:0 0 26px;
+    margin:0;
+  }
+  .about-section .about-text{ flex:1; }
+  @media (max-width:420px){
+    .about-section .about-wrap{ flex-direction:column; }
+    .about-section .about-img{ width:100%; aspect-ratio:4/3; }
   }
 
   /* ---- gift section ---- */
@@ -477,9 +489,17 @@
   }
 
   /* ---- profile ---- */
+  .profile-wrap{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    padding:24px 20px 4px;
+  }
   .profile-photo{
+    flex:none;
+    width:38%;
     aspect-ratio:4/5;
-    margin:0 20px;
+    margin:0;
     border-radius:2px;
     background:linear-gradient(160deg,#DCD5EE,#F4F2FA 75%);
     position:relative;
@@ -494,8 +514,12 @@
     margin:12px;
     border-radius:2px;
   }
-  .profile-bio{ padding:26px 20px 4px; font-size:14.5px; }
-  .profile-bio p{ margin:0 0 20px; }
+  .profile-bio{ flex:1; padding:0; font-size:13px; }
+  .profile-bio p{ margin:0 0 16px; }
+  @media (max-width:420px){
+    .profile-wrap{ flex-direction:column; }
+    .profile-photo{ width:100%; }
+  }
   .profile-bio ul{ margin:0 0 20px; padding-left:20px; }
   .profile-bio li{ margin-bottom:8px; }
 
@@ -583,12 +607,6 @@
 
 <!-- 星空ビジュアル：魂の覚醒プログラム -->
 <div class="starry-card">
-  <div class="center"><span class="pill">守護霊と仲良くなるだけで望むもの全てが入ってくる</span></div>
-  <div class="circle-row">
-    <div class="circle">巡る<br>お金</div>
-    <div class="circle">ストレスフリー<br>人間関係</div>
-    <div class="circle">想像超えた<br>幸運</div>
-  </div>
   <h2>魂の覚醒プログラム</h2>
   <img src="https://drive.google.com/thumbnail?id=1-Cw1smmWO4EgT_6mGBUHoKbfBrmdoZ05&sz=w1000" alt="魂の覚醒プログラム" style="width:100%; border-radius:2px; display:block;">
   <div style="height:24px;"></div>
@@ -598,10 +616,14 @@
 <div class="about-section">
   <span class="eyebrow">About Us</span>
   <h2>魂の覚醒プログラム<br>「ルノリアン」とは</h2>
-  <img class="about-img" src="https://drive.google.com/thumbnail?id=1rNK537I1w2cUhE45xoghm9R98I1sM_wf&sz=w1000" alt="ルノリアン">
-  <p>「ルノリアン」は、守護霊からのメッセージを受け取り、あなたの中に眠る才能や魅力を目覚めさせる、女性起業家のための魂の覚醒プログラムの仲間たちです。</p>
-  <p>魂が本当に望んでいることを出発点に、これまでの経験を使命へ、使命をビジネスへ、ビジネスを愛と豊かさが循環する生き方へと仲間と共に育てていきます。</p>
-  <p>年齢・経験・現在の売上に関係なく、周囲の正解に振り回されない、あなただけのビジネスと人生を築けるよう全力でサポートします。</p>
+  <div class="about-wrap">
+    <img class="about-img" src="https://drive.google.com/thumbnail?id=1rNK537I1w2cUhE45xoghm9R98I1sM_wf&sz=w1000" alt="ルノリアン">
+    <div class="about-text">
+      <p>「ルノリアン」は、守護霊からのメッセージを受け取り、あなたの中に眠る才能や魅力を目覚めさせる、女性起業家のための魂の覚醒プログラムの仲間たちです。</p>
+      <p>魂が本当に望んでいることを出発点に、これまでの経験を使命へ、使命をビジネスへ、ビジネスを愛と豊かさが循環する生き方へと仲間と共に育てていきます。</p>
+      <p>年齢・経験・現在の売上に関係なく、周囲の正解に振り回されない、あなただけのビジネスと人生を築けるよう全力でサポートします。</p>
+    </div>
+  </div>
 </div>
 
 <!-- 豪華3大プレゼント -->
@@ -693,27 +715,29 @@
   友彩（ゆうさい）
 </div>
 
-<div class="profile-photo"><img src="https://drive.google.com/thumbnail?id=1suoztgF9-4fm8_VriHk3opvgRvs3W7jj&sz=w1000" alt="友彩（ゆうさい）さん" style="width:100%; height:100%; object-fit:cover; display:block; border-radius:2px;"></div>
+<div class="profile-wrap">
+  <div class="profile-photo"><img src="https://drive.google.com/thumbnail?id=1suoztgF9-4fm8_VriHk3opvgRvs3W7jj&sz=w1000" alt="友彩（ゆうさい）さん" style="width:100%; height:100%; object-fit:cover; display:block; border-radius:2px;"></div>
 
-<div class="profile-bio">
-  <p>私の人生が大きく変わったのは、19歳で祖母が他界したときでした。</p>
-  <p>それをきっかけに、目には見えない存在や、その人が持つエネルギーを感じ取るようになりました。</p>
-  <p>その後、公務員を退職し、フォトグラファーとして起業。起業1年目で、現在チャンネル登録者数110万人を超えるYouTuberの専属フォトグラファーを務め、女性経営者を紹介する書籍にも掲載されました。</p>
-  <p>多くの起業家・経営者を撮影するなかで、私が感じ取っていたのは、外見の美しさだけではありません。その人の中に眠る才能や可能性、魂が本当に望んでいる未来——。次第に、視えたものを言葉にしてお伝えするようになりました。</p>
-  <p>霊視を通して経営者の事業をサポートした際には、わずか1日で685万円の売上に貢献。目に見えない魂の領域を整えることが、現実のビジネスや売上にも大きな変化をもたらすと確信しました。</p>
-  <p>私自身も、ビジネス開始から4か月で売上1,000万円を達成し、8か月で法人化。2025年からは、感覚や直観を大切にする女性起業家に向けて、本格的なビジネスサポートをスタートしました。</p>
-  <p>これまでお客様からは、</p>
-  <ul>
-    <li>年商5,000万円から1億円超えへ成長</li>
-    <li>月商8桁の達成</li>
-    <li>月商7桁の安定化</li>
-    <li>ひとり起業から11名のチームへ拡大</li>
-  </ul>
-  <p>といった、さまざまなご報告をいただいています。</p>
-  <p>私がお伝えしているのは、売上を伸ばすためのノウハウだけではありません。自分の感覚や直観を信じ、魂の使命とビジネスを一致させること。子どものニーズにも応えながら、仕事も人生も大切にすること。そして、無理に頑張り続けなくても、愛と豊かさが循環するビジネスを築くこと。</p>
-  <p>すでに月7桁を売り上げている女性起業家が、次のステージへ進むために必要なのは、誰かの成功法則をさらに詰め込むことではありません。</p>
-  <p>自分の魂が知っている答えを思い出し、本来の力を解放すること。</p>
-  <p>それが、私が「ルノリアン」に届けたい未来です。</p>
+  <div class="profile-bio">
+    <p>私の人生が大きく変わったのは、19歳で祖母が他界したときでした。</p>
+    <p>それをきっかけに、目には見えない存在や、その人が持つエネルギーを感じ取るようになりました。</p>
+    <p>その後、公務員を退職し、フォトグラファーとして起業。起業1年目で、現在チャンネル登録者数110万人を超えるYouTuberの専属フォトグラファーを務め、女性経営者を紹介する書籍にも掲載されました。</p>
+    <p>多くの起業家・経営者を撮影するなかで、私が感じ取っていたのは、外見の美しさだけではありません。その人の中に眠る才能や可能性、魂が本当に望んでいる未来——。次第に、視えたものを言葉にしてお伝えするようになりました。</p>
+    <p>霊視を通して経営者の事業をサポートした際には、わずか1日で685万円の売上に貢献。目に見えない魂の領域を整えることが、現実のビジネスや売上にも大きな変化をもたらすと確信しました。</p>
+    <p>私自身も、ビジネス開始から4か月で売上1,000万円を達成し、8か月で法人化。2025年からは、感覚や直観を大切にする女性起業家に向けて、本格的なビジネスサポートをスタートしました。</p>
+    <p>これまでお客様からは、</p>
+    <ul>
+      <li>年商5,000万円から1億円超えへ成長</li>
+      <li>月商8桁の達成</li>
+      <li>月商7桁の安定化</li>
+      <li>ひとり起業から11名のチームへ拡大</li>
+    </ul>
+    <p>といった、さまざまなご報告をいただいています。</p>
+    <p>私がお伝えしているのは、売上を伸ばすためのノウハウだけではありません。自分の感覚や直観を信じ、魂の使命とビジネスを一致させること。子どものニーズにも応えながら、仕事も人生も大切にすること。そして、無理に頑張り続けなくても、愛と豊かさが循環するビジネスを築くこと。</p>
+    <p>すでに月7桁を売り上げている女性起業家が、次のステージへ進むために必要なのは、誰かの成功法則をさらに詰め込むことではありません。</p>
+    <p>自分の魂が知っている答えを思い出し、本来の力を解放すること。</p>
+    <p>それが、私が「ルノリアン」に届けたい未来です。</p>
+  </div>
 </div>
 
 <a class="btn-green" href="#">守護霊をビジネスパートナーにする！</a>
