@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>魂の覚醒プログラム | 友彩（ゆうさい）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+  :root{
+    --bg:#F7F3EA;
+    --bg-alt:#F1EADC;
+    --ink:#2E2A24;
+    --ink-soft:#5B554C;
+    --sage:#8C9678;
+    --gold:#AE8A54;
+    --gold-deep:#9A7940;
+    --line:#DDD3BE;
+    --charcoal:#2B2926;
+    --card:#FFFFFF;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    font-family:'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.9;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  .narrow{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  h1,h2,h3{
+    font-family:'Shippori Mincho', serif;
+    color:var(--ink);
+    margin:0;
+    font-weight:600;
+  }
+
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.28em;
+    color:var(--sage);
+    font-weight:700;
+    text-transform:uppercase;
+    margin:0 0 18px;
+  }
+  .rule{
+    width:44px;
+    height:2px;
+    background:var(--gold);
+    margin:0 0 28px;
+  }
+  .rule.center{ margin-left:auto; margin-right:auto; }
+
+  .disclaimer{
+    font-size:12px;
+    color:var(--ink-soft);
+    opacity:.75;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(247,243,234,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  header .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:20px; padding-bottom:20px;
+  }
+  .logo{
+    font-family:'Shippori Mincho', serif;
+    font-size:19px;
+    letter-spacing:.08em;
+  }
+  .logo span{ color:var(--sage); font-size:12px; letter-spacing:.2em; display:block; margin-top:2px;}
+  .nav-cta{
+    font-size:13px;
+    letter-spacing:.05em;
+    text-decoration:none;
+    border-bottom:1px solid var(--gold);
+    padding-bottom:3px;
+    white-space:nowrap;
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:block;
+    width:100%;
+    max-width:480px;
+    text-align:center;
+    background:var(--gold);
+    color:#fff !important;
+    font-weight:700;
+    letter-spacing:.08em;
+    padding:20px 16px;
+    border-radius:3px;
+    text-decoration:none;
+    font-size:15px;
+    box-shadow:0 10px 24px rgba(174,138,84,.28);
+    transition:background .2s ease, transform .2s ease;
+  }
+  .btn:hover{ background:var(--gold-deep); transform:translateY(-1px); }
+  .btn-row{ display:flex; justify-content:center; margin:8px 0 0; }
+  .btn-row.left{ justify-content:flex-start; }
+
+  /* ---------- placeholder image frame ---------- */
+  .img-frame{
+    position:relative;
+    width:100%;
+    border-radius:3px;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,255,255,.55) 0, rgba(255,255,255,0) 1.5%),
+      radial-gradient(circle at 75% 60%, rgba(255,255,255,.5) 0, rgba(255,255,255,0) 1.2%),
+      radial-gradient(circle at 45% 80%, rgba(255,255,255,.5) 0, rgba(255,255,255,0) 1%),
+      radial-gradient(circle at 85% 15%, rgba(255,255,255,.45) 0, rgba(255,255,255,0) 1%),
+      linear-gradient(135deg, #EAE1CC 0%, #E4D7BE 45%, #DCCBAE 100%);
+  }
+  .img-frame.ratio-portrait{ aspect-ratio: 4 / 5; }
+  .img-frame.ratio-square{ aspect-ratio: 1 / 1; }
+  .img-frame.ratio-wide{ aspect-ratio: 16 / 7; }
+  .img-frame.ratio-card{ aspect-ratio: 5 / 4; }
+  .img-caption{
+    position:absolute; left:12px; bottom:12px;
+    background:rgba(255,255,255,.88);
+    color:var(--ink-soft);
+    font-size:11px;
+    letter-spacing:.03em;
+    padding:5px 11px;
+    border-radius:2px;
+  }
+  .dots{ display:flex; gap:6px; margin-top:14px; }
+  .dots span{ width:6px; height:6px; border-radius:50%; background:var(--line); }
+  .dots span.active{ background:var(--gold); }
+
+  /* ---------- section spacing ---------- */
+  section{ padding:88px 0; }
+  section.tight{ padding:64px 0; }
+  .bg-alt{ background:var(--bg-alt); }
+
+  /* ---------- split layout ---------- */
+  .split{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:64px;
+    align-items:center;
+  }
+  .split.rev{ direction:rtl; }
+  .split.rev > *{ direction:ltr; }
+  @media (max-width:860px){
+    .split{ grid-template-columns:1fr; gap:36px; }
+    .split.rev{ direction:ltr; }
+  }
+
+  .heading-lg{
+    font-size:clamp(26px,3.6vw,38px);
+    line-height:1.55;
+    margin-bottom:22px;
+  }
+  .heading-md{
+    font-size:clamp(22px,3vw,28px);
+    line-height:1.6;
+    margin-bottom:18px;
+  }
+  .lead{
+    color:var(--ink-soft);
+    font-size:15.5px;
+    margin-bottom:30px;
+  }
+
+  /* ---------- checklist ---------- */
+  .check-list{ margin-top:8px; }
+  .check-item{
+    display:flex;
+    gap:14px;
+    padding:18px 0;
+    border-bottom:1px solid var(--line);
+    font-size:15.5px;
+  }
+  .check-item:first-child{ border-top:1px solid var(--line); }
+  .check-item .mark{ color:var(--gold); flex:none; font-weight:700; }
+
+  /* ---------- numbered features ---------- */
+  .feat{
+    display:flex;
+    gap:26px;
+    padding:30px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .feat:first-child{ border-top:1px solid var(--line); }
+  .feat .num{
+    font-family:'Shippori Mincho', serif;
+    font-size:34px;
+    color:#D9C9A6;
+    line-height:1;
+    flex:none;
+    width:50px;
+  }
+  .feat h3{ font-size:18px; margin-bottom:10px; }
+  .feat p{ color:var(--ink-soft); font-size:14.5px; margin:0; }
+
+  /* ---------- plain story text ---------- */
+  .story p{
+    margin:0 0 26px;
+    color:var(--ink);
+  }
+  .story .tag{
+    display:inline-block;
+    background:#233A6B;
+    color:#fff;
+    font-weight:700;
+    padding:4px 14px;
+    font-size:15px;
+    letter-spacing:.02em;
+    margin:6px 0 26px;
+  }
+  .story .em{
+    color:var(--gold-deep);
+    font-weight:700;
+  }
+
+  /* ---------- voice / testimonial cards ---------- */
+  .voice-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+    margin-top:44px;
+  }
+  @media (max-width:760px){ .voice-grid{ grid-template-columns:1fr; } }
+  .voice-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .voice-card .banner{
+    position:relative;
+  }
+  .voice-card .tag-row{
+    background:var(--gold);
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.03em;
+    padding:14px 18px;
+    line-height:1.6;
+  }
+  .voice-card .body{ padding:18px 20px 24px; }
+  .voice-card .body .detail{
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .voice-card .name{
+    font-size:12.5px;
+    color:var(--sage);
+    font-weight:700;
+    letter-spacing:.04em;
+    margin-bottom:6px;
+  }
+
+  /* ---------- stat grid ---------- */
+  .stat-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:26px;
+  }
+  @media (max-width:600px){ .stat-grid{ grid-template-columns:1fr; } }
+  .stat-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:20px 22px;
+    font-size:14.5px;
+  }
+  .stat-card b{ color:var(--gold-deep); font-size:17px; }
+
+  /* ---------- resume list ---------- */
+  .resume-list{ margin-top:10px; border-top:1px solid var(--line); }
+  .resume-list li{
+    list-style:none;
+    display:flex;
+    gap:12px;
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+    font-size:14.5px;
+    color:var(--ink);
+  }
+  .resume-list li::before{ content:"–"; color:var(--gold); flex:none; }
+
+  /* ---------- about (dark) ---------- */
+  .about-dark{
+    background:var(--charcoal);
+    color:#EDE7DA;
+  }
+  .about-dark .eyebrow{ color:#B7A87D; }
+  .about-dark h2{ color:#fff; }
+  .about-dark p{ color:#C9C1B2; font-size:15px; }
+
+  /* ---------- profile ---------- */
+  .profile-org{ font-size:12.5px; color:var(--sage); font-weight:700; letter-spacing:.03em; margin-bottom:8px; }
+  .profile-name{ font-size:clamp(26px,3.4vw,34px); margin-bottom:6px; }
+  .profile-role{ font-size:13.5px; color:var(--ink-soft); margin-bottom:22px; }
+
+  /* ---------- final cta ---------- */
+  .final-cta{
+    background:var(--bg-alt);
+    text-align:center;
+    padding:100px 0;
+  }
+  .final-cta h2{ font-size:clamp(24px,3.6vw,34px); line-height:1.6; margin-bottom:34px; }
+  .final-cta p{ color:var(--ink-soft); font-size:15px; margin:0 0 10px; }
+
+  /* ---------- footer ---------- */
+  footer{
+    background:var(--charcoal);
+    color:#B7B2A6;
+    text-align:center;
+    padding:48px 24px 36px;
+  }
+  footer a{
+    color:#D9CFB6;
+    text-decoration:underline;
+    font-size:13px;
+    margin:0 14px;
+  }
+  footer .copy{
+    margin-top:22px;
+    font-size:12px;
+    letter-spacing:.03em;
+    color:#948E80;
+  }
+
+  .center{ text-align:center; }
+  .mx-auto{ margin-left:auto; margin-right:auto; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">友彩 <span>THE SOUL AWAKENING PROGRAM</span></div>
+    <a class="nav-cta" href="#cta">公式LINEに登録する</a>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="tight">
+  <div class="wrap split">
+    <div>
+      <div class="img-frame ratio-portrait">
+        <span class="img-caption">Photo: 友彩さんのメインビジュアル</span>
+      </div>
+      <div class="dots"><span class="active"></span><span></span><span></span></div>
+    </div>
+    <div>
+      <p class="eyebrow">Spiritual Business Coach</p>
+      <div class="rule"></div>
+      <h1 class="heading-lg">守護霊を、<br>ビジネスパートナーにする。</h1>
+      <p class="lead">
+        「好きなことを仕事にしたい」<br>
+        その想いで始めたビジネス。<br>
+        気づけば男性的なやり方で自分を追い込み、<br>
+        本当の自分を見失っていました。<br><br>
+        守護霊の導きのまま、自分の魂の声を聴くことを中心にしたら、<br>
+        わずか数か月で、すべてが変わったのです。
+      </p>
+      <div class="btn-row left">
+        <a class="btn" href="#cta">まずは無料LINEで受け取る</a>
+      </div>
+      <p class="disclaimer" style="margin-top:16px;">※個人の感想であり、成果を保証するものではありません</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOR YOU ===================== -->
+<section class="bg-alt">
+  <div class="wrap split rev">
+    <div>
+      <div class="img-frame ratio-square">
+        <span class="img-caption">Photo: 悩んでいる女性起業家</span>
+      </div>
+    </div>
+    <div>
+      <p class="eyebrow">For You</p>
+      <h2 class="heading-md">こんな想いは<br>ありませんか？</h2>
+      <div class="rule"></div>
+      <div class="check-list">
+        <div class="check-item"><span class="mark">—</span>心が付いていかないまま、ビジネスを走らせている。</div>
+        <div class="check-item"><span class="mark">—</span>成果が出る方法だとわかっていても、どこか心が苦しい。</div>
+        <div class="check-item"><span class="mark">—</span>教わったノウハウ通りにやっても、本当の自分とズレている気がする。</div>
+        <div class="check-item"><span class="mark">—</span>神社参拝や風水を試しても、根本的な解決にはならない。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 3 GOOD THINGS (numbered) ===================== -->
+<section>
+  <div class="wrap split">
+    <div>
+      <div class="img-frame ratio-portrait">
+        <span class="img-caption">Photo: 守護霊と繋がる女性のビジュアル</span>
+      </div>
+    </div>
+    <div>
+      <p class="eyebrow">Soul Awakening Program</p>
+      <h2 class="heading-md">守護霊と仲良くなるだけで、<br>望むものすべてが入ってくる。</h2>
+      <div class="rule"></div>
+
+      <div class="feat">
+        <div class="num">01</div>
+        <div>
+          <h3>巡るお金</h3>
+          <p>無理に働き方を変えなくても、お金が滞りなく巡るようになります。</p>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="num">02</div>
+        <div>
+          <h3>ストレスフリーな人間関係</h3>
+          <p>受講生さんや周りの人との関係も、ストレスなく築けるようになります。</p>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="num">03</div>
+        <div>
+          <h3>想像を超えた幸運</h3>
+          <p>頑張りすぎなくても、想像以上の幸運が舞い込むようになります。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STORY ===================== -->
+<section class="bg-alt">
+  <div class="narrow story">
+    <p class="eyebrow center mx-auto" style="text-align:center;">True Story</p>
+    <h2 class="heading-md center" style="text-align:center;">これは、本当のお話です。</h2>
+    <div class="rule center"></div>
+
+    <p>「好きなことを仕事にしたい！」という思いで始めたビジネス。</p>
+    <p>それなのに、気づけば男性的なビジネスで自分を追い込みすぎて、本当の自分を見失っていました。</p>
+    <p>起業塾に入って、教わったノウハウを愚直に実践し、コンサルタントのアドバイスを信じて行動を続け、成果が出る方法だとわかっていても、どこか心が苦しい…。</p>
+    <p>ほんまは「やりたくない」と感じていても、「これが成功への近道」と思い込んで、自分に言い聞かせながら取り組んでいました。</p>
+    <p>毎日感じる焦りや「何のためにこの仕事をしてるんやろう」という虚無感が、私の心を静かに蝕んできました。</p>
+    <p>ビジネスは一見進んでいるように見えました。でも、その裏ではいつも心はギリギリの状態。</p>
+    <p>受講生さんへアドバイスした言葉で傷つけたかもしれない気がして、不安も募るばかり。「言い過ぎたかも」「私が間違っていたかも」とモヤモヤで夜も眠れなくなることもありました。</p>
+    <p>神社に参拝したり、風水を気にしたりもしました。でも、それらが根本的な解決になるわけではないこともわかっていました。</p>
+
+    <p>ある日、私は思い切って「もう男性的なビジネスはしない」と決めて、守護霊の導きのまま自分の魂の声を聴くことを中心にした、女性性を活かす新しいメソッドに変えました。</p>
+
+    <p>それが</p>
+    <span class="tag">「魂の覚醒プログラム」</span>
+    <p>です。</p>
+
+    <p>最初は半信半疑でしたが、このメソッドを実践する中で、私は少しずつ心の奥底から変わっていきました。</p>
+    <p>このプログラムでは、無茶な行動や外部のアドバイスに頼るのではなく、自分の内側にある本当の望みを観測し、守護霊の導きの方向に進むだけでいいのです。</p>
+    <p>このメソッドを取り入れてから、私のビジネスは一変しました。</p>
+  </div>
+</section>
+
+<!-- ===================== RESULTS CHECKLIST ===================== -->
+<section>
+  <div class="wrap split rev">
+    <div>
+      <div class="img-frame ratio-square">
+        <span class="img-caption">Photo: 変化を実感する友彩さん</span>
+      </div>
+    </div>
+    <div>
+      <p class="eyebrow">Change</p>
+      <h2 class="heading-md">例えば、こんな変化が<br>起こりました。</h2>
+      <div class="rule"></div>
+      <div class="check-list">
+        <div class="check-item"><span class="mark">—</span>守護霊の導きを選択するだけで、4か月で1000万超え！8か月で法人化。</div>
+        <div class="check-item"><span class="mark">—</span>受講生から「あなたのおかげで人生が変わりました」と感謝される毎日に。</div>
+        <div class="check-item"><span class="mark">—</span>自分自身だけでなく、受講生さんのビジネスもスムーズに成功するように。</div>
+        <div class="check-item"><span class="mark">—</span>受講生が実際に守護霊と仲良くなって、月商7桁から8桁を達成。</div>
+        <div class="check-item"><span class="mark">—</span>がむしゃらにならなくても、1の行動で100の成果が得られるように。</div>
+      </div>
+      <p class="disclaimer" style="margin-top:18px;">（もっと早くこれをやってたら、あんなにがむしゃらに頑張らなくても…）</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROGRAM RESTATEMENT ===================== -->
+<section class="bg-alt center">
+  <div class="narrow">
+    <span class="tag">「魂の覚醒プログラム」</span>
+    <p style="margin:0 0 6px;">この新しいメソッドは、、、</p>
+    <h2 class="heading-md" style="margin-top:18px;">
+      <span class="em">守護霊をビジネスパートナーにするだけで</span>
+    </h2>
+    <p class="lead" style="text-align:left; max-width:620px; margin:26px auto 0;">
+      お金が豊かに巡り<br>
+      ストレスフリーな人間関係を築くことができ<br>
+      想像以上の幸運が手に入り<br><br>
+      自分自身だけでなく<br>
+      周りの大切な人へも<br>
+      幸せの循環を渡しながら<br>
+      <span class="em">ビジネスステージをするっと上げる</span>ことができます。
+    </p>
+    <div class="btn-row" style="margin-top:40px;">
+      <a class="btn" href="#cta">守護霊をビジネスパートナーにする！</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VOICE ===================== -->
+<section>
+  <div class="wrap">
+    <div class="img-frame ratio-wide">
+      <span class="img-caption">Photo: 受講生の活動風景</span>
+    </div>
+    <div class="center" style="margin-top:44px;">
+      <p class="eyebrow">Voice</p>
+      <h2 class="heading-md">守護霊とつながった、受講生の声</h2>
+      <div class="rule center"></div>
+      <p class="disclaimer">※個人の感想であり、成果を保証するものではありません</p>
+    </div>
+
+    <div class="voice-grid">
+      <div class="voice-card">
+        <div class="banner">
+          <div class="img-frame ratio-card">
+            <span class="img-caption">Photo: 渡辺みゆさん</span>
+          </div>
+          <div class="tag-row">学びの投資で自転車操業から<br>6か月で1億達成</div>
+        </div>
+        <div class="body">
+          <div class="name">渡辺みゆさん／億女の自動化プロデュース</div>
+          <div class="detail">セッション翌日695万売り上げ、守護霊が1柱から4柱に増えて最高月商300万が2,050万円へ。</div>
+        </div>
+      </div>
+
+      <div class="voice-card">
+        <div class="banner">
+          <div class="img-frame ratio-card">
+            <span class="img-caption">Photo: 松本ゆうこさん</span>
+          </div>
+          <div class="tag-row">メンタル落ちて収入不安定から<br>年商800万超え</div>
+        </div>
+        <div class="body">
+          <div class="name">松本ゆうこさん／インド刺繍リボン講座代表</div>
+          <div class="detail">見えない殻を破って本来の自分を解放！強靭な守護霊とも繋がり、家族みんなで守護霊会議も。</div>
+        </div>
+      </div>
+
+      <div class="voice-card">
+        <div class="banner">
+          <div class="img-frame ratio-card">
+            <span class="img-caption">Photo: 大塚香澄さん</span>
+          </div>
+          <div class="tag-row">ひとりで起業から<br>3か月でチーム化</div>
+        </div>
+        <div class="body">
+          <div class="name">大塚香澄さん／オンライン秘書</div>
+          <div class="detail">新案件5件獲得後も、ぞくぞくと依頼殺到。</div>
+        </div>
+      </div>
+
+      <div class="voice-card">
+        <div class="banner">
+          <div class="img-frame ratio-card">
+            <span class="img-caption">Photo: 俵木真紀さん</span>
+          </div>
+          <div class="tag-row">不安から卒業して<br>3か月で高額講座成約</div>
+        </div>
+        <div class="body">
+          <div class="name">俵木真紀さん／笑顔で"わたし"を整えるノートの先生</div>
+          <div class="detail">守護霊と対話を重ねて自分を導けるようになり、次期講座も満席予約に。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin-top:52px;">
+      <a class="btn" href="#cta">守護霊をビジネスパートナーにする！</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ABOUT (dark) ===================== -->
+<section class="about-dark">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">About the Program</p>
+      <h2 class="heading-md">無理をやめても、<br>望む未来はやってくる。</h2>
+      <div class="rule"></div>
+      <p>
+        無茶な行動や外部のアドバイスに頼るのではなく、自分の内側にある本当の望みを観測し、守護霊の導きの方向に進むだけでいい。<br><br>
+        100の労力をかけなくても、1の実行で100の成果を得たい。<br>
+        男性的なビジネスでやりたくないことを続け、本当に大切なことを見失いたくない。<br><br>
+        そう思うなら、守護霊をビジネスパートナーにすることから始めてみませんか。
+      </p>
+    </div>
+    <div>
+      <div class="img-frame ratio-portrait" style="background:linear-gradient(135deg,#3A372F,#211F1B);">
+        <span class="img-caption" style="background:rgba(0,0,0,.45); color:#EDE7DA;">Photo: 「魂の覚醒プログラム」イメージ</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROFILE ===================== -->
+<section>
+  <div class="wrap">
+    <div class="center" style="margin-bottom:56px;">
+      <p class="eyebrow">About the Founder</p>
+      <h2 class="heading-md">主催者プロフィール</h2>
+      <div class="rule center"></div>
+    </div>
+
+    <div class="split">
+      <div>
+        <div class="img-frame ratio-portrait">
+          <span class="img-caption">Photo: 友彩（ゆうさい）さん</span>
+        </div>
+      </div>
+      <div>
+        <div class="profile-org">守護霊と仲良くなって月商28倍</div>
+        <h3 class="profile-name">友彩（ゆうさい）</h3>
+        <div class="profile-role">「魂の覚醒プログラム」主宰</div>
+        <div class="rule"></div>
+        <p class="lead" style="margin-bottom:0;">
+          祖母の他界をきっかけに19歳でサードアイ開眼。<br><br>
+          コミュ障×鬱×引きこもりから、知識0・経験0・人脈0でもフォトグラファーとして起業し、現在は100万人超えYouTuberの撮影を担当。<br><br>
+          ギャップジャパン出版「なぜか愛される女性経営者27人の夢を叶えた魔法の言葉II」にも掲載。<br><br>
+          現在は月商7桁、8桁超えの女性起業家が守護霊と仲良くなって、ビジネスステージを変えるサポートを行なう。
+        </p>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">守護霊と仲良くなって <b>月商28倍</b></div>
+      <div class="stat-card">現在の月商 <b>7桁〜8桁超え</b></div>
+      <div class="stat-card">撮影実績 <b>登録100万人超えYouTuber</b></div>
+      <div class="stat-card">書籍掲載 <b>「なぜか愛される女性経営者27人の夢を叶えた魔法の言葉II」</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FINAL CTA ===================== -->
+<section class="final-cta" id="cta">
+  <div class="narrow">
+    <h2>「やりたくない」を、<br>もう続けなくていい。</h2>
+    <p>100の労力をかけなくても、1の実行で100の成果を得たい。</p>
+    <p>男性的なビジネスで、やりたくないことを続け、本当に大切なことを見失いたくない。</p>
+    <p style="margin-bottom:36px;">そう思うなら、下のボタンを押してLINE公式アカウントに登録してください😊</p>
+    <div class="btn-row">
+      <a class="btn" href="#">LINEメルマガに登録する</a>
+    </div>
+    <p class="disclaimer" style="margin-top:20px;">※個人の感想であり、成果を保証するものではありません</p>
+  </div>
+</section>
+
+<footer>
+  <a href="#">プライバシーポリシー</a>
+  <a href="#">特定商取引法に基づく表記</a>
+  <div class="copy">Copyright(c) 2026 yuusai All Rights Reserved.</div>
+</footer>
+
+</body>
+</html>
