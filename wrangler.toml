@@ -1,0 +1,17 @@
+name = "task-classifier"
+main = "src/worker.js"
+compatibility_date = "2024-01-01"
+
+# 毎週月曜 9:00 JST（= UTC 0:00）に週次フィードバック配信
+[triggers]
+crons = ["0 0 * * 1"]
+
+# Cloudflare D1 バインディング（ダッシュボードの database_id に差し替えてください）
+[[d1_databases]]
+binding = "DB"
+database_name = "task-classifier"
+database_id = "YOUR_D1_DATABASE_ID"
+
+# シークレットは `wrangler secret put` で登録
+# ANTHROPIC_API_KEY
+# LINE_CHANNEL_ACCESS_TOKEN
