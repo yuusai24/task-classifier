@@ -1,0 +1,274 @@
+<!-- ============================================================
+  UTAGE「HTML埋め込み」ブロック用コード
+  守護霊とおしゃべりLAB LP
+
+  【使い方】
+  1. 下の5つの画像ファイルを、UTAGEのメディア(画像)アップロード機能で
+     アップロードしてください。
+       - hero-banner.png（ヒーロー写真）
+       - goal-a.png / goal-b.png / goal-c.png / goal-d.png（ゴール4枚）
+  2. アップロード後に発行される画像URLを、このコード内の
+       "REPLACE_WITH_HERO_IMAGE_URL"
+       "REPLACE_WITH_GOAL_A_IMAGE_URL" など
+     という書き込みを探して、実際のURLに置き換えてください。
+  3. このファイルの中身を全部コピーして、UTAGEの「HTML埋め込み」ブロックに
+     貼り付けてください。
+============================================================ -->
+<!-- 日本語フォントの読み込み（UTAGE側で日本語フォントを別途設定している場合は削除してOKです） -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+
+<div id="gslab-lp">
+<style>
+  #gslab-lp{
+    --bg:#F3F7FC;
+    --surface:#FFFFFF;
+    --surface-alt:#E9F1FA;
+    --surface-card:#FBFDFF;
+    --ink:#1E2A44;
+    --ink-soft:#4F5C78;
+    --ink-faint:#8492AC;
+    --gold:#AD8140;
+    --gold-soft:#EFE0C6;
+    --line:#D9E4F1;
+    --pink:#DD7EA0;
+    --pink-shadow: rgba(221,126,160,.55);
+    --shadow: 0 18px 40px -24px rgba(30,42,68,.35);
+
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Zen Kaku Gothic New","Hiragino Sans",sans-serif;
+    line-height:1.8;
+    padding-inline:20px;
+    padding-block-end:90px;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+  #gslab-lp, #gslab-lp *{box-sizing:border-box;}
+  #gslab-lp .wrap{max-width:760px;margin-inline:auto;}
+  #gslab-lp h1, #gslab-lp h2, #gslab-lp h3{
+    font-family:"Shippori Mincho",serif;letter-spacing:.02em;margin:0;
+  }
+  #gslab-lp p{margin:0;}
+  #gslab-lp a{color:inherit;}
+  #gslab-lp .eyebrow{
+    font-size:.78rem;letter-spacing:.18em;color:var(--gold);
+    display:inline-flex;align-items:center;gap:.5em;font-weight:700;
+  }
+  #gslab-lp .eyebrow::before,#gslab-lp .eyebrow::after{content:"";width:18px;height:1px;background:var(--gold);}
+
+  /* ---- Hero ---- */
+  #gslab-lp .hero{
+    position:relative;overflow:hidden;
+    margin-inline:-20px;padding:56px 20px 64px;
+    background:
+      radial-gradient(circle at 18% 15%, rgba(255,255,255,.55), transparent 40%),
+      radial-gradient(circle at 82% 8%, rgba(218,223,244,.6), transparent 45%),
+      linear-gradient(160deg, #EAF3FC 0%, #E4E9FA 45%, #F3EADD 100%);
+  }
+  #gslab-lp .hero::before{
+    content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
+    background-image:
+      radial-gradient(1.5px 1.5px at 10% 20%, var(--ink-faint), transparent),
+      radial-gradient(1.5px 1.5px at 30% 70%, var(--ink-faint), transparent),
+      radial-gradient(1.5px 1.5px at 55% 15%, var(--ink-faint), transparent),
+      radial-gradient(1.5px 1.5px at 75% 55%, var(--ink-faint), transparent),
+      radial-gradient(1.5px 1.5px at 90% 25%, var(--ink-faint), transparent),
+      radial-gradient(1.5px 1.5px at 45% 85%, var(--ink-faint), transparent);
+    background-size:100% 100%;
+    mix-blend-mode:screen;
+  }
+  #gslab-lp .hero-inner{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;gap:22px;}
+  #gslab-lp .hero-img{
+    width:100%;max-width:480px;height:auto;display:block;border-radius:20px;
+    box-shadow:var(--shadow);
+  }
+  #gslab-lp .cta{
+    display:inline-block;background:var(--pink);color:#fff;font-weight:700;
+    padding:14px 34px;border-radius:999px;text-decoration:none;font-size:1rem;
+    box-shadow:0 14px 28px -14px var(--pink-shadow);
+  }
+  #gslab-lp .price-note{font-size:.82rem;color:var(--ink-faint);}
+
+  /* ---- Sections ---- */
+  #gslab-lp section{padding-block:52px;border-top:1px solid var(--line);}
+  #gslab-lp section.no-line{border-top:none;}
+  #gslab-lp .section-head{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;text-align:center;}
+  #gslab-lp .section-head h2{font-size:clamp(1.35rem,4vw,1.7rem);}
+
+  #gslab-lp .check-list{display:grid;gap:12px;padding:0;list-style:none;}
+  #gslab-lp .check-list li{
+    display:flex;gap:12px;align-items:flex-start;
+    background:var(--surface-card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+  }
+  #gslab-lp .check-list li::before{content:"✓";color:var(--gold);font-weight:700;flex:none;}
+
+  #gslab-lp blockquote{
+    background:var(--surface-alt);border-radius:18px;padding:24px;margin:0;
+    font-size:.98rem;color:var(--ink-soft);
+  }
+
+  #gslab-lp table.schedule{width:100%;border-collapse:collapse;font-size:.92rem;}
+  #gslab-lp table.schedule th,#gslab-lp table.schedule td{
+    text-align:left;padding:14px 12px;border-bottom:1px solid var(--line);vertical-align:top;
+  }
+  #gslab-lp table.schedule th{color:var(--ink-faint);font-weight:600;width:32%;}
+
+  #gslab-lp .goal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+  #gslab-lp .goal-grid img{width:100%;height:auto;border-radius:16px;box-shadow:var(--shadow);display:block;}
+
+  #gslab-lp .price-card{
+    background:linear-gradient(155deg,var(--surface),var(--surface-alt));
+    border:1px solid var(--line);border-radius:22px;padding:32px 26px;text-align:center;
+    display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow);
+  }
+  #gslab-lp .price-card .ribbon{
+    align-self:center;background:var(--gold-soft);color:var(--gold);font-weight:700;
+    font-size:.8rem;padding:6px 14px;border-radius:999px;
+  }
+  #gslab-lp .price-card .amount{font-family:"Shippori Mincho",serif;font-size:clamp(1.8rem,6vw,2.3rem);color:var(--ink);}
+  #gslab-lp .price-card .amount small{font-size:.45em;color:var(--ink-faint);font-family:"Zen Kaku Gothic New",sans-serif;}
+  #gslab-lp .price-card .terms{font-size:.85rem;color:var(--ink-soft);}
+  #gslab-lp .bonus{
+    background:var(--gold-soft);border-radius:12px;padding:14px 16px;
+    font-size:.85rem;color:var(--ink);text-align:left;display:flex;gap:10px;align-items:flex-start;
+  }
+  #gslab-lp .bonus .icon{font-size:1.3rem;flex:none;line-height:1;}
+  #gslab-lp .bonus b{display:block;color:var(--gold);font-size:.75rem;letter-spacing:.05em;margin-bottom:3px;}
+
+  #gslab-lp .steps{display:grid;gap:14px;}
+  #gslab-lp .step{display:flex;gap:14px;align-items:flex-start;}
+  #gslab-lp .step .dot{
+    flex:none;width:28px;height:28px;border-radius:999px;background:var(--gold);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;
+  }
+  #gslab-lp .step .body h3{font-size:.98rem;font-weight:600;}
+  #gslab-lp .step .body p{font-size:.88rem;color:var(--ink-soft);}
+  #gslab-lp .tbd{color:var(--ink-faint);font-style:normal;border-bottom:1px dashed var(--ink-faint);}
+
+  #gslab-lp .notice{
+    background:var(--surface-alt);border-radius:16px;padding:22px;font-size:.85rem;color:var(--ink-soft);
+    display:flex;flex-direction:column;gap:10px;
+  }
+  #gslab-lp .notice h3{font-size:.95rem;color:var(--ink);}
+
+  #gslab-lp footer{padding-block:36px 10px;text-align:center;font-size:.78rem;color:var(--ink-faint);display:flex;flex-direction:column;gap:8px;}
+</style>
+
+<div class="hero">
+  <div class="hero-inner wrap">
+    <img class="hero-img" src="REPLACE_WITH_HERO_IMAGE_URL" alt="守護霊とおしゃべりLAB 10月1日開校。あなたをずっと見守っている存在と、つながる私になる。毎週瞑想会、オープンチャット招待、守護霊からのサインに気付く。">
+    <a class="cta" href="#gslab-apply">LAB生になる</a>
+    <p class="price-note">3か月プログラム 月¥8,800（税込）</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="no-line">
+    <div class="section-head">
+      <span class="eyebrow">こんな感覚、ありませんか</span>
+      <h2>視えなくても、感じている人へ</h2>
+    </div>
+    <ul class="check-list">
+      <li>ふと涙が出たり、胸がじんとする瞬間がある</li>
+      <li>直感を信じたいけれど、それが「本物」か自信が持てない</li>
+      <li>夢や偶然の出来事が、何かのサインのように思える</li>
+      <li>スピリチュアルには興味があるけれど、怪しい情報に振り回されたくない</li>
+      <li>自分だけの「受け取り方」を、安心できる場所で育てたい</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="eyebrow">LABの考え方</span>
+      <h2>「視える」だけが正解じゃない</h2>
+    </div>
+    <blockquote>
+      視える人もいれば、感じる人、ふと言葉が浮かぶ人、なぜか分かる人、夢で受け取る人もいます。守護霊とのつながり方は、一人ひとり違う「回線」を持っているようなもの。LABでは映像として視えることをゴールにせず、あなた本来の受け取り方を大切にしながら、少しずつ感覚を育てていきます。
+    </blockquote>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="eyebrow">プログラム内容</span>
+      <h2>3か月・少人数LABの内容</h2>
+    </div>
+    <table class="schedule">
+      <tr><th>期間</th><td>3か月間</td></tr>
+      <tr><th>定員</th><td>10名</td></tr>
+      <tr><th>月1回</th><td>守護霊とつながるオンラインワーク</td></tr>
+      <tr><th>週1回</th><td>Zoom誘導瞑想</td></tr>
+      <tr><th>常時</th><td>受け取った感覚を安心してシェアできるコミュニティ</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <span class="eyebrow">3か月後のゴール</span>
+      <h2>「感じる」わたしになる</h2>
+    </div>
+    <div class="goal-grid">
+      <img src="REPLACE_WITH_GOAL_A_IMAGE_URL" alt="A. 自分特有のサインが分かる。体の感覚、浮かぶ言葉、夢など、自分に合った受け取り方に気づけるようになります。">
+      <img src="REPLACE_WITH_GOAL_B_IMAGE_URL" alt="B. 直感と不安を区別できる。思い込みや不安からくる声と、静かな直感との違いを見分ける感覚が育ちます。">
+      <img src="REPLACE_WITH_GOAL_C_IMAGE_URL" alt="C. 問いかける習慣ができる。迷ったときに、守護霊へそっと問いかける時間を持てるようになります。">
+      <img src="REPLACE_WITH_GOAL_D_IMAGE_URL" alt="D. 現実の選択に活かせる。受け取った感覚を、日々の小さな決断につなげていけるようになります。">
+    </div>
+  </section>
+
+  <section id="gslab-apply">
+    <div class="section-head">
+      <h2>参加要項</h2>
+    </div>
+    <div class="price-card">
+      <span class="ribbon">3か月プログラム</span>
+      <p class="amount">¥8,800<small>（税込）/ 月</small></p>
+      <p class="terms">3か月分で合計 ¥26,400（税込）。</p>
+      <div class="bonus">
+        <span class="icon">🎁</span>
+        <span><b>今だけの特典</b>現実創造が加速するグラウンディング瞑想音源をプレゼント</span>
+      </div>
+      <a class="cta" href="#gslab-how-to-apply">LAB生になる</a>
+    </div>
+  </section>
+
+  <section id="gslab-how-to-apply">
+    <div class="section-head">
+      <span class="eyebrow">申し込みの流れ</span>
+      <h2>参加までのステップ</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="dot">1</span>
+        <div class="body"><h3>申し込みフォームを送信</h3><p>「LAB生になる」から、申し込みフォームを入力して送信してください。</p></div>
+      </div>
+      <div class="step">
+        <span class="dot">2</span>
+        <div class="body"><h3>クレジット決済</h3><p>自動送信メールを確認し、クレジット決済してください。</p></div>
+      </div>
+      <div class="step">
+        <span class="dot">3</span>
+        <div class="body"><h3>オープンチャットへご招待</h3><p>決済確認ができた方から、オープンチャットへご招待します。</p></div>
+      </div>
+    </div>
+    <p style="margin-top:16px;font-size:.85rem;color:var(--ink-faint);text-align:center;">定員：10名　締切：<span class="tbd">調整中</span></p>
+  </section>
+
+  <section>
+    <div class="notice">
+      <h3>ご参加にあたって大切なお願い</h3>
+      <p>・LABは、感じ方や気づきを育てるための場であり、効果や結果を保証するものではありません。</p>
+      <p>・受け取り方や進み方には個人差があります。他の方と比べず、ご自身のペースを大切にしてください。</p>
+      <p>・医療行為やカウンセリングの代わりにはなりません。心身の不調がある場合は、専門機関にもご相談ください。</p>
+      <p>・コミュニティ内で共有された内容は、他の場所へ転載・共有しないようお願いします。</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>© 2026 守護霊とおしゃべりLAB</p>
+  <p><a href="#tokusho" class="tbd">特定商取引法に基づく表記（準備中）</a></p>
+</footer>
+
+</div>
