@@ -94,7 +94,7 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 .option:hover { border-color: var(--gold); transform: translateX(3px); }
 .option .kana {
   flex: none; width: 30px; height: 30px; display: grid; place-items: center;
-  font-family: var(--font-display); font-weight: 700; color: var(--gold);
+  font-family: var(--font-body); font-weight: 700; color: var(--gold);
   border: 1px solid var(--gold); border-radius: 50%; font-size: 14px;
 }
 .option span:last-child { min-width: 0; }
@@ -176,7 +176,8 @@ textarea#share-text { width: 100%; min-height: 110px; background: var(--night-2)
 @media (max-width: 400px) {
   .ofuda { grid-template-columns: 1fr; }
   .ofuda-name { writing-mode: horizontal-tb; min-height: 0; border-right: 0; border-bottom: 2px solid var(--vermilion); padding: 0 64px 8px 0; margin: 0; }
-  .ofuda-name small { margin: 0 0 0 .6em; }
+  .ofuda-name { font-size: 30px; letter-spacing: .1em; white-space: nowrap; }
+  .ofuda-name small { display: inline-block; margin: 0 0 0 .6em; }
   .seal { position: absolute; top: 18px; right: 18px; width: 60px; height: 60px; font-size: 34px; }
 }
 </style>
@@ -237,48 +238,58 @@ const ORDER = ["michibiki","shugo","shimei","kakusei"];
 
 // ===== 質問（えらんだ答えのタイプに1点） =====
 const QUESTIONS = [
-  { q: "道に迷ったとき、あなたはどうする？", a: [
-    ["なんとなく「こっち」と思う方へ進む", "michibiki"],
-    ["なんだか嫌な感じがする道はさける", "shugo"],
-    ["待っている人のために、一番早い道をさがす", "shimei"],
-    ["さっき見た看板や数字がヒントに思えてくる", "kakusei"] ]},
-  { q: "初めて会う人と話したとき、よくあるのは？", a: [
-    ["「この人はちょっと違う」とすぐ感じる", "shugo"],
-    ["話しているうちに、やりたいことのアイデアが浮かぶ", "michibiki"],
-    ["前にも会ったような、ふしぎな感覚がある", "kakusei"],
-    ["この人の役に立てることは何か考える", "shimei"] ]},
-  { q: "大事なことを決めるとき、一番たよりにするのは？", a: [
-    ["ふっと浮かんだひらめき", "michibiki"],
-    ["「だれのためになるか」", "shimei"],
-    ["心の中の「やめておけ」という声", "shugo"],
-    ["夢や偶然の出来事からのヒント", "kakusei"] ]},
-  { q: "あなたによく起こる「ふしぎなこと」は？", a: [
-    ["時計を見ると 11:11 のようなゾロ目が多い", "kakusei"],
-    ["行くのをやめた場所で、あとからトラブルがあったと知る", "shugo"],
-    ["思いつきで動いたら、うまくいった", "michibiki"],
-    ["人のために動くと、なぜか必要な助けがやってくる", "shimei"] ]},
-  { q: "いちばんエネルギーがわくのは、どんなとき？", a: [
-    ["だれかに「ありがとう」と言われたとき", "shimei"],
-    ["新しい方向が見えた瞬間", "michibiki"],
-    ["静かな場所で、感覚がとぎすまされるとき", "kakusei"],
-    ["大切な人を守れたとき", "shugo"] ]},
-  { q: "まわりの人によく言われるのは？", a: [
-    ["「人を見る目があるね」", "shugo"],
-    ["「ふしぎな人だね」", "kakusei"],
-    ["「たよりになるね」", "shimei"],
-    ["「決めるのが早いね」", "michibiki"] ]},
-  { q: "寝ているときに見る夢について、近いのは？", a: [
-    ["内容をよく覚えていて、意味がありそうに感じる", "kakusei"],
-    ["起きた瞬間に、いいアイデアが浮かぶ", "michibiki"],
-    ["胸さわぎのする夢のあとは、気をつけて過ごす", "shugo"],
-    ["仕事や役目にかかわる夢をよく見る", "shimei"] ]},
-  { q: "守護霊に一番お願いしたいことは？", a: [
-    ["進むべき道を教えてほしい", "michibiki"],
-    ["悪いことや合わない人から守ってほしい", "shugo"],
-    ["自分の役目を果たす力をかしてほしい", "shimei"],
-    ["もっとサインを感じとれるようになりたい", "kakusei"] ]}
+  { q: "何かを決める時、いちばん多いのは？", a: [
+    ["理由はないけど「こっち」と感じる", "michibiki"],
+    ["人や場所への違和感を参考にする", "shugo"],
+    ["誰かの役に立つかどうかで決める", "shimei"],
+    ["偶然の一致やサインを参考にする", "kakusei"] ]},
+  { q: "「守られてるかも」と感じる瞬間は？", a: [
+    ["ふと答えが降りてきた時", "michibiki"],
+    ["危ないことを直前で回避できた時", "shugo"],
+    ["必要な人とのご縁がつながった時", "shimei"],
+    ["ゾロ目や夢、シンクロが続いた時", "kakusei"] ]},
+  { q: "人からよく言われるのは？", a: [
+    ["直感が鋭い", "michibiki"],
+    ["人を見る目がある", "shugo"],
+    ["面倒見がいい", "shimei"],
+    ["不思議な体験が多い", "kakusei"] ]},
+  { q: "ビジネスで迷った時は？", a: [
+    ["感覚的に「今だ」と思う方へ進む", "michibiki"],
+    ["違和感があるものは避ける", "shugo"],
+    ["お客様にどう貢献できるかを考える", "shimei"],
+    ["タイミングやサインを待つ", "kakusei"] ]},
+  { q: "自分に起こりやすいことは？", a: [
+    ["急にアイデアが浮かぶ", "michibiki"],
+    ["人の本音や空気を察知する", "shugo"],
+    ["人に相談されたり頼られたりする", "shimei"],
+    ["夢や数字、偶然が妙に重なる", "kakusei"] ]},
+  { q: "「これはやめた方がいい」と感じる時は？", a: [
+    ["急に気持ちが冷める", "michibiki"],
+    ["身体が重くなる・ザワつく", "shugo"],
+    ["誰かを傷つけそうだと感じる", "shimei"],
+    ["不思議なくらい予定が進まなくなる", "kakusei"] ]},
+  { q: "仕事でいちばん嬉しいのは？", a: [
+    ["自分のアイデアが形になった時", "michibiki"],
+    ["トラブルを未然に防げた時", "shugo"],
+    ["相手が変化・成長した時", "shimei"],
+    ["偶然が重なって流れが一気に動いた時", "kakusei"] ]},
+  { q: "スピリチュアルとの関わり方は？", a: [
+    ["直感として自然に使いたい", "michibiki"],
+    ["自分や大切な人を守るために使いたい", "shugo"],
+    ["人の役に立つために使いたい", "shimei"],
+    ["もっと深く感じたり視たりしてみたい", "kakusei"] ]},
+  { q: "「なんか流れがいい」と感じるのは？", a: [
+    ["自分の感覚に従った時", "michibiki"],
+    ["嫌な予感を無視しなかった時", "shugo"],
+    ["誰かのために動いた時", "shimei"],
+    ["サインに気づいて行動した時", "kakusei"] ]},
+  { q: "今いちばん知りたいのは？", a: [
+    ["直感をもっと信じる方法", "michibiki"],
+    ["守られているサインの見分け方", "shugo"],
+    ["自分の使命や役割", "shimei"],
+    ["守護霊とのつながりを深める方法", "kakusei"] ]}
 ];
-const KANA = ["い","ろ","は","に"];
+const KANA = ["A","B","C","D"];
 const KANJI_NUM = ["一","二","三","四","五","六","七","八","九","十"];
 
 // ===== 状態 =====
@@ -320,10 +331,10 @@ function renderIntro() {
     </svg>
     <div class="eyebrow">GUARDIAN SPIRIT</div>
     <h1>守護霊<br>タイプ診断</h1>
-    <p>八つの問いに答えると、あなたが守護霊からのサインをどう受け取りやすいか、4つのタイプでわかります。直感で、パッと選んでください。</p>
+    <p>十の問いに答えると、あなたが守護霊からのサインをどう受け取りやすいか、4つのタイプでわかります。直感で、パッと選んでください。</p>
     <div class="spirits-row" aria-label="4つのタイプ">${ORDER.map(k => `<span title="${SPIRITS[k].name}">${SPIRITS[k].seal}</span>`).join("")}</div>
     <button class="btn-main" id="start">診断をはじめる</button>
-    <p class="note">所要時間：約1分 ／ 全8問 ／ 4タイプ</p>
+    <p class="note">所要時間：約1分 ／ 全10問 ／ 4タイプ</p>
   </section>`;
   document.getElementById("start").onclick = () => { step = 0; answers = []; renderQuestion(); };
 }
