@@ -6,21 +6,21 @@
 <title>守護霊タイプ診断</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
 <style>
-/* Layout: 夜の神社の一本道。中央の細い柱（max 560px）に、問い → 御札（おふだ）型の結果カードが縦に並ぶ */
+/* Layout: 星空の一本道。中央の細い柱（max 560px）に、問い → 金の額縁の結果カードが縦に並ぶ（ポスターの天空ファンタジーに合わせる） */
 :root {
   --night: #150f30;      /* 夜の紫紺（ポスターに合わせる） */
   --night-2: #221a4a;    /* 一段明るい紫（カード地） */
   --line: #3b3072;       /* 罫線 */
   --gold: #d9b45a;       /* 金箔 */
   --gold-soft: #f1dfa8;  /* 淡い金（見出し） */
-  --paper: #f4ecd8;      /* 和紙（御札の地） */
-  --ink: #1d1a2e;        /* 墨 */
-  --vermilion: #b8432f;  /* 朱印 */
+  --lavender: #cbbcff;   /* 月明かりのラベンダー（引用・強調） */
+  --ink: #1d1a2e;        /* ボタン上の文字 */
   --text: #e6e3f2;
   --muted: #a6a8c8;
   --font-display: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-latin: "Cinzel", "Times New Roman", serif;
   --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
   color-scheme: dark;
 }
@@ -49,8 +49,8 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 
 /* ---------- はじまり ---------- */
 .intro { display: grid; gap: 28px; text-align: center; justify-items: center; }
-.torii { width: 120px; height: auto; color: var(--vermilion); }
 .eyebrow { font-size: 12px; letter-spacing: .35em; color: var(--gold); }
+.latin { font-family: var(--font-latin); font-weight: 500; letter-spacing: .3em; }
 .intro h1 { font-size: clamp(36px, 10vw, 54px); font-weight: 800; color: var(--gold-soft); letter-spacing: .08em; line-height: 1.25; }
 .intro p { margin: 0; color: var(--muted); max-width: 30em; }
 .spirits-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
@@ -84,7 +84,7 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 .quiz { display: grid; gap: 24px; }
 .progress { display: grid; gap: 8px; }
 .progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.progress-label b { font-family: var(--font-display); color: var(--gold); font-size: 15px; letter-spacing: .1em; }
+.progress-label b { color: var(--gold); font-size: 15px; letter-spacing: .15em; }
 .bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--gold); transition: width .35s ease; }
 .question { font-size: clamp(22px, 6vw, 28px); font-weight: 700; color: var(--gold-soft); line-height: 1.5; }
@@ -118,46 +118,42 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 .result-head { text-align: center; display: grid; gap: 6px; }
 .result-head .eyebrow { color: var(--muted); }
 
-.ofuda {
-  background: var(--paper); color: var(--ink);
-  border-radius: 4px;
-  padding: 22px 20px 26px;
-  display: grid; grid-template-columns: auto 1fr; gap: 20px;
+/* 結果カード：夜空のガラス板＋金の二重額縁＋四隅の星 */
+.card {
   position: relative;
-  box-shadow: 0 20px 50px rgba(0,0,0,.45);
+  padding: 34px 24px 28px;
   border: 1px solid var(--gold);
-  outline: 1px solid var(--paper); outline-offset: -7px;
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, color-mix(in srgb, var(--glow, var(--gold)) 22%, transparent), transparent 70%),
+    linear-gradient(180deg, rgba(58,40,120,.75), rgba(24,16,56,.92));
+  box-shadow: 0 0 40px color-mix(in srgb, var(--glow, var(--gold)) 30%, transparent), 0 18px 50px rgba(0,0,0,.45);
+  display: grid; gap: 18px;
 }
-.ofuda::before { /* 御札の内枠（金） */
-  content: ""; position: absolute; inset: 9px; border: 1px solid var(--gold); pointer-events: none;
-}
-.ofuda-name {
-  writing-mode: vertical-rl;
+.card::before { content: ""; position: absolute; inset: 7px; border: 1px solid rgba(217,180,90,.45); border-radius: 13px; pointer-events: none; }
+.card .star { position: absolute; color: var(--gold-soft); font-size: 14px; line-height: 1; text-shadow: 0 0 8px var(--gold); }
+.card .star.tl { top: 1px; left: 1px; } .card .star.tr { top: 1px; right: 1px; }
+.card .star.bl { bottom: 1px; left: 1px; } .card .star.br { bottom: 1px; right: 1px; }
+.card-head { text-align: center; display: grid; gap: 6px; justify-items: center; }
+.card-head .latin { font-size: 12px; color: var(--gold); }
+.type-name {
   font-family: var(--font-display); font-weight: 800;
-  font-size: clamp(30px, 9vw, 40px); letter-spacing: .18em;
-  color: var(--ink);
-  border-right: 2px solid var(--vermilion);
-  padding-right: 10px; margin-left: 4px;
-  min-height: 200px;
+  font-size: clamp(32px, 9vw, 42px); letter-spacing: .12em; line-height: 1.3;
+  background: linear-gradient(180deg, #fff6d6 10%, var(--gold) 90%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 10px rgba(217,180,90,.45));
 }
-.ofuda-name small { font-size: .38em; font-weight: 500; letter-spacing: .3em; color: var(--vermilion); margin-top: .8em; }
-.ofuda-body { min-width: 0; display: grid; gap: 14px; align-content: start; }
-.seal {
-  justify-self: end;
-  width: 78px; height: 78px; display: grid; place-items: center;
-  border: 3px solid var(--vermilion); border-radius: 8px;
-  color: var(--vermilion); font-family: var(--font-display); font-weight: 800; font-size: 44px;
-  transform: rotate(-6deg);
-  background: rgba(184,67,47,.06);
-}
-.catch { font-family: var(--font-display); font-weight: 700; font-size: 19px; line-height: 1.6; color: var(--ink); }
-.desc { margin: 0; font-size: 15px; color: #3a3550; }
+.ornament { display: flex; align-items: center; gap: 10px; color: var(--gold); width: min(240px, 80%); }
+.ornament::before, .ornament::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); }
+.ornament::after { background: linear-gradient(90deg, var(--gold), transparent); }
+.card-body { display: grid; gap: 14px; }
+.catch { font-family: var(--font-display); font-weight: 700; font-size: 19px; line-height: 1.7; color: var(--gold-soft); text-wrap: pretty; }
+.desc { margin: 0; font-size: 15px; color: var(--text); }
 .desc { display: grid; gap: 10px; }
 .desc p, .panel-body p { margin: 0; }
-.desc strong, .panel-body strong { color: var(--vermilion); font-weight: 700; }
-.panel-body strong { color: var(--gold-soft); }
+.desc strong, .panel-body strong { color: var(--gold-soft); font-weight: 700; }
 .voices, .points { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-.voices li { font-family: var(--font-display); font-weight: 700; color: var(--ink); padding-left: 12px; border-left: 2px solid var(--vermilion); line-height: 1.6; }
+.voices li { font-family: var(--font-display); font-weight: 700; color: var(--lavender); padding: 4px 0 4px 14px; border-left: 2px solid var(--gold); line-height: 1.6; background: linear-gradient(90deg, rgba(203,188,255,.10), transparent); }
 .panel-body { display: grid; gap: 10px; font-size: 15px; }
 .points li { font-family: var(--font-display); font-weight: 700; color: var(--gold-soft); }
 .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -198,13 +194,6 @@ textarea#share-text { width: 100%; min-height: 110px; background: var(--night-2)
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
-}
-@media (max-width: 400px) {
-  .ofuda { grid-template-columns: 1fr; }
-  .ofuda-name { writing-mode: horizontal-tb; min-height: 0; border-right: 0; border-bottom: 2px solid var(--vermilion); padding: 0 64px 8px 0; margin: 0; }
-  .ofuda-name { font-size: 30px; letter-spacing: .1em; white-space: nowrap; }
-  .ofuda-name small { display: inline-block; margin: 0 0 0 .6em; }
-  .seal { position: absolute; top: 18px; right: 18px; width: 60px; height: 60px; font-size: 34px; }
 }
 </style>
 </head>
@@ -344,7 +333,6 @@ const QUESTIONS = [
     ["守護霊とのつながりを深める方法", "kakusei"] ]}
 ];
 const KANA = ["A","B","C","D"];
-const KANJI_NUM = ["一","二","三","四","五","六","七","八","九","十"];
 
 // ===== 状態 =====
 let step = 0;
@@ -389,7 +377,7 @@ function renderQuestion() {
   app.innerHTML = `
   <section class="quiz fade-in">
     <div class="progress">
-      <div class="progress-label"><b>第${KANJI_NUM[step]}問</b><span>${step + 1} / ${QUESTIONS.length}</span></div>
+      <div class="progress-label"><b class="latin">Q.${step + 1}</b><span>${step + 1} / ${QUESTIONS.length}</span></div>
       <div class="bar"><i style="width:${(step / QUESTIONS.length) * 100}%"></i></div>
     </div>
     <h2 class="question">${esc(Q.q)}</h2>
@@ -423,7 +411,7 @@ function webinarHTML(key) {
   if (!page && !embed) return "";
   return `
     <section class="webinar" aria-labelledby="webinar-title">
-      <div class="eyebrow">WEBINAR</div>
+      <div class="eyebrow latin">WEBINAR</div>
       <h3 id="webinar-title">${esc(WEBINAR.title)}</h3>
       <p>${esc(WEBINAR.text)}</p>
       ${embed ? `<div class="video"><iframe src="${esc(embed)}" title="${esc(WEBINAR.title)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ""}
@@ -448,10 +436,15 @@ function renderResult() {
         : `<img class="type-art" src="${IMG[key]}" width="360" height="360" alt="${S.name}のイメージ" style="--glow:${S.color}">`}
     </div>
 
-    <article class="ofuda" aria-label="診断結果">
-      <h2 class="ofuda-name">${S.name}<small>${S.kana}</small></h2>
-      <div class="ofuda-body">
-        <div class="seal" aria-hidden="true">${S.seal}</div>
+    <article class="card" aria-label="診断結果" style="--glow:${S.color}">
+      <span class="star tl" aria-hidden="true">✦</span><span class="star tr" aria-hidden="true">✦</span>
+      <span class="star bl" aria-hidden="true">✦</span><span class="star br" aria-hidden="true">✦</span>
+      <div class="card-head">
+        <div class="latin">${key.toUpperCase()}</div>
+        <h2 class="type-name">${S.name}</h2>
+        <div class="ornament" aria-hidden="true">✧</div>
+      </div>
+      <div class="card-body">
         <div class="catch">${esc(S.lead)}</div>
         <div class="desc">${S.body}</div>
       </div>
