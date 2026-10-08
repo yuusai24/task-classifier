@@ -72,11 +72,6 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
   transition: transform .15s, box-shadow .15s;
 }
 .btn-main:hover { transform: translateY(-1px); box-shadow: 0 0 0 6px rgba(196,79,174,.28), 0 0 30px rgba(196,79,174,.5); }
-.btn-sub {
-  background: transparent; color: var(--pink-soft);
-  border: 1px solid var(--pink); border-radius: 999px;
-  padding: 10px 24px; font-size: 14px; letter-spacing: .1em;
-}
 .note { font-size: 12px; color: var(--muted); }
 
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -187,7 +182,6 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 .fact .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; border: 1px solid rgba(255,255,255,.3); }
 
 
-.actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 
 .fade-in { animation: fadeIn .45s ease both; }
 @keyframes fadeIn { from { opacity: .0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
@@ -458,13 +452,9 @@ function renderResult() {
 
     ${webinarHTML(key)}
 
-    <div class="actions">
-      <button class="btn-sub" id="again">もう一度診断する</button>
-    </div>
     <p class="note" style="text-align:center">※ この診断はあそびです。結果を楽しんでくださいね。</p>
   </section>`;
 
-  document.getElementById("again").onclick = renderIntro;
   window.scrollTo({ top: 0 });
 }
 
