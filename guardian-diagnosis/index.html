@@ -163,6 +163,12 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .flow span { border: 1px solid var(--gold); color: var(--gold-soft); border-radius: 999px; padding: 3px 10px; font-size: 14px; font-family: var(--font-display); font-weight: 700; }
 .flow i { font-style: normal; color: var(--gold); }
+.webinar { display: grid; gap: 12px; justify-items: center; text-align: center; background: var(--night-2); border: 1px solid var(--gold); border-radius: 14px; padding: 22px 18px; }
+.webinar h3 { font-size: clamp(18px, 5vw, 22px); color: var(--gold-soft); line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
+.webinar p { margin: 0; font-size: 15px; color: var(--text); max-width: 30em; }
+.video { width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; border: 1px solid var(--line); }
+.video iframe { width: 100%; height: 100%; border: 0; display: block; }
+.webinar-btn { text-decoration: none; font-size: 15px; letter-spacing: .08em; padding: 12px 26px; }
 .keyword { text-align: center; display: grid; gap: 8px; padding-block: 20px; border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold); }
 .keyword p { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(20px, 5.6vw, 26px); color: var(--gold-soft); line-height: 1.6; text-wrap: balance; word-break: keep-all; overflow-wrap: anywhere; }
 
@@ -268,6 +274,21 @@ const SPIRITS = {
   }
 };
 const ORDER = ["michibiki","shugo","shimei","kakusei"];
+
+// ===== ウェビナー動画（UTAGE） =====
+// page  : UTAGEの動画ページのURL（「動画を見る」ボタンのリンク先）
+// embed : UTAGEの埋め込みコードにある iframe の src（入れると結果の下でそのまま再生できる）
+// 両方とも空のときは、動画の枠は表示しない。
+// タイプごとに動画を変えるときは byType に書く（書いていないタイプは共通の動画を使う）。
+const WEBINAR = {
+  title: "あなたのタイプを、もっと深く知る特別ウェビナー",
+  text: "守護霊からのサインを、毎日とビジネスでどう活かすか。動画でくわしくお話ししています。",
+  page: "",
+  embed: "",
+  byType: {
+    // michibiki: { page: "", embed: "" },
+  }
+};
 
 // ===== 質問（えらんだ答えのタイプに1点） =====
 const QUESTIONS = [
@@ -393,6 +414,23 @@ function renderReading() {
   setTimeout(renderResult, reduce ? 0 : 1600);
 }
 
+function safeUrl(u) {
+  try { const x = new URL(u); return x.protocol === "https:" ? x.href : ""; } catch (e) { return ""; }
+}
+function webinarHTML(key) {
+  const v = Object.assign({ page: WEBINAR.page, embed: WEBINAR.embed }, WEBINAR.byType[key] || {});
+  const page = safeUrl(v.page), embed = safeUrl(v.embed);
+  if (!page && !embed) return "";
+  return `
+    <section class="webinar" aria-labelledby="webinar-title">
+      <div class="eyebrow">WEBINAR</div>
+      <h3 id="webinar-title">${esc(WEBINAR.title)}</h3>
+      <p>${esc(WEBINAR.text)}</p>
+      ${embed ? `<div class="video"><iframe src="${esc(embed)}" title="${esc(WEBINAR.title)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ""}
+      ${page ? `<a class="btn-main webinar-btn" href="${esc(page)}" target="_blank" rel="noopener">▶ ${embed ? "動画が見られないときはこちら" : "ウェビナー動画を見る"}</a>` : ""}
+    </section>`;
+}
+
 function renderResult() {
   const s = score(answers);
   const key = topSpirit(s);
@@ -425,6 +463,8 @@ function renderResult() {
       <div class="eyebrow">あなたへのキーワード</div>
       <p>「${esc(S.keyword)}」</p>
     </div>
+
+    ${webinarHTML(key)}
 
     <div class="panel">
       <h3>4タイプの割合</h3>
