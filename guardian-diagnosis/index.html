@@ -146,6 +146,20 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 }
 .catch { font-family: var(--font-display); font-weight: 700; font-size: 19px; line-height: 1.6; color: var(--ink); }
 .desc { margin: 0; font-size: 15px; color: #3a3550; }
+.desc { display: grid; gap: 10px; }
+.desc p, .panel-body p { margin: 0; }
+.desc strong, .panel-body strong { color: var(--vermilion); font-weight: 700; }
+.panel-body strong { color: var(--gold-soft); }
+.voices, .points { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.voices li { font-family: var(--font-display); font-weight: 700; color: var(--ink); padding-left: 12px; border-left: 2px solid var(--vermilion); line-height: 1.6; }
+.panel-body { display: grid; gap: 10px; font-size: 15px; }
+.points li { font-family: var(--font-display); font-weight: 700; color: var(--gold-soft); }
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.flow span { border: 1px solid var(--gold); color: var(--gold-soft); border-radius: 999px; padding: 3px 10px; font-size: 14px; font-family: var(--font-display); font-weight: 700; }
+.flow i { font-style: normal; color: var(--gold); }
+.keyword { text-align: center; display: grid; gap: 8px; padding-block: 20px; border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold); }
+.keyword p { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(20px, 5.6vw, 26px); color: var(--gold-soft); line-height: 1.6; text-wrap: balance; word-break: keep-all; overflow-wrap: anywhere; }
+
 
 .panel { background: var(--night-2); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 20px; display: grid; gap: 12px; }
 .panel h3 { font-size: 16px; color: var(--gold-soft); letter-spacing: .12em; }
@@ -189,49 +203,46 @@ textarea#share-text { width: 100%; min-height: 110px; background: var(--night-2)
 <script>
 // ===== 守護霊タイプ（4種類） =====
 const SPIRITS = {
+  // body / business は、こちらで書いたHTML（利用者の入力は入らない）
   michibiki: {
-    name: "導きタイプ", kana: "みちびき", seal: "導", color: "#e2a33b", colorName: "金色（こんじき）",
-    catch: "「なぜかこっちな気がする」が強い人",
-    desc: "直感やひらめきで方向性を受け取りやすい人。理由は説明できなくても「こっちだ」と感じたほうへ進むと、あとから「やっぱり正しかった」とわかることが多いタイプです。",
-    sign: "ふと浮かぶひらめき",
-    strength: "決めるのが早く、新しい道を見つける力。迷っている人に「こっちだよ」と道を示せる。",
-    caution: "頭で考えすぎると、せっかくのひらめきが聞こえにくくなります。最初に浮かんだ答えをメモしておきましょう。",
-    habit: "朝いちばんに浮かんだ言葉や考えを、3行だけ書きとめる。",
-    business: "新しい企画や方向性を決める場面で力を発揮します。迷ったら「ワクワクするほう」を選ぶのがコツ。",
-    partner: "shimei"
+    name: "導きタイプ", kana: "みちびき", seal: "導", color: "#e2a33b",
+    lead: "あなたは、直感やひらめきを通して守護霊からサインを受け取りやすいタイプ。",
+    body: `<ul class="voices"><li>「なんとなくこっち」</li><li>「理由はないけど今な気がする」</li></ul>
+      <p>そんな感覚が、実は大切なメッセージになっていることがあります。</p>
+      <p>このタイプは、頭で考えすぎると本来の感覚が鈍りやすいのが特徴。</p>`,
+    business: `<div class="flow"><span>直感</span><i>→</i><span>小さく行動</span><i>→</i><span>現実を見る</span></div>
+      <p>この流れを意識すると、守護霊との連携が深まりやすいです。</p>`,
+    keyword: "考えすぎる前に、感じたことを一度信じる"
   },
   shugo: {
-    name: "守護タイプ", kana: "しゅご", seal: "護", color: "#4f9a7e", colorName: "翡翠（ひすい）",
-    catch: "「なんとなくこの人は違う」が当たりやすい人",
-    desc: "危険回避や人間関係の違和感としてサインを受け取りやすい人。胸のざわざわ、なんとなくの居心地の悪さは、守護霊からの「気をつけて」の合図です。",
-    sign: "違和感・胸さわぎ",
-    strength: "人を見る目と、トラブルを先回りしてよける力。大切な人を守れる人です。",
-    caution: "違和感を「気のせい」と打ち消しがち。小さなざわざわほど、大事にしてください。",
-    habit: "人と会ったあと「心が軽い？重い？」を一言でふり返る。",
-    business: "取引先やパートナー選び、契約の判断で強みが出ます。「なにか引っかかる」は立ち止まるサインです。",
-    partner: "kakusei"
+    name: "守護タイプ", kana: "しゅご", seal: "護", color: "#4f9a7e",
+    lead: "あなたは、違和感や危機回避を通して守護霊のサポートを受け取りやすいタイプ。",
+    body: `<p>人・場所・仕事に対して</p>
+      <ul class="voices"><li>「なんか違う」</li><li>「今日はやめた方がいい気がする」</li></ul>
+      <p>そんな感覚が強い人です。</p>`,
+    business: `<ul class="points"><li>「誰と組むか」</li><li>「何を断るか」</li><li>「どこに時間を使わないか」</li></ul>
+      <p>がとても重要。</p>
+      <p>あなたは、攻める力以上に<strong>“不要なものを見抜く力”</strong>を持っています。</p>`,
+    keyword: "違和感を軽く扱わない"
   },
   shimei: {
-    name: "使命タイプ", kana: "しめい", seal: "命", color: "#c8483a", colorName: "緋色（ひいろ）",
-    catch: "人のために動くとき、守護霊とのつながりが強くなる人",
-    desc: "仕事・役割・人のために動く時に守護霊とのつながりが強くなる人。4つのタイプの中で、ビジネスとの相性がいちばん見えやすいタイプです。だれかの役に立とうと動き出すと、必要な人や出来事が自然と集まってきます。",
-    sign: "人からの依頼・ご縁",
-    strength: "責任感と行動力。自分の役割がはっきりすると、だれよりも力を出せる。",
-    caution: "人のためにがんばりすぎて、自分を後回しにしがち。休むことも使命の一部です。",
-    habit: "1日の終わりに「今日だれの役に立てたか」を1つ思い出す。",
-    business: "ビジネスとの相性がいちばん良いタイプ。「だれを助けたいか」を言葉にすると、仕事の方向性とご縁が一気につながります。",
-    partner: "michibiki"
+    name: "使命タイプ", kana: "しめい", seal: "命", color: "#c8483a",
+    lead: "あなたは、人の役に立つ時に守護霊とのつながりが強くなるタイプ。",
+    body: `<ul class="voices"><li>誰かの相談に乗る</li><li>教える</li><li>導く</li><li>支える</li></ul>
+      <p>そんな時に、不思議と必要な言葉が出てきたり、流れが良くなったりしませんか？</p>
+      <p>このタイプは、「自分のためだけ」よりも誰かに貢献する時に力が開く傾向があります。</p>`,
+    business: `<p>ビジネスとの相性もとても良く、自分の才能を人のために使うほど、次のご縁やチャンスにつながりやすいです。</p>`,
+    keyword: "自分の力を、誰のために使う？"
   },
   kakusei: {
-    name: "覚醒タイプ", kana: "かくせい", seal: "覚", color: "#8a6ad8", colorName: "紫紺（しこん）",
-    catch: "感覚を育てるほど、受信力が上がる人",
-    desc: "夢・数字・偶然の一致・体感など、スピリチュアルなサインを受け取りやすい人。ゾロ目をよく見る、同じ言葉に何度も出会う、鳥肌が立つ……そんな出来事が守護霊からのメッセージです。感覚を育てるほど受信力が上がります。",
-    sign: "夢・数字・偶然の一致",
-    strength: "ふつうの人が見すごすサインに気づける感受性。育てるほど伸びる力です。",
-    caution: "サインを探しすぎると疲れてしまいます。「気づいたらラッキー」くらいの気持ちで。",
-    habit: "見た夢や、気になった数字・偶然を「サイン日記」に記録する。",
-    business: "アイデアやタイミングを読む場面で強みが出ます。偶然の出会いや紹介は、チャンスの入り口です。",
-    partner: "shugo"
+    name: "覚醒タイプ", kana: "かくせい", seal: "覚", color: "#8a6ad8",
+    lead: "あなたは、夢・数字・偶然の一致・体感など、目に見えないサインを受け取りやすいタイプ。",
+    body: `<ul class="voices"><li>「最近ゾロ目ばっかり見る」</li><li>「夢が妙にリアル」</li><li>「考えていた人から連絡が来た」</li></ul>
+      <p>そんな体験が多いかもしれません。</p>
+      <p>このタイプは、感覚を育てるほどサインに気づきやすくなります。</p>
+      <p>ただし、サインを探しすぎると迷子になりやすいので、大切なのは<strong>“受け取ったあと現実でどう動くか”</strong>。</p>`,
+    business: "",
+    keyword: "サインを見つけるだけで終わらせない"
   }
 };
 const ORDER = ["michibiki","shugo","shimei","kakusei"];
@@ -373,10 +384,9 @@ function renderResult() {
   const s = score(answers);
   const key = topSpirit(s);
   const S = SPIRITS[key];
-  const P = SPIRITS[S.partner];
   const total = answers.length;
   const ranked = [...ORDER].sort((a, b) => s[b] - s[a] || ORDER.indexOf(a) - ORDER.indexOf(b));
-  const shareText = `わたしの守護霊タイプは「${S.name}」でした。\n${S.catch}\n受け取りやすいサイン：${S.sign}\n#守護霊タイプ診断`;
+  const shareText = `わたしの守護霊タイプは「${S.name}」でした。\nキーワード：「${S.keyword}」\n#守護霊タイプ診断`;
 
   app.innerHTML = `
   <section class="result fade-in">
@@ -388,20 +398,17 @@ function renderResult() {
       <h2 class="ofuda-name">${S.name}<small>${S.kana}</small></h2>
       <div class="ofuda-body">
         <div class="seal" aria-hidden="true">${S.seal}</div>
-        <div class="catch">${esc(S.catch)}</div>
-        <p class="desc">${esc(S.desc)}</p>
+        <div class="catch">${esc(S.lead)}</div>
+        <div class="desc">${S.body}</div>
       </div>
     </article>
 
-    <dl class="facts">
-      <div class="fact"><dt>受け取りやすいサイン</dt><dd>${S.sign}</dd></div>
-      <div class="fact"><dt>相性のいいタイプ</dt><dd>${P.name}</dd></div>
-    </dl>
+    ${S.business ? `<div class="panel"><h3>ビジネスでは</h3><div class="panel-body">${S.business}</div></div>` : ""}
 
-    <div class="panel"><h3>あなたの強み</h3><p>${esc(S.strength)}</p></div>
-    <div class="panel"><h3>ビジネスでの活かし方</h3><p>${esc(S.business)}</p></div>
-    <div class="panel"><h3>受信力を上げる習慣</h3><p>${esc(S.habit)}</p></div>
-    <div class="panel"><h3>守護霊からのひとこと</h3><p>${esc(S.caution)}</p></div>
+    <div class="keyword">
+      <div class="eyebrow">あなたへのキーワード</div>
+      <p>「${esc(S.keyword)}」</p>
+    </div>
 
     <div class="panel">
       <h3>4タイプの割合</h3>
