@@ -186,16 +186,8 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 .fact dd { margin: 0; font-family: var(--font-display); font-weight: 700; color: var(--pink-soft); font-size: 16px; line-height: 1.5; }
 .fact .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; border: 1px solid rgba(255,255,255,.3); }
 
-.ranks { display: grid; gap: 10px; }
-.rank { display: grid; grid-template-columns: 5.2em 1fr 2.8em; align-items: center; gap: 10px; font-size: 14px; }
-.rank .r-name { font-family: var(--font-display); font-weight: 700; white-space: nowrap; }
-.rank .r-bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
-.rank .r.bar i { display: block; height: 100%; background: var(--pink); border-radius: 4px; }
-.rank .r-pct { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
 
 .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-.toast { text-align: center; font-size: 13px; color: var(--pink); min-height: 1.4em; margin: 0; }
-textarea#share-text { width: 100%; min-height: 110px; background: var(--night-2); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 10px; font: inherit; font-size: 13px; }
 
 .fade-in { animation: fadeIn .45s ease both; }
 @keyframes fadeIn { from { opacity: .0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
@@ -433,9 +425,6 @@ function renderResult() {
   const s = score(answers);
   const key = topSpirit(s);
   const S = SPIRITS[key];
-  const total = answers.length;
-  const ranked = [...ORDER].sort((a, b) => s[b] - s[a] || ORDER.indexOf(a) - ORDER.indexOf(b));
-  const shareText = `わたしの守護霊タイプは「${S.name}」でした。\nキーワード：「${S.keyword}」\n#守護霊タイプ診断`;
 
   app.innerHTML = `
   <section class="result fade-in">
@@ -469,37 +458,13 @@ function renderResult() {
 
     ${webinarHTML(key)}
 
-    <div class="panel">
-      <h3>4タイプの割合</h3>
-      <div class="ranks">
-        ${ranked.map(k => {
-          const pct = Math.round((s[k] / total) * 100);
-          return `<div class="rank"><span class="r-name">${SPIRITS[k].name}</span><span class="r-bar"><i style="width:${pct}%;background:${SPIRITS[k].color}"></i></span><span class="r-pct">${pct}%</span></div>`;
-        }).join("")}
-      </div>
-    </div>
-
     <div class="actions">
-      <button class="btn-main" id="copy">結果をコピー</button>
       <button class="btn-sub" id="again">もう一度診断する</button>
     </div>
-    <p class="toast" id="toast" role="status"></p>
-    <textarea id="share-text" readonly hidden>${esc(shareText)}</textarea>
     <p class="note" style="text-align:center">※ この診断はあそびです。結果を楽しんでくださいね。</p>
   </section>`;
 
   document.getElementById("again").onclick = renderIntro;
-  document.getElementById("copy").onclick = async () => {
-    const toast = document.getElementById("toast");
-    const ta = document.getElementById("share-text");
-    try {
-      await navigator.clipboard.writeText(shareText);
-      toast.textContent = "コピーしました。SNSに貼りつけてシェアできます。";
-    } catch (e) {
-      ta.hidden = false; ta.focus(); ta.select();
-      toast.textContent = "自動コピーできませんでした。下の文章を選んでコピーしてください。";
-    }
-  };
   window.scrollTo({ top: 0 });
 }
 
