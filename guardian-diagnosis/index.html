@@ -78,6 +78,7 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 .poster { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 18px 50px rgba(0,0,0,.5); }
 .type-art { justify-self: center; width: min(220px, 60vw); height: auto; aspect-ratio: 1; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 0 6px rgba(217,180,90,.15), 0 0 48px var(--glow, var(--gold)); margin-top: 14px; }
 .intro { gap: 22px; }
+.result-poster { display: block; justify-self: center; width: 100%; max-width: 420px; height: auto; margin-top: 14px; border-radius: 14px; border: 1px solid var(--gold); box-shadow: 0 0 40px color-mix(in srgb, var(--glow, var(--gold)) 45%, transparent), 0 18px 50px rgba(0,0,0,.5); }
 
 /* ---------- 質問 ---------- */
 .quiz { display: grid; gap: 24px; }
@@ -211,6 +212,7 @@ const SPIRITS = {
   // body / business は、こちらで書いたHTML（利用者の入力は入らない）
   michibiki: {
     name: "導きタイプ", kana: "みちびき", seal: "導", color: "#e2a33b",
+    poster: "img/result-michibiki.jpg", posterSize: [720, 1279],
     lead: "あなたは、直感やひらめきを通して守護霊からサインを受け取りやすいタイプ。",
     body: `<ul class="voices"><li>「なんとなくこっち」</li><li>「理由はないけど今な気がする」</li></ul>
       <p>そんな感覚が、実は大切なメッセージになっていることがあります。</p>
@@ -388,7 +390,9 @@ function renderResult() {
   <section class="result fade-in">
     <div class="result-head">
       <div class="eyebrow">あなたの守護霊タイプは</div>
-      <img class="type-art" src="img/${key}.jpg" width="360" height="360" alt="${S.name}のイメージ" style="--glow:${S.color}">
+      ${S.poster
+        ? `<img class="result-poster" src="${S.poster}" width="${S.posterSize[0]}" height="${S.posterSize[1]}" alt="診断結果 ${S.name}。${esc(S.keyword)}" style="--glow:${S.color}">`
+        : `<img class="type-art" src="img/${key}.jpg" width="360" height="360" alt="${S.name}のイメージ" style="--glow:${S.color}">`}
     </div>
 
     <article class="ofuda" aria-label="診断結果">
