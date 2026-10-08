@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>守護霊タイプ診断</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* Layout: 夜の神社の一本道。中央の細い柱（max 560px）に、問い → 御札（おふだ）型の結果カードが縦に並ぶ */
+:root {
+  --night: #0f1530;      /* 夜の藍 */
+  --night-2: #18204a;    /* 一段明るい藍（カード地） */
+  --line: #2c3770;       /* 罫線 */
+  --gold: #d9b45a;       /* 金箔 */
+  --gold-soft: #f1dfa8;  /* 淡い金（見出し） */
+  --paper: #f4ecd8;      /* 和紙（御札の地） */
+  --ink: #1d1a2e;        /* 墨 */
+  --vermilion: #b8432f;  /* 朱印 */
+  --text: #e6e3f2;
+  --muted: #a6a8c8;
+  --font-display: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background: var(--night);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(217,180,90,.16), transparent 70%),
+    radial-gradient(circle at 20% 80%, rgba(80,100,200,.12), transparent 50%);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.8;
+}
+#stars { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+main {
+  position: relative; z-index: 1;
+  max-width: 560px; margin: 0 auto;
+  padding-inline: 16px; padding-block: 40px 64px;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+button { font: inherit; cursor: pointer; }
+button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px; }
+
+/* ---------- はじまり ---------- */
+.intro { display: grid; gap: 28px; text-align: center; justify-items: center; }
+.torii { width: 120px; height: auto; color: var(--vermilion); }
+.eyebrow { font-size: 12px; letter-spacing: .35em; color: var(--gold); }
+.intro h1 { font-size: clamp(36px, 10vw, 54px); font-weight: 800; color: var(--gold-soft); letter-spacing: .08em; line-height: 1.25; }
+.intro p { margin: 0; color: var(--muted); max-width: 30em; }
+.spirits-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.spirits-row span {
+  width: 40px; height: 40px; display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: 50%;
+  font-family: var(--font-display); font-weight: 700; color: var(--gold);
+}
+.btn-main {
+  background: var(--gold); color: var(--ink);
+  border: 0; border-radius: 999px;
+  padding: 14px 40px; font-weight: 700; letter-spacing: .15em;
+  box-shadow: 0 0 0 4px rgba(217,180,90,.18);
+  transition: transform .15s, box-shadow .15s;
+}
+.btn-main:hover { transform: translateY(-1px); box-shadow: 0 0 0 6px rgba(217,180,90,.25); }
+.btn-sub {
+  background: transparent; color: var(--gold-soft);
+  border: 1px solid var(--gold); border-radius: 999px;
+  padding: 10px 24px; font-size: 14px; letter-spacing: .1em;
+}
+.note { font-size: 12px; color: var(--muted); }
+
+/* ---------- 質問 ---------- */
+.quiz { display: grid; gap: 24px; }
+.progress { display: grid; gap: 8px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.progress-label b { font-family: var(--font-display); color: var(--gold); font-size: 15px; letter-spacing: .1em; }
+.bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--gold); transition: width .35s ease; }
+.question { font-size: clamp(22px, 6vw, 28px); font-weight: 700; color: var(--gold-soft); line-height: 1.5; }
+.options { display: grid; gap: 12px; }
+.option {
+  display: flex; align-items: center; gap: 14px;
+  text-align: left; width: 100%;
+  background: var(--night-2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 14px 16px;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.option:hover { border-color: var(--gold); transform: translateX(3px); }
+.option .kana {
+  flex: none; width: 30px; height: 30px; display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 700; color: var(--gold);
+  border: 1px solid var(--gold); border-radius: 50%; font-size: 14px;
+}
+.option span:last-child { min-width: 0; }
+.back { justify-self: start; background: none; border: 0; color: var(--muted); font-size: 14px; padding: 4px 0; }
+.back:hover { color: var(--text); }
+
+/* ---------- 霊視中 ---------- */
+.reading { display: grid; justify-items: center; gap: 24px; text-align: center; padding-block: 60px; }
+.flame { width: 70px; height: 70px; border-radius: 50%; background: radial-gradient(circle, var(--gold-soft), rgba(217,180,90,0) 70%); animation: pulse 1.1s ease-in-out infinite; }
+@keyframes pulse { 50% { transform: scale(1.35); opacity: .6; } }
+.reading p { font-family: var(--font-display); font-size: 20px; color: var(--gold-soft); letter-spacing: .2em; margin: 0; }
+
+/* ---------- 結果 ---------- */
+.result { display: grid; gap: 28px; }
+.result-head { text-align: center; display: grid; gap: 6px; }
+.result-head .eyebrow { color: var(--muted); }
+
+.ofuda {
+  background: var(--paper); color: var(--ink);
+  border-radius: 4px;
+  padding: 22px 20px 26px;
+  display: grid; grid-template-columns: auto 1fr; gap: 20px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,.45);
+  border: 1px solid var(--gold);
+  outline: 1px solid var(--paper); outline-offset: -7px;
+}
+.ofuda::before { /* 御札の内枠（金） */
+  content: ""; position: absolute; inset: 9px; border: 1px solid var(--gold); pointer-events: none;
+}
+.ofuda-name {
+  writing-mode: vertical-rl;
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(30px, 9vw, 40px); letter-spacing: .18em;
+  color: var(--ink);
+  border-right: 2px solid var(--vermilion);
+  padding-right: 10px; margin-left: 4px;
+  min-height: 200px;
+}
+.ofuda-name small { font-size: .38em; font-weight: 500; letter-spacing: .3em; color: var(--vermilion); margin-top: .8em; }
+.ofuda-body { min-width: 0; display: grid; gap: 14px; align-content: start; }
+.seal {
+  justify-self: end;
+  width: 78px; height: 78px; display: grid; place-items: center;
+  border: 3px solid var(--vermilion); border-radius: 8px;
+  color: var(--vermilion); font-family: var(--font-display); font-weight: 800; font-size: 44px;
+  transform: rotate(-6deg);
+  background: rgba(184,67,47,.06);
+}
+.catch { font-family: var(--font-display); font-weight: 700; font-size: 19px; line-height: 1.6; color: var(--ink); }
+.desc { margin: 0; font-size: 15px; color: #3a3550; }
+
+.panel { background: var(--night-2); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 20px; display: grid; gap: 12px; }
+.panel h3 { font-size: 16px; color: var(--gold-soft); letter-spacing: .12em; }
+.panel p { margin: 0; font-size: 15px; }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.fact { background: var(--night-2); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 2px; }
+.fact dt { font-size: 11px; letter-spacing: .25em; color: var(--muted); }
+.fact dd { margin: 0; font-family: var(--font-display); font-weight: 700; color: var(--gold-soft); font-size: 17px; }
+.fact .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; border: 1px solid rgba(255,255,255,.3); }
+
+.ranks { display: grid; gap: 10px; }
+.rank { display: grid; grid-template-columns: 5.5em 1fr 2.8em; align-items: center; gap: 10px; font-size: 14px; }
+.rank .r-name { font-family: var(--font-display); font-weight: 700; white-space: nowrap; }
+.rank .r-bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.rank .r-bar i { display: block; height: 100%; background: var(--gold); border-radius: 4px; }
+.rank .r-pct { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+
+.actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.toast { text-align: center; font-size: 13px; color: var(--gold); min-height: 1.4em; margin: 0; }
+textarea#share-text { width: 100%; min-height: 110px; background: var(--night-2); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 10px; font: inherit; font-size: 13px; }
+
+.fade-in { animation: fadeIn .45s ease both; }
+@keyframes fadeIn { from { opacity: .0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+@media (max-width: 400px) {
+  .ofuda { grid-template-columns: 1fr; }
+  .ofuda-name { writing-mode: horizontal-tb; min-height: 0; border-right: 0; border-bottom: 2px solid var(--vermilion); padding: 0 0 8px; margin: 0; }
+  .ofuda-name small { margin: 0 0 0 .6em; }
+  .seal { position: absolute; top: 18px; right: 18px; width: 60px; height: 60px; font-size: 34px; }
+}
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<main id="app"></main>
+
+<script>
+// ===== 守護霊タイプ（8種類） =====
+const SPIRITS = {
+  ryujin: {
+    name: "龍神", kana: "りゅうじん", seal: "龍", color: "#3a6fd8", colorName: "群青（ぐんじょう）",
+    catch: "大きな夢へ、雲を突きぬけて進む人",
+    desc: "あなたを守っているのは、空と水をつかさどる龍神。決めたらまっすぐ進むパワーと、まわりを巻きこむ勢いを持っています。チャンスの波が来たとき、背中をグッと押してくれる存在です。",
+    strength: "行動力とリーダーシップ。みんなが迷っているときに「やろう！」と言える勇気。",
+    caution: "勢いがありすぎて、休むのを忘れがち。龍も雲の上でひと休みします。",
+    item: "水晶・青いペン", direction: "東", partner: "hakuja"
+  },
+  byakko: {
+    name: "白狐", kana: "びゃっこ", seal: "狐", color: "#e9e6f5", colorName: "白銀（はくぎん）",
+    catch: "ひらめきで道を見つける、知恵の人",
+    desc: "あなたのそばには、お稲荷さまの使いである白い狐がいます。「なんとなくこっちがいい」というカンがよく当たるのは、この狐がそっと教えてくれているから。頭の回転が速く、ユーモアも得意です。",
+    strength: "直感力と機転。こまったときに、だれも思いつかない近道を見つけられる。",
+    caution: "気分が変わりやすい一面も。ひらめいたことはメモしておくと、運が逃げません。",
+    item: "鈴・白いハンカチ", direction: "西", partner: "tengu"
+  },
+  houou: {
+    name: "鳳凰", kana: "ほうおう", seal: "鳳", color: "#e2a33b", colorName: "金色（こんじき）",
+    catch: "そこにいるだけで、場がパッと明るくなる人",
+    desc: "あなたを守るのは、めでたいことを運ぶ伝説の鳥・鳳凰。華やかさと、何度でも立ち上がる強さを持っています。失敗しても、前よりきれいな羽を広げて飛び直せるタイプです。",
+    strength: "人を元気にする明るさと、くじけない回復力。",
+    caution: "人の目を気にしすぎると疲れてしまうことも。自分のための時間も大切に。",
+    item: "羽モチーフの小物・金色のしおり", direction: "南", partner: "ryujin"
+  },
+  mononofu: {
+    name: "武士の祖霊", kana: "もののふのそれい", seal: "武", color: "#6b7a8f", colorName: "鉄紺（てつこん）",
+    catch: "約束を守りぬく、信頼のかたまり",
+    desc: "あなたの後ろには、ご先祖さまの中でも特に心の強い武士の魂がついています。まじめで、決めたことは最後までやりとげる人。まわりからの「あの人なら大丈夫」という信頼は、この守護霊のおかげです。",
+    strength: "責任感とねばり強さ。コツコツ積み上げて、大きな結果を出せる。",
+    caution: "がんばりすぎて、ひとりで抱えこみがち。たまには刀をおろして、人に頼ってOK。",
+    item: "お守り袋・木のペンケース", direction: "北", partner: "miko"
+  },
+  miko: {
+    name: "巫女", kana: "みこ", seal: "巫", color: "#c8483a", colorName: "緋色（ひいろ）",
+    catch: "人の心にそっと寄りそう、癒やしの人",
+    desc: "あなたを守っているのは、神さまと人をつなぐ巫女の霊。人の気持ちに気づくのが上手で、話しているだけで相手がホッとします。言葉にしない「助けて」をキャッチできる、やさしい力を持っています。",
+    strength: "共感する力と、場の空気をやわらかくする力。",
+    caution: "人の気持ちを受け取りすぎて、つかれやすいかも。自分の心もいたわってあげて。",
+    item: "赤いひも・ハーブティー", direction: "南東", partner: "mononofu"
+  },
+  hakuja: {
+    name: "白蛇", kana: "はくじゃ", seal: "蛇", color: "#d8d2b8", colorName: "乳白（にゅうはく）",
+    catch: "静かに力をためて、ここぞで実らせる人",
+    desc: "あなたのそばには、昔から金運と幸運の使いとされる白い蛇がいます。あせらず、じっくり、ていねいに。地道にためた力が、ある日まとめて花ひらくタイプです。",
+    strength: "計画力と、あきらめない粘り。お金や時間の使い方が上手。",
+    caution: "慎重すぎてチャンスを見送ることも。ときには一歩ふみ出してみて。",
+    item: "がま口の財布・白い石", direction: "北西", partner: "ryujin"
+  },
+  tengu: {
+    name: "天狗", kana: "てんぐ", seal: "天", color: "#9c3b6a", colorName: "紅紫（こうし）",
+    catch: "どこへでも飛んでいける、自由な冒険家",
+    desc: "あなたを守るのは、山にすみ、空を自由にかける天狗。知りたいことがあれば、とことん調べて、行ってみる。ルールにしばられない発想で、新しい道を切りひらく人です。",
+    strength: "好奇心と行動の早さ。新しいことに一番乗りできる。",
+    caution: "あきっぽさに注意。ひとつのことを続けると、天狗の羽うちわが力を貸してくれます。",
+    item: "うちわ・地図", direction: "北東", partner: "byakko"
+  },
+  kodama: {
+    name: "木霊", kana: "こだま", seal: "森", color: "#5f9a5a", colorName: "若竹色（わかたけいろ）",
+    catch: "そばにいると落ち着く、森のような人",
+    desc: "あなたについているのは、古い木に宿る森の精・木霊。おだやかで、まわりをゆっくり育てる力があります。植物や動物にも好かれやすく、あなたがいる場所は自然とみんなが集まる「居場所」になります。",
+    strength: "おだやかさと、人や物を大切に育てる力。",
+    caution: "自分の意見をのみこみがち。小さな声でも、思ったことを伝えてみて。",
+    item: "観葉植物・木のアクセサリー", direction: "東南東", partner: "miko"
+  }
+};
+const ORDER = ["ryujin","byakko","houou","mononofu","miko","hakuja","tengu","kodama"];
+
+// ===== 質問（えらぶと、1つ目のタイプに2点・2つ目に1点） =====
+const QUESTIONS = [
+  { q: "休みの日、いちばんしたいことは？", a: [
+    ["知らない場所へ冒険に出かける", "tengu", "ryujin"],
+    ["友だちとワイワイおしゃべり", "houou", "miko"],
+    ["家でのんびり本やゲーム", "kodama", "hakuja"],
+    ["目標のための練習や勉強", "mononofu", "ryujin"] ]},
+  { q: "みんなで何かするとき、あなたの役目は？", a: [
+    ["先頭に立って引っぱる", "mononofu", "ryujin"],
+    ["みんなの気持ちをまとめる", "miko", "kodama"],
+    ["おもしろいアイデアを出す", "byakko", "tengu"],
+    ["目立つ役で場を盛り上げる", "houou", "byakko"] ]},
+  { q: "こまったことが起きたら？", a: [
+    ["すぐ動いて、力でなんとかする", "ryujin", "tengu"],
+    ["ピンときたカンを信じる", "byakko", "houou"],
+    ["じっくり考えて作戦を立てる", "hakuja", "mononofu"],
+    ["信頼できる人に相談する", "miko", "kodama"] ]},
+  { q: "いちばん心ひかれる景色は？", a: [
+    ["しぶきを上げる大きな滝", "ryujin", "houou"],
+    ["月明かりの竹林", "byakko", "hakuja"],
+    ["朝日がのぼる山のてっぺん", "tengu", "houou"],
+    ["しずかな森と小川", "kodama", "miko"] ]},
+  { q: "友だちからよく言われるのは？", a: [
+    ["まじめ・たよりになる", "mononofu", "hakuja"],
+    ["やさしい・話を聞いてくれる", "miko", "kodama"],
+    ["おもしろい・ふしぎな人", "byakko", "tengu"],
+    ["明るい・キラキラしてる", "houou", "ryujin"] ]},
+  { q: "おこづかいをもらったら？", a: [
+    ["コツコツ貯金する", "hakuja", "mononofu"],
+    ["だれかへのプレゼントに使う", "miko", "houou"],
+    ["気になったものをすぐ買う", "tengu", "byakko"],
+    ["植物やペットのお世話グッズを買う", "kodama", "miko"] ]},
+  { q: "いちばん大切にしたいものは？", a: [
+    ["約束やルール", "mononofu", "ryujin"],
+    ["自由", "tengu", "byakko"],
+    ["家族や仲間", "kodama", "miko"],
+    ["夢をかなえること", "hakuja", "ryujin"] ]},
+  { q: "自分を色であらわすと？", a: [
+    ["深い青", "ryujin", "hakuja"],
+    ["かがやく金色", "houou", "hakuja"],
+    ["すんだ白銀", "byakko", "mononofu"],
+    ["若葉の緑", "kodama", "tengu"] ]}
+];
+const KANA = ["い","ろ","は","に"];
+const KANJI_NUM = ["一","二","三","四","五","六","七","八","九","十"];
+
+// ===== 状態 =====
+let step = 0;
+let answers = []; // 各問でえらんだ番号
+
+const app = document.getElementById("app");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+
+function score(list) {
+  const s = Object.fromEntries(ORDER.map(k => [k, 0]));
+  list.forEach((choice, i) => {
+    const [, p, sec] = QUESTIONS[i].a[choice];
+    s[p] += 2; s[sec] += 1;
+  });
+  return s;
+}
+function topSpirit(s) {
+  // 同点のときは、最後の質問で選んだ「色」のタイプを優先 → それでも同点なら一覧の順
+  const max = Math.max(...ORDER.map(k => s[k]));
+  const tied = ORDER.filter(k => s[k] === max);
+  if (tied.length === 1) return tied[0];
+  for (let i = answers.length - 1; i >= 0; i--) {
+    const [, p, sec] = QUESTIONS[i].a[answers[i]];
+    if (tied.includes(p)) return p;
+    if (tied.includes(sec)) return sec;
+  }
+  return tied[0];
+}
+
+// ===== 画面 =====
+function renderIntro() {
+  app.innerHTML = `
+  <section class="intro fade-in">
+    <svg class="torii" viewBox="0 0 120 90" aria-hidden="true">
+      <path d="M4 14 Q60 2 116 14 L116 22 Q60 11 4 22 Z" fill="currentColor"/>
+      <rect x="14" y="28" width="92" height="7" fill="currentColor"/>
+      <rect x="26" y="20" width="9" height="70" fill="currentColor"/>
+      <rect x="85" y="20" width="9" height="70" fill="currentColor"/>
+      <rect x="56" y="22" width="8" height="8" fill="currentColor"/>
+    </svg>
+    <div class="eyebrow">GUARDIAN SPIRIT</div>
+    <h1>守護霊<br>タイプ診断</h1>
+    <p>八つの問いに答えると、あなたのうしろでそっと見守っている守護霊のタイプがわかります。直感で、パッと選んでください。</p>
+    <div class="spirits-row" aria-label="出てくる守護霊">${ORDER.map(k => `<span title="${SPIRITS[k].name}">${SPIRITS[k].seal}</span>`).join("")}</div>
+    <button class="btn-main" id="start">診断をはじめる</button>
+    <p class="note">所要時間：約1分 ／ 全8問 ／ 8タイプ</p>
+  </section>`;
+  document.getElementById("start").onclick = () => { step = 0; answers = []; renderQuestion(); };
+}
+
+function renderQuestion() {
+  const Q = QUESTIONS[step];
+  app.innerHTML = `
+  <section class="quiz fade-in">
+    <div class="progress">
+      <div class="progress-label"><b>第${KANJI_NUM[step]}問</b><span>${step + 1} / ${QUESTIONS.length}</span></div>
+      <div class="bar"><i style="width:${(step / QUESTIONS.length) * 100}%"></i></div>
+    </div>
+    <h2 class="question">${esc(Q.q)}</h2>
+    <div class="options">
+      ${Q.a.map((opt, i) => `<button class="option" data-i="${i}"><span class="kana">${KANA[i]}</span><span>${esc(opt[0])}</span></button>`).join("")}
+    </div>
+    ${step > 0 ? `<button class="back" id="back">← ひとつ前の問いにもどる</button>` : ""}
+  </section>`;
+  app.querySelectorAll(".option").forEach(b => b.onclick = () => {
+    answers[step] = Number(b.dataset.i);
+    step++;
+    if (step < QUESTIONS.length) renderQuestion(); else renderReading();
+  });
+  const back = document.getElementById("back");
+  if (back) back.onclick = () => { step--; answers.length = step; renderQuestion(); };
+  app.querySelector(".option").focus({ preventScroll: true });
+}
+
+function renderReading() {
+  app.innerHTML = `<section class="reading fade-in"><div class="flame"></div><p>霊視中……</p></section>`;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  setTimeout(renderResult, reduce ? 0 : 1600);
+}
+
+function renderResult() {
+  const s = score(answers);
+  const key = topSpirit(s);
+  const S = SPIRITS[key];
+  const P = SPIRITS[S.partner];
+  const total = Object.values(s).reduce((a, b) => a + b, 0);
+  const ranked = [...ORDER].sort((a, b) => s[b] - s[a] || ORDER.indexOf(a) - ORDER.indexOf(b)).slice(0, 3);
+  const shareText = `わたしの守護霊は「${S.name}（${S.kana}）」でした。\n${S.catch}\nラッキーアイテム：${S.item}／開運方角：${S.direction}\n#守護霊タイプ診断`;
+
+  app.innerHTML = `
+  <section class="result fade-in">
+    <div class="result-head">
+      <div class="eyebrow">あなたを守る守護霊は</div>
+    </div>
+
+    <article class="ofuda" aria-label="診断結果">
+      <h2 class="ofuda-name">${S.name}<small>${S.kana}</small></h2>
+      <div class="ofuda-body">
+        <div class="seal" aria-hidden="true">${S.seal}</div>
+        <div class="catch">${esc(S.catch)}</div>
+        <p class="desc">${esc(S.desc)}</p>
+      </div>
+    </article>
+
+    <dl class="facts">
+      <div class="fact"><dt>守護色</dt><dd><span class="swatch" style="background:${S.color}"></span>${S.colorName}</dd></div>
+      <div class="fact"><dt>開運方角</dt><dd>${S.direction}</dd></div>
+      <div class="fact"><dt>ラッキーアイテム</dt><dd>${S.item}</dd></div>
+      <div class="fact"><dt>相性のいい守護霊</dt><dd>${P.name}</dd></div>
+    </dl>
+
+    <div class="panel"><h3>あなたの強み</h3><p>${esc(S.strength)}</p></div>
+    <div class="panel"><h3>守護霊からのひとこと</h3><p>${esc(S.caution)}</p></div>
+
+    <div class="panel">
+      <h3>守護霊の気配（上位3つ）</h3>
+      <div class="ranks">
+        ${ranked.map(k => {
+          const pct = Math.round((s[k] / total) * 100);
+          return `<div class="rank"><span class="r-name">${SPIRITS[k].name}</span><span class="r-bar"><i style="width:${Math.min(100, pct * 2.5)}%"></i></span><span class="r-pct">${pct}%</span></div>`;
+        }).join("")}
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-main" id="copy">結果をコピー</button>
+      <button class="btn-sub" id="again">もう一度診断する</button>
+    </div>
+    <p class="toast" id="toast" role="status"></p>
+    <textarea id="share-text" readonly hidden>${esc(shareText)}</textarea>
+    <p class="note" style="text-align:center">※ この診断はあそびです。結果を楽しんでくださいね。</p>
+  </section>`;
+
+  document.getElementById("again").onclick = renderIntro;
+  document.getElementById("copy").onclick = async () => {
+    const toast = document.getElementById("toast");
+    const ta = document.getElementById("share-text");
+    try {
+      await navigator.clipboard.writeText(shareText);
+      toast.textContent = "コピーしました。SNSに貼りつけてシェアできます。";
+    } catch (e) {
+      ta.hidden = false; ta.focus(); ta.select();
+      toast.textContent = "自動コピーできませんでした。下の文章を選んでコピーしてください。";
+    }
+  };
+  window.scrollTo({ top: 0 });
+}
+
+// ===== 背景の星（ゆっくりまたたく） =====
+(function stars() {
+  const c = document.getElementById("stars");
+  const ctx = c.getContext("2d");
+  let pts = [];
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    c.width = innerWidth * dpr; c.height = innerHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    pts = Array.from({ length: Math.round(innerWidth * innerHeight / 9000) }, () => ({
+      x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+      r: Math.random() * 1.2 + .3, p: Math.random() * Math.PI * 2
+    }));
+  }
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function draw(t) {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (const s of pts) {
+      const a = still ? .6 : .35 + .35 * Math.sin(t / 1400 + s.p);
+      ctx.fillStyle = `rgba(241,223,168,${a})`;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+    }
+    if (!still) requestAnimationFrame(draw);
+  }
+  addEventListener("resize", () => { resize(); if (still) draw(0); });
+  resize(); requestAnimationFrame(draw);
+})();
+
+renderIntro();
+</script>
+</body>
+</html>
