@@ -153,11 +153,11 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .fact { background: var(--night-2); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 2px; }
 .fact dt { font-size: 11px; letter-spacing: .25em; color: var(--muted); }
-.fact dd { margin: 0; font-family: var(--font-display); font-weight: 700; color: var(--gold-soft); font-size: 17px; }
+.fact dd { margin: 0; font-family: var(--font-display); font-weight: 700; color: var(--gold-soft); font-size: 16px; line-height: 1.5; }
 .fact .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; border: 1px solid rgba(255,255,255,.3); }
 
 .ranks { display: grid; gap: 10px; }
-.rank { display: grid; grid-template-columns: 5.5em 1fr 2.8em; align-items: center; gap: 10px; font-size: 14px; }
+.rank { display: grid; grid-template-columns: 5.2em 1fr 2.8em; align-items: center; gap: 10px; font-size: 14px; }
 .rank .r-name { font-family: var(--font-display); font-weight: 700; white-space: nowrap; }
 .rank .r-bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
 .rank .r-bar i { display: block; height: 100%; background: var(--gold); border-radius: 4px; }
@@ -175,7 +175,7 @@ textarea#share-text { width: 100%; min-height: 110px; background: var(--night-2)
 }
 @media (max-width: 400px) {
   .ofuda { grid-template-columns: 1fr; }
-  .ofuda-name { writing-mode: horizontal-tb; min-height: 0; border-right: 0; border-bottom: 2px solid var(--vermilion); padding: 0 0 8px; margin: 0; }
+  .ofuda-name { writing-mode: horizontal-tb; min-height: 0; border-right: 0; border-bottom: 2px solid var(--vermilion); padding: 0 64px 8px 0; margin: 0; }
   .ofuda-name small { margin: 0 0 0 .6em; }
   .seal { position: absolute; top: 18px; right: 18px; width: 60px; height: 60px; font-size: 34px; }
 }
@@ -186,117 +186,97 @@ textarea#share-text { width: 100%; min-height: 110px; background: var(--night-2)
 <main id="app"></main>
 
 <script>
-// ===== 守護霊タイプ（8種類） =====
+// ===== 守護霊タイプ（4種類） =====
 const SPIRITS = {
-  ryujin: {
-    name: "龍神", kana: "りゅうじん", seal: "龍", color: "#3a6fd8", colorName: "群青（ぐんじょう）",
-    catch: "大きな夢へ、雲を突きぬけて進む人",
-    desc: "あなたを守っているのは、空と水をつかさどる龍神。決めたらまっすぐ進むパワーと、まわりを巻きこむ勢いを持っています。チャンスの波が来たとき、背中をグッと押してくれる存在です。",
-    strength: "行動力とリーダーシップ。みんなが迷っているときに「やろう！」と言える勇気。",
-    caution: "勢いがありすぎて、休むのを忘れがち。龍も雲の上でひと休みします。",
-    item: "水晶・青いペン", direction: "東", partner: "hakuja"
+  michibiki: {
+    name: "導きタイプ", kana: "みちびき", seal: "導", color: "#e2a33b", colorName: "金色（こんじき）",
+    catch: "「なぜかこっちな気がする」が強い人",
+    desc: "直感やひらめきで方向性を受け取りやすい人。理由は説明できなくても「こっちだ」と感じたほうへ進むと、あとから「やっぱり正しかった」とわかることが多いタイプです。",
+    sign: "ふと浮かぶひらめき",
+    strength: "決めるのが早く、新しい道を見つける力。迷っている人に「こっちだよ」と道を示せる。",
+    caution: "頭で考えすぎると、せっかくのひらめきが聞こえにくくなります。最初に浮かんだ答えをメモしておきましょう。",
+    habit: "朝いちばんに浮かんだ言葉や考えを、3行だけ書きとめる。",
+    business: "新しい企画や方向性を決める場面で力を発揮します。迷ったら「ワクワクするほう」を選ぶのがコツ。",
+    partner: "shimei"
   },
-  byakko: {
-    name: "白狐", kana: "びゃっこ", seal: "狐", color: "#e9e6f5", colorName: "白銀（はくぎん）",
-    catch: "ひらめきで道を見つける、知恵の人",
-    desc: "あなたのそばには、お稲荷さまの使いである白い狐がいます。「なんとなくこっちがいい」というカンがよく当たるのは、この狐がそっと教えてくれているから。頭の回転が速く、ユーモアも得意です。",
-    strength: "直感力と機転。こまったときに、だれも思いつかない近道を見つけられる。",
-    caution: "気分が変わりやすい一面も。ひらめいたことはメモしておくと、運が逃げません。",
-    item: "鈴・白いハンカチ", direction: "西", partner: "tengu"
+  shugo: {
+    name: "守護タイプ", kana: "しゅご", seal: "護", color: "#4f9a7e", colorName: "翡翠（ひすい）",
+    catch: "「なんとなくこの人は違う」が当たりやすい人",
+    desc: "危険回避や人間関係の違和感としてサインを受け取りやすい人。胸のざわざわ、なんとなくの居心地の悪さは、守護霊からの「気をつけて」の合図です。",
+    sign: "違和感・胸さわぎ",
+    strength: "人を見る目と、トラブルを先回りしてよける力。大切な人を守れる人です。",
+    caution: "違和感を「気のせい」と打ち消しがち。小さなざわざわほど、大事にしてください。",
+    habit: "人と会ったあと「心が軽い？重い？」を一言でふり返る。",
+    business: "取引先やパートナー選び、契約の判断で強みが出ます。「なにか引っかかる」は立ち止まるサインです。",
+    partner: "kakusei"
   },
-  houou: {
-    name: "鳳凰", kana: "ほうおう", seal: "鳳", color: "#e2a33b", colorName: "金色（こんじき）",
-    catch: "そこにいるだけで、場がパッと明るくなる人",
-    desc: "あなたを守るのは、めでたいことを運ぶ伝説の鳥・鳳凰。華やかさと、何度でも立ち上がる強さを持っています。失敗しても、前よりきれいな羽を広げて飛び直せるタイプです。",
-    strength: "人を元気にする明るさと、くじけない回復力。",
-    caution: "人の目を気にしすぎると疲れてしまうことも。自分のための時間も大切に。",
-    item: "羽モチーフの小物・金色のしおり", direction: "南", partner: "ryujin"
+  shimei: {
+    name: "使命タイプ", kana: "しめい", seal: "命", color: "#c8483a", colorName: "緋色（ひいろ）",
+    catch: "人のために動くとき、守護霊とのつながりが強くなる人",
+    desc: "仕事・役割・人のために動く時に守護霊とのつながりが強くなる人。4つのタイプの中で、ビジネスとの相性がいちばん見えやすいタイプです。だれかの役に立とうと動き出すと、必要な人や出来事が自然と集まってきます。",
+    sign: "人からの依頼・ご縁",
+    strength: "責任感と行動力。自分の役割がはっきりすると、だれよりも力を出せる。",
+    caution: "人のためにがんばりすぎて、自分を後回しにしがち。休むことも使命の一部です。",
+    habit: "1日の終わりに「今日だれの役に立てたか」を1つ思い出す。",
+    business: "ビジネスとの相性がいちばん良いタイプ。「だれを助けたいか」を言葉にすると、仕事の方向性とご縁が一気につながります。",
+    partner: "michibiki"
   },
-  mononofu: {
-    name: "武士の祖霊", kana: "もののふのそれい", seal: "武", color: "#6b7a8f", colorName: "鉄紺（てつこん）",
-    catch: "約束を守りぬく、信頼のかたまり",
-    desc: "あなたの後ろには、ご先祖さまの中でも特に心の強い武士の魂がついています。まじめで、決めたことは最後までやりとげる人。まわりからの「あの人なら大丈夫」という信頼は、この守護霊のおかげです。",
-    strength: "責任感とねばり強さ。コツコツ積み上げて、大きな結果を出せる。",
-    caution: "がんばりすぎて、ひとりで抱えこみがち。たまには刀をおろして、人に頼ってOK。",
-    item: "お守り袋・木のペンケース", direction: "北", partner: "miko"
-  },
-  miko: {
-    name: "巫女", kana: "みこ", seal: "巫", color: "#c8483a", colorName: "緋色（ひいろ）",
-    catch: "人の心にそっと寄りそう、癒やしの人",
-    desc: "あなたを守っているのは、神さまと人をつなぐ巫女の霊。人の気持ちに気づくのが上手で、話しているだけで相手がホッとします。言葉にしない「助けて」をキャッチできる、やさしい力を持っています。",
-    strength: "共感する力と、場の空気をやわらかくする力。",
-    caution: "人の気持ちを受け取りすぎて、つかれやすいかも。自分の心もいたわってあげて。",
-    item: "赤いひも・ハーブティー", direction: "南東", partner: "mononofu"
-  },
-  hakuja: {
-    name: "白蛇", kana: "はくじゃ", seal: "蛇", color: "#d8d2b8", colorName: "乳白（にゅうはく）",
-    catch: "静かに力をためて、ここぞで実らせる人",
-    desc: "あなたのそばには、昔から金運と幸運の使いとされる白い蛇がいます。あせらず、じっくり、ていねいに。地道にためた力が、ある日まとめて花ひらくタイプです。",
-    strength: "計画力と、あきらめない粘り。お金や時間の使い方が上手。",
-    caution: "慎重すぎてチャンスを見送ることも。ときには一歩ふみ出してみて。",
-    item: "がま口の財布・白い石", direction: "北西", partner: "ryujin"
-  },
-  tengu: {
-    name: "天狗", kana: "てんぐ", seal: "天", color: "#9c3b6a", colorName: "紅紫（こうし）",
-    catch: "どこへでも飛んでいける、自由な冒険家",
-    desc: "あなたを守るのは、山にすみ、空を自由にかける天狗。知りたいことがあれば、とことん調べて、行ってみる。ルールにしばられない発想で、新しい道を切りひらく人です。",
-    strength: "好奇心と行動の早さ。新しいことに一番乗りできる。",
-    caution: "あきっぽさに注意。ひとつのことを続けると、天狗の羽うちわが力を貸してくれます。",
-    item: "うちわ・地図", direction: "北東", partner: "byakko"
-  },
-  kodama: {
-    name: "木霊", kana: "こだま", seal: "森", color: "#5f9a5a", colorName: "若竹色（わかたけいろ）",
-    catch: "そばにいると落ち着く、森のような人",
-    desc: "あなたについているのは、古い木に宿る森の精・木霊。おだやかで、まわりをゆっくり育てる力があります。植物や動物にも好かれやすく、あなたがいる場所は自然とみんなが集まる「居場所」になります。",
-    strength: "おだやかさと、人や物を大切に育てる力。",
-    caution: "自分の意見をのみこみがち。小さな声でも、思ったことを伝えてみて。",
-    item: "観葉植物・木のアクセサリー", direction: "東南東", partner: "miko"
+  kakusei: {
+    name: "覚醒タイプ", kana: "かくせい", seal: "覚", color: "#8a6ad8", colorName: "紫紺（しこん）",
+    catch: "感覚を育てるほど、受信力が上がる人",
+    desc: "夢・数字・偶然の一致・体感など、スピリチュアルなサインを受け取りやすい人。ゾロ目をよく見る、同じ言葉に何度も出会う、鳥肌が立つ……そんな出来事が守護霊からのメッセージです。感覚を育てるほど受信力が上がります。",
+    sign: "夢・数字・偶然の一致",
+    strength: "ふつうの人が見すごすサインに気づける感受性。育てるほど伸びる力です。",
+    caution: "サインを探しすぎると疲れてしまいます。「気づいたらラッキー」くらいの気持ちで。",
+    habit: "見た夢や、気になった数字・偶然を「サイン日記」に記録する。",
+    business: "アイデアやタイミングを読む場面で強みが出ます。偶然の出会いや紹介は、チャンスの入り口です。",
+    partner: "shugo"
   }
 };
-const ORDER = ["ryujin","byakko","houou","mononofu","miko","hakuja","tengu","kodama"];
+const ORDER = ["michibiki","shugo","shimei","kakusei"];
 
-// ===== 質問（えらぶと、1つ目のタイプに2点・2つ目に1点） =====
+// ===== 質問（えらんだ答えのタイプに1点） =====
 const QUESTIONS = [
-  { q: "休みの日、いちばんしたいことは？", a: [
-    ["知らない場所へ冒険に出かける", "tengu", "ryujin"],
-    ["友だちとワイワイおしゃべり", "houou", "miko"],
-    ["家でのんびり本やゲーム", "kodama", "hakuja"],
-    ["目標のための練習や勉強", "mononofu", "ryujin"] ]},
-  { q: "みんなで何かするとき、あなたの役目は？", a: [
-    ["先頭に立って引っぱる", "mononofu", "ryujin"],
-    ["みんなの気持ちをまとめる", "miko", "kodama"],
-    ["おもしろいアイデアを出す", "byakko", "tengu"],
-    ["目立つ役で場を盛り上げる", "houou", "byakko"] ]},
-  { q: "こまったことが起きたら？", a: [
-    ["すぐ動いて、力でなんとかする", "ryujin", "tengu"],
-    ["ピンときたカンを信じる", "byakko", "houou"],
-    ["じっくり考えて作戦を立てる", "hakuja", "mononofu"],
-    ["信頼できる人に相談する", "miko", "kodama"] ]},
-  { q: "いちばん心ひかれる景色は？", a: [
-    ["しぶきを上げる大きな滝", "ryujin", "houou"],
-    ["月明かりの竹林", "byakko", "hakuja"],
-    ["朝日がのぼる山のてっぺん", "tengu", "houou"],
-    ["しずかな森と小川", "kodama", "miko"] ]},
-  { q: "友だちからよく言われるのは？", a: [
-    ["まじめ・たよりになる", "mononofu", "hakuja"],
-    ["やさしい・話を聞いてくれる", "miko", "kodama"],
-    ["おもしろい・ふしぎな人", "byakko", "tengu"],
-    ["明るい・キラキラしてる", "houou", "ryujin"] ]},
-  { q: "おこづかいをもらったら？", a: [
-    ["コツコツ貯金する", "hakuja", "mononofu"],
-    ["だれかへのプレゼントに使う", "miko", "houou"],
-    ["気になったものをすぐ買う", "tengu", "byakko"],
-    ["植物やペットのお世話グッズを買う", "kodama", "miko"] ]},
-  { q: "いちばん大切にしたいものは？", a: [
-    ["約束やルール", "mononofu", "ryujin"],
-    ["自由", "tengu", "byakko"],
-    ["家族や仲間", "kodama", "miko"],
-    ["夢をかなえること", "hakuja", "ryujin"] ]},
-  { q: "自分を色であらわすと？", a: [
-    ["深い青", "ryujin", "hakuja"],
-    ["かがやく金色", "houou", "hakuja"],
-    ["すんだ白銀", "byakko", "mononofu"],
-    ["若葉の緑", "kodama", "tengu"] ]}
+  { q: "道に迷ったとき、あなたはどうする？", a: [
+    ["なんとなく「こっち」と思う方へ進む", "michibiki"],
+    ["なんだか嫌な感じがする道はさける", "shugo"],
+    ["待っている人のために、一番早い道をさがす", "shimei"],
+    ["さっき見た看板や数字がヒントに思えてくる", "kakusei"] ]},
+  { q: "初めて会う人と話したとき、よくあるのは？", a: [
+    ["「この人はちょっと違う」とすぐ感じる", "shugo"],
+    ["話しているうちに、やりたいことのアイデアが浮かぶ", "michibiki"],
+    ["前にも会ったような、ふしぎな感覚がある", "kakusei"],
+    ["この人の役に立てることは何か考える", "shimei"] ]},
+  { q: "大事なことを決めるとき、一番たよりにするのは？", a: [
+    ["ふっと浮かんだひらめき", "michibiki"],
+    ["「だれのためになるか」", "shimei"],
+    ["心の中の「やめておけ」という声", "shugo"],
+    ["夢や偶然の出来事からのヒント", "kakusei"] ]},
+  { q: "あなたによく起こる「ふしぎなこと」は？", a: [
+    ["時計を見ると 11:11 のようなゾロ目が多い", "kakusei"],
+    ["行くのをやめた場所で、あとからトラブルがあったと知る", "shugo"],
+    ["思いつきで動いたら、うまくいった", "michibiki"],
+    ["人のために動くと、なぜか必要な助けがやってくる", "shimei"] ]},
+  { q: "いちばんエネルギーがわくのは、どんなとき？", a: [
+    ["だれかに「ありがとう」と言われたとき", "shimei"],
+    ["新しい方向が見えた瞬間", "michibiki"],
+    ["静かな場所で、感覚がとぎすまされるとき", "kakusei"],
+    ["大切な人を守れたとき", "shugo"] ]},
+  { q: "まわりの人によく言われるのは？", a: [
+    ["「人を見る目があるね」", "shugo"],
+    ["「ふしぎな人だね」", "kakusei"],
+    ["「たよりになるね」", "shimei"],
+    ["「決めるのが早いね」", "michibiki"] ]},
+  { q: "寝ているときに見る夢について、近いのは？", a: [
+    ["内容をよく覚えていて、意味がありそうに感じる", "kakusei"],
+    ["起きた瞬間に、いいアイデアが浮かぶ", "michibiki"],
+    ["胸さわぎのする夢のあとは、気をつけて過ごす", "shugo"],
+    ["仕事や役目にかかわる夢をよく見る", "shimei"] ]},
+  { q: "守護霊に一番お願いしたいことは？", a: [
+    ["進むべき道を教えてほしい", "michibiki"],
+    ["悪いことや合わない人から守ってほしい", "shugo"],
+    ["自分の役目を果たす力をかしてほしい", "shimei"],
+    ["もっとサインを感じとれるようになりたい", "kakusei"] ]}
 ];
 const KANA = ["い","ろ","は","に"];
 const KANJI_NUM = ["一","二","三","四","五","六","七","八","九","十"];
@@ -311,20 +291,18 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">"
 function score(list) {
   const s = Object.fromEntries(ORDER.map(k => [k, 0]));
   list.forEach((choice, i) => {
-    const [, p, sec] = QUESTIONS[i].a[choice];
-    s[p] += 2; s[sec] += 1;
+    s[QUESTIONS[i].a[choice][1]] += 1;
   });
   return s;
 }
 function topSpirit(s) {
-  // 同点のときは、最後の質問で選んだ「色」のタイプを優先 → それでも同点なら一覧の順
+  // 同点のときは、あとの質問で選んだタイプを優先
   const max = Math.max(...ORDER.map(k => s[k]));
   const tied = ORDER.filter(k => s[k] === max);
   if (tied.length === 1) return tied[0];
   for (let i = answers.length - 1; i >= 0; i--) {
-    const [, p, sec] = QUESTIONS[i].a[answers[i]];
-    if (tied.includes(p)) return p;
-    if (tied.includes(sec)) return sec;
+    const t = QUESTIONS[i].a[answers[i]][1];
+    if (tied.includes(t)) return t;
   }
   return tied[0];
 }
@@ -342,10 +320,10 @@ function renderIntro() {
     </svg>
     <div class="eyebrow">GUARDIAN SPIRIT</div>
     <h1>守護霊<br>タイプ診断</h1>
-    <p>八つの問いに答えると、あなたのうしろでそっと見守っている守護霊のタイプがわかります。直感で、パッと選んでください。</p>
-    <div class="spirits-row" aria-label="出てくる守護霊">${ORDER.map(k => `<span title="${SPIRITS[k].name}">${SPIRITS[k].seal}</span>`).join("")}</div>
+    <p>八つの問いに答えると、あなたが守護霊からのサインをどう受け取りやすいか、4つのタイプでわかります。直感で、パッと選んでください。</p>
+    <div class="spirits-row" aria-label="4つのタイプ">${ORDER.map(k => `<span title="${SPIRITS[k].name}">${SPIRITS[k].seal}</span>`).join("")}</div>
     <button class="btn-main" id="start">診断をはじめる</button>
-    <p class="note">所要時間：約1分 ／ 全8問 ／ 8タイプ</p>
+    <p class="note">所要時間：約1分 ／ 全8問 ／ 4タイプ</p>
   </section>`;
   document.getElementById("start").onclick = () => { step = 0; answers = []; renderQuestion(); };
 }
@@ -385,14 +363,14 @@ function renderResult() {
   const key = topSpirit(s);
   const S = SPIRITS[key];
   const P = SPIRITS[S.partner];
-  const total = Object.values(s).reduce((a, b) => a + b, 0);
-  const ranked = [...ORDER].sort((a, b) => s[b] - s[a] || ORDER.indexOf(a) - ORDER.indexOf(b)).slice(0, 3);
-  const shareText = `わたしの守護霊は「${S.name}（${S.kana}）」でした。\n${S.catch}\nラッキーアイテム：${S.item}／開運方角：${S.direction}\n#守護霊タイプ診断`;
+  const total = answers.length;
+  const ranked = [...ORDER].sort((a, b) => s[b] - s[a] || ORDER.indexOf(a) - ORDER.indexOf(b));
+  const shareText = `わたしの守護霊タイプは「${S.name}」でした。\n${S.catch}\n受け取りやすいサイン：${S.sign}\n#守護霊タイプ診断`;
 
   app.innerHTML = `
   <section class="result fade-in">
     <div class="result-head">
-      <div class="eyebrow">あなたを守る守護霊は</div>
+      <div class="eyebrow">あなたの守護霊タイプは</div>
     </div>
 
     <article class="ofuda" aria-label="診断結果">
@@ -405,21 +383,21 @@ function renderResult() {
     </article>
 
     <dl class="facts">
-      <div class="fact"><dt>守護色</dt><dd><span class="swatch" style="background:${S.color}"></span>${S.colorName}</dd></div>
-      <div class="fact"><dt>開運方角</dt><dd>${S.direction}</dd></div>
-      <div class="fact"><dt>ラッキーアイテム</dt><dd>${S.item}</dd></div>
-      <div class="fact"><dt>相性のいい守護霊</dt><dd>${P.name}</dd></div>
+      <div class="fact"><dt>受け取りやすいサイン</dt><dd>${S.sign}</dd></div>
+      <div class="fact"><dt>相性のいいタイプ</dt><dd>${P.name}</dd></div>
     </dl>
 
     <div class="panel"><h3>あなたの強み</h3><p>${esc(S.strength)}</p></div>
+    <div class="panel"><h3>ビジネスでの活かし方</h3><p>${esc(S.business)}</p></div>
+    <div class="panel"><h3>受信力を上げる習慣</h3><p>${esc(S.habit)}</p></div>
     <div class="panel"><h3>守護霊からのひとこと</h3><p>${esc(S.caution)}</p></div>
 
     <div class="panel">
-      <h3>守護霊の気配（上位3つ）</h3>
+      <h3>4タイプの割合</h3>
       <div class="ranks">
         ${ranked.map(k => {
           const pct = Math.round((s[k] / total) * 100);
-          return `<div class="rank"><span class="r-name">${SPIRITS[k].name}</span><span class="r-bar"><i style="width:${Math.min(100, pct * 2.5)}%"></i></span><span class="r-pct">${pct}%</span></div>`;
+          return `<div class="rank"><span class="r-name">${SPIRITS[k].name}</span><span class="r-bar"><i style="width:${pct}%;background:${SPIRITS[k].color}"></i></span><span class="r-pct">${pct}%</span></div>`;
         }).join("")}
       </div>
     </div>
