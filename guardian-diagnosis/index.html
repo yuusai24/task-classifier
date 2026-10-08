@@ -266,7 +266,7 @@ const ORDER = ["michibiki","shugo","shimei","kakusei"];
 const WEBINAR = {
   label: "魂の覚醒プログラム 入門講座",
   title: ["守護霊をパートナーにすれば", "お金と人と運に愛される"],
-  text: "あなたの守護霊タイプを、毎日とビジネスにどう活かすか。動画でくわしくお話ししています。",
+  text: "",   // 見出しの下の説明文（空なら表示しない）
   page: "https://sub.yuusai-parallelworld.com/p/htwf_webinar1",
   embed: "",
   byType: {
@@ -409,7 +409,7 @@ function webinarHTML(key) {
       <div class="eyebrow latin">WEBINAR</div>
       <div class="webinar-label">${esc(WEBINAR.label)}</div>
       <h3 id="webinar-title">${WEBINAR.title.map(t => `<span>${esc(t)}</span>`).join("")}</h3>
-      <p>${esc(WEBINAR.text)}</p>
+      ${WEBINAR.text ? `<p>${esc(WEBINAR.text)}</p>` : ""}
       ${embed ? `<div class="video"><iframe src="${esc(embed)}" title="${esc(WEBINAR.title.join(" "))}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ""}
       ${page ? `<a class="btn-main webinar-btn" href="${esc(page)}" target="_blank" rel="noopener">▶ ${embed ? "動画が見られないときはこちら" : "ウェビナー動画を見る"}</a>` : ""}
     </section>`;
