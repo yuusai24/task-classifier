@@ -161,7 +161,10 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 .flow i { font-style: normal; color: var(--gold); }
 .webinar { display: grid; gap: 12px; justify-items: center; text-align: center; background: var(--night-2); border: 1px solid var(--gold); border-radius: 14px; padding: 22px 18px; }
 .webinar h3 { font-size: clamp(18px, 5vw, 22px); color: var(--gold-soft); line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
-.webinar p { margin: 0; font-size: 15px; color: var(--text); max-width: 30em; }
+.webinar h3 span { display: block; }
+.webinar h3 span:first-child { font-size: .72em; color: var(--text); font-weight: 700; }
+.webinar-label { font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .12em; color: var(--ink); background: linear-gradient(180deg, #fff1c2, var(--gold)); border-radius: 999px; padding: 3px 14px; }
+.webinar p { margin: 0; font-size: 15px; color: var(--text); max-width: 30em; text-wrap: balance; }
 .video { width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; border: 1px solid var(--line); }
 .video iframe { width: 100%; height: 100%; border: 0; display: block; }
 .webinar-btn { text-decoration: none; font-size: 15px; letter-spacing: .08em; padding: 12px 26px; }
@@ -270,8 +273,9 @@ const ORDER = ["michibiki","shugo","shimei","kakusei"];
 // 両方とも空のときは、動画の枠は表示しない。
 // タイプごとに動画を変えるときは byType に書く（書いていないタイプは共通の動画を使う）。
 const WEBINAR = {
-  title: "あなたのタイプを、もっと深く知る特別ウェビナー",
-  text: "守護霊からのサインを、毎日とビジネスでどう活かすか。動画でくわしくお話ししています。",
+  label: "魂の覚醒プログラム 入門講座",
+  title: ["守護霊をパートナーにすれば", "お金と人と運に愛される"],
+  text: "あなたの守護霊タイプを、毎日とビジネスにどう活かすか。動画でくわしくお話ししています。",
   page: "https://sub.yuusai-parallelworld.com/p/htwf_webinar1",
   embed: "",
   byType: {
@@ -412,9 +416,10 @@ function webinarHTML(key) {
   return `
     <section class="webinar" aria-labelledby="webinar-title">
       <div class="eyebrow latin">WEBINAR</div>
-      <h3 id="webinar-title">${esc(WEBINAR.title)}</h3>
+      <div class="webinar-label">${esc(WEBINAR.label)}</div>
+      <h3 id="webinar-title">${WEBINAR.title.map(t => `<span>${esc(t)}</span>`).join("")}</h3>
       <p>${esc(WEBINAR.text)}</p>
-      ${embed ? `<div class="video"><iframe src="${esc(embed)}" title="${esc(WEBINAR.title)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ""}
+      ${embed ? `<div class="video"><iframe src="${esc(embed)}" title="${esc(WEBINAR.title.join(" "))}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ""}
       ${page ? `<a class="btn-main webinar-btn" href="${esc(page)}" target="_blank" rel="noopener">▶ ${embed ? "動画が見られないときはこちら" : "ウェビナー動画を見る"}</a>` : ""}
     </section>`;
 }
