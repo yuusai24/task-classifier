@@ -87,7 +87,7 @@ button:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px;
 .progress-label b { color: var(--pink); font-size: 15px; letter-spacing: .15em; }
 .bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--pink); transition: width .35s ease; }
-.question { font-size: clamp(22px, 6vw, 28px); font-weight: 700; color: var(--pink-soft); line-height: 1.5; }
+.question { font-size: clamp(22px, 6vw, 28px); font-weight: 700; color: var(--pink-soft); line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
 .options { display: grid; gap: 12px; }
 .option {
   display: flex; align-items: center; gap: 14px;
@@ -296,11 +296,11 @@ const QUESTIONS = [
     ["違和感があるものは避ける", "shugo"],
     ["お客様にどう貢献できるかを考える", "shimei"],
     ["タイミングやサインを待つ", "kakusei"] ]},
-  { q: "自分に起こりやすいことは？", a: [
-    ["急にアイデアが浮かぶ", "michibiki"],
-    ["人の本音や空気を察知する", "shugo"],
-    ["人に相談されたり頼られたりする", "shimei"],
-    ["夢や数字、偶然が妙に重なる", "kakusei"] ]},
+  { q: "守られてるな、と感じるのはどんな時？", a: [
+    ["ふと答えやアイデアが浮かんだ時", "michibiki"],
+    ["危ないことや合わないものを避けられた時", "shugo"],
+    ["誰かの役に立ったことで、流れが良くなった時", "shimei"],
+    ["ゾロ目・夢・偶然の一致が続いた時", "kakusei"] ]},
   { q: "「これはやめた方がいい」と感じる時は？", a: [
     ["急に気持ちが冷める", "michibiki"],
     ["身体が重くなる・ザワつく", "shugo"],
