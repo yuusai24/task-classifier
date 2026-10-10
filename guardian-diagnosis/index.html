@@ -1,0 +1,340 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>守護霊パートナー度診断</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* Layout: 一画面一問のカード型。上に光の輪、下に回答ボタン。結果は総合タイプ→4項目バー→組み合わせ→次の一歩 */
+:root {
+  --bg: #eef3f1;
+  --surface: #ffffff;
+  --ink: #1f2d2a;
+  --muted: #5d6f6a;
+  --line: #d3dfdb;
+  --jade: #2f7d6d;
+  --jade-soft: #dcece7;
+  --gold: #b8892e;
+  --glow: rgba(214, 177, 92, .38);
+  --display: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1a19; --surface: #172624; --ink: #e6efec; --muted: #9db1ab; --line: #2a3d3a;
+    --jade: #6cc3ad; --jade-soft: #1f3833; --gold: #e0b75e; --glow: rgba(224, 183, 94, .28);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1a19; --surface: #172624; --ink: #e6efec; --muted: #9db1ab; --line: #2a3d3a;
+  --jade: #6cc3ad; --jade-soft: #1f3833; --gold: #e0b75e; --glow: rgba(224, 183, 94, .28);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 16px; line-height: 1.8;
+}
+.wrap { max-width: 560px; margin: 0 auto; padding: 28px 16px 48px; display: grid; gap: 22px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; text-wrap: balance; margin: 0; line-height: 1.4; }
+h1 { font-size: 1.85rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.1rem; }
+p { margin: 0; }
+.eyebrow { font-size: .78rem; letter-spacing: .14em; color: var(--jade); font-weight: 700; }
+.muted { color: var(--muted); font-size: .92rem; }
+
+/* 光の輪 */
+.halo { position: relative; width: 132px; height: 132px; margin: 4px auto 0; }
+.halo span { position: absolute; inset: 0; border-radius: 50%; border: 1px solid var(--gold); opacity: .5; }
+.halo span:nth-child(2) { inset: 16px; opacity: .7; }
+.halo span:nth-child(3) { inset: 34px; opacity: 1; background: radial-gradient(circle, var(--glow), transparent 70%); border-width: 1.5px; }
+.halo::after { content: ""; position: absolute; inset: -18px; border-radius: 50%; background: radial-gradient(circle, var(--glow), transparent 65%); opacity: var(--power, .5); transition: opacity .6s; }
+@media (prefers-reduced-motion: no-preference) {
+  .halo span { animation: breathe 5s ease-in-out infinite; }
+  .halo span:nth-child(2) { animation-delay: .6s; }
+  .halo span:nth-child(3) { animation-delay: 1.2s; }
+  @keyframes breathe { 50% { transform: scale(1.04); } }
+}
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px 20px; display: grid; gap: 14px; }
+.axes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.axis-chip { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; display: grid; gap: 2px; }
+.axis-chip b { font-family: var(--display); font-size: 1rem; }
+.axis-chip small { color: var(--muted); font-size: .8rem; line-height: 1.5; }
+
+.btn {
+  appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 700;
+  background: var(--jade); color: var(--surface); border-radius: 999px; padding: 14px 22px;
+  width: 100%; font-size: 1rem; transition: transform .15s, filter .15s;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn:active { transform: scale(.98); }
+.btn.ghost { background: transparent; color: var(--jade); border: 1.5px solid var(--jade); }
+.btn:focus-visible, .choice:focus-visible, .back:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+/* 質問画面 */
+.progress { display: grid; gap: 6px; }
+.progress-top { display: flex; justify-content: space-between; align-items: baseline; font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bar { height: 6px; background: var(--jade-soft); border-radius: 999px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--jade); border-radius: 999px; transition: width .3s; }
+.q-text { font-family: var(--display); font-size: 1.3rem; line-height: 1.7; min-height: 5.1em; }
+.choices { display: grid; gap: 10px; }
+.choice {
+  appearance: none; font: inherit; text-align: left; cursor: pointer; color: var(--ink);
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px;
+  padding: 13px 16px; display: flex; align-items: center; gap: 12px; transition: border-color .15s, background .15s;
+}
+.choice:hover { border-color: var(--jade); }
+.choice[aria-pressed="true"] { border-color: var(--jade); background: var(--jade-soft); }
+.dot { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; }
+.choice[aria-pressed="true"] .dot { border-color: var(--jade); }
+.choice[aria-pressed="true"] .dot::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--jade); }
+.pts { margin-left: auto; font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.back { appearance: none; background: none; border: 0; color: var(--muted); font: inherit; font-size: .9rem; cursor: pointer; padding: 6px 0; justify-self: start; }
+.back:disabled { visibility: hidden; }
+
+/* 結果画面 */
+.score { text-align: center; display: grid; gap: 6px; }
+.score-num { font-family: var(--display); font-size: 3rem; line-height: 1.1; color: var(--gold); font-variant-numeric: tabular-nums; }
+.score-num small { font-size: 1.1rem; color: var(--muted); }
+.type-name { font-family: var(--display); font-size: 1.5rem; }
+.rows { display: grid; gap: 14px; }
+.row { display: grid; gap: 5px; }
+.row-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.row-top b { font-family: var(--display); }
+.row-top span { font-variant-numeric: tabular-nums; color: var(--muted); font-size: .92rem; }
+.row .bar { height: 10px; }
+.tag { display: inline-block; font-size: .75rem; padding: 1px 9px; border-radius: 999px; margin-left: 6px; vertical-align: 2px; font-family: var(--body); font-weight: 700; }
+.tag.hi { background: var(--jade-soft); color: var(--jade); }
+.tag.lo { background: var(--glow); color: var(--ink); }
+.combo { font-family: var(--display); font-size: 1.2rem; line-height: 1.6; color: var(--jade); }
+.step { border-left: 3px solid var(--gold); padding-left: 14px; }
+.actions { display: grid; gap: 10px; }
+.note { font-size: .8rem; color: var(--muted); text-align: center; line-height: 1.6; }
+.toast { text-align: center; font-size: .85rem; color: var(--jade); min-height: 1.4em; }
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+const AXES = [
+  { key: "receive", name: "受信力", desc: "サインやひらめきを感じとる力" },
+  { key: "trust",   name: "自己信頼", desc: "受け取った感覚を信じる力" },
+  { key: "action",  name: "行動力", desc: "受け取ったものを試してみる力" },
+  { key: "self",    name: "主体性", desc: "最後は自分で決める力" },
+];
+
+const QUESTIONS = [
+  ["receive", "理由はなくても「こっちな気がする」と感じることがある。"],
+  ["receive", "人や場所に対して、説明できない違和感を感じることがある。"],
+  ["receive", "同じ言葉・数字・出来事が何度も続くと気になる。"],
+  ["receive", "ふと浮かんだアイデアが、あとから意味を持つことがある。"],
+  ["receive", "頭で考えている時より、リラックスしている時に答えが浮かびやすい。"],
+  ["trust",   "直感を感じた時、すぐ「気のせい」と否定しない。"],
+  ["trust",   "周りと意見が違っても、自分の感覚を大切にできる。"],
+  ["trust",   "「なんとなく嫌」という感覚にも意味があると思える。"],
+  ["trust",   "自分が受け取った感覚を、正解か不正解かだけで判断しない。"],
+  ["trust",   "一度決めたことを、他人の一言ですぐ変えてしまうことは少ない。"],
+  ["action",  "「やってみたい」と思ったら、小さくても行動に移せる。"],
+  ["action",  "怖さがあっても、本当にやりたいことなら一歩踏み出せる。"],
+  ["action",  "直感やひらめきを受け取ったあと、実際に試してみることがある。"],
+  ["action",  "完璧に準備が整うまで待つより、動きながら考えられる。"],
+  ["action",  "チャンスだと感じた時、「また今度」で終わらせない。"],
+  ["self",    "「誰かに人生を変えてほしい」より「自分で変えたい」と思っている。"],
+  ["self",    "守護霊からメッセージをもらっても、最後に決めるのは自分だと思う。"],
+  ["self",    "うまくいかない時、環境や他人だけでなく自分の選択も振り返る。"],
+  ["self",    "「どうしたらいい？」だけでなく、「私はどうしたい？」を考えられる。"],
+  ["self",    "守護霊には答えを決めてもらうのではなく、自分の人生を後押ししてほしいと思う。"],
+];
+
+const CHOICES = [
+  { pts: 4, label: "とてもあてはまる" },
+  { pts: 3, label: "ややあてはまる" },
+  { pts: 2, label: "あまりあてはまらない" },
+  { pts: 1, label: "まったくあてはまらない" },
+];
+
+const TYPES = [
+  { min: 65, name: "守護霊ビジネスパートナー準備OK",
+    text: "受け取る・信じる・動く・自分で決める、のバランスが整っている状態。守護霊からのサインを「答え」ではなく、人生やビジネスを進めるヒントとして活かしやすいタイプ。" },
+  { min: 50, name: "もうすぐパートナータイプ",
+    text: "サインを感じる力はあるけれど、「本当にこれでいい？」と疑ったり、行動の手前で止まりやすいかも。必要なのは、もっとサインを探すことより、受け取ったものを小さく試してみること。" },
+  { min: 35, name: "自分軸育成タイプ",
+    text: "守護霊からのサインより先に、「私は本当はどうしたい？」を整える段階。自分の意思が曖昧なままだと、どんなメッセージを受け取っても迷いやすい。まずは自分の選択に責任を持つ練習から。" },
+  { min: 0, name: "まずは現実を動かすタイプ",
+    text: "今は「守護霊ともっとつながらなきゃ」と頑張るより、目の前の現実で自分ができることを一つずつ選ぶことが大切。守護霊に人生を動かしてもらうのではなく、自分が動き始めた時にサポートを感じやすくなる。" },
+];
+
+// 一番高い項目 × 一番低い項目 の組み合わせメッセージ
+const COMBOS = {
+  "receive>trust":  "サインは来てる。でも自分が疑って止めてるタイプ",
+  "receive>action": "受け取ってるのに、動く手前で止まってるタイプ",
+  "receive>self":   "サインは届くけど、答えを外に求めがちなタイプ",
+  "trust>receive":  "自分の感覚は信じられる。力を抜くと、もっと受け取れるタイプ",
+  "trust>action":   "わかってるのに腰が重い、慎重派タイプ",
+  "trust>self":     "感覚は信じてる。でも人生のハンドルを人に預けがちなタイプ",
+  "action>receive": "よく動ける。でも立ち止まって感じる時間が足りないタイプ",
+  "action>trust":   "行動は早い。でも人の声で方向がブレやすいタイプ",
+  "action>self":    "動いてはいる。でも「私はどうしたい？」が置き去りなタイプ",
+  "self>receive":   "自分で決める力は十分。アンテナを開くと一気に加速するタイプ",
+  "self>trust":     "自分で決めたい。でも自分の感覚にまだ自信が持てないタイプ",
+  "self>action":    "意志はしっかりある。あとは一歩目を小さく踏み出すタイプ",
+};
+
+// 一番低い項目に合わせた「今日からの一歩」
+const STEPS = {
+  receive: "1日5分、スマホを置いてぼーっとする時間をつくってみて。答えは、頭がゆるんだ時にふっと浮かぶから。浮かんだ言葉や数字はメモしておこう。",
+  trust:   "「気のせいかも」と思った感覚を、否定せずに一行だけ書き出してみて。合ってたか間違ってたかは気にしなくていい。感じた自分に花丸をつけてあげて。",
+  action:  "ピンときたことを「5分でできるサイズ」にして、今日のうちに試してみよう。完璧な準備は要らない。やった人だけが体感できるから。",
+  self:    "迷った時は「どうしたらいい？」の前に「私はどうしたい？」と自分に聞いてみて。答えを決めるのは自分。守護霊はその背中を押してくれる存在なんです。",
+};
+
+const app = document.getElementById("app");
+let answers = new Array(QUESTIONS.length).fill(null);
+let current = 0;
+
+function axisName(key) { return AXES.find(a => a.key === key).name; }
+
+function renderIntro() {
+  app.innerHTML = `
+    <div class="halo" style="--power:.55" aria-hidden="true"><span></span><span></span><span></span></div>
+    <header style="display:grid;gap:10px;text-align:center">
+      <p class="eyebrow">全20問・約3分</p>
+      <h1>守護霊パートナー度診断</h1>
+      <p class="muted">守護霊は誰のそばにもいる。<br>違いは、そのサポートを受け取って活かせる状態かどうか。<br>今のあなたの「パートナー度」を4つの力で見てみよう。</p>
+    </header>
+    <section class="panel">
+      <h3>診断する4つの力</h3>
+      <div class="axes">
+        ${AXES.map(a => `<div class="axis-chip"><b>${a.name}</b><small>${a.desc}</small></div>`).join("")}
+      </div>
+      <p class="muted">各項目5問・20点満点、合計80点満点。直感で、今の自分に近いものを選んでね。</p>
+    </section>
+    <button class="btn" id="start">診断をはじめる</button>
+    <p class="note">この診断は、今の在り方を見つめるためのセルフチェックです。</p>
+  `;
+  document.getElementById("start").onclick = () => { current = 0; renderQuestion(); };
+}
+
+function renderQuestion() {
+  const [axis, text] = QUESTIONS[current];
+  const done = answers.filter(v => v !== null).length;
+  app.innerHTML = `
+    <div class="progress">
+      <div class="progress-top"><span>${axisName(axis)}</span><span>${current + 1} / ${QUESTIONS.length}</span></div>
+      <div class="bar"><i style="width:${(done / QUESTIONS.length) * 100}%"></i></div>
+    </div>
+    <section class="panel">
+      <p class="eyebrow">Q${current + 1}</p>
+      <p class="q-text">${text}</p>
+      <div class="choices" role="group" aria-label="回答を選ぶ">
+        ${CHOICES.map(c => `
+          <button class="choice" data-pts="${c.pts}" aria-pressed="${answers[current] === c.pts}">
+            <span class="dot" aria-hidden="true"></span>${c.label}<span class="pts">${c.pts}点</span>
+          </button>`).join("")}
+      </div>
+    </section>
+    <button class="back" id="back" ${current === 0 ? "disabled" : ""}>← 前の質問にもどる</button>
+  `;
+  app.querySelectorAll(".choice").forEach(btn => {
+    btn.onclick = () => {
+      answers[current] = Number(btn.dataset.pts);
+      app.querySelectorAll(".choice").forEach(b => b.setAttribute("aria-pressed", b === btn));
+      setTimeout(() => {
+        if (current < QUESTIONS.length - 1) { current++; renderQuestion(); }
+        else renderResult();
+      }, 220);
+    };
+  });
+  document.getElementById("back").onclick = () => { if (current > 0) { current--; renderQuestion(); } };
+  window.scrollTo({ top: 0 });
+}
+
+function scoreAxes() {
+  const s = Object.fromEntries(AXES.map(a => [a.key, 0]));
+  QUESTIONS.forEach(([axis], i) => { s[axis] += answers[i] || 0; });
+  return s;
+}
+
+function renderResult() {
+  const s = scoreAxes();
+  const total = Object.values(s).reduce((a, b) => a + b, 0);
+  const type = TYPES.find(t => total >= t.min);
+  const sorted = [...AXES].sort((a, b) => s[b.key] - s[a.key]);
+  const hi = sorted[0], lo = sorted[sorted.length - 1];
+  const gap = s[hi.key] - s[lo.key];
+  const combo = gap >= 3
+    ? COMBOS[`${hi.key}>${lo.key}`]
+    : "4つの力のバランスがそろっているタイプ";
+  const power = Math.max(.2, (total - 20) / 60);
+
+  const shareText =
+`【守護霊パートナー度診断】
+${total}点／80点：${type.name}
+${AXES.map(a => `${a.name} ${s[a.key]}／20`).join("、")}
+${combo}`;
+
+  app.innerHTML = `
+    <div class="halo" style="--power:${power.toFixed(2)}" aria-hidden="true"><span></span><span></span><span></span></div>
+    <section class="score">
+      <p class="eyebrow">あなたのパートナー度</p>
+      <p class="score-num">${total}<small>／80点</small></p>
+      <h2 class="type-name">${type.name}</h2>
+    </section>
+    <section class="panel">
+      <p>${type.text}</p>
+    </section>
+    <section class="panel">
+      <h3>4つの力の内訳</h3>
+      <div class="rows">
+        ${AXES.map(a => `
+          <div class="row">
+            <div class="row-top">
+              <b>${a.name}${gap >= 3 && a.key === hi.key ? '<span class="tag hi">いちばん強い</span>' : ""}${gap >= 3 && a.key === lo.key ? '<span class="tag lo">伸びしろ</span>' : ""}</b>
+              <span>${s[a.key]}／20</span>
+            </div>
+            <div class="bar"><i style="width:${(s[a.key] / 20) * 100}%"></i></div>
+          </div>`).join("")}
+      </div>
+    </section>
+    <section class="panel">
+      <p class="eyebrow">あなたの組み合わせ</p>
+      <p class="combo">“${combo}”</p>
+      ${gap >= 3 ? `<p class="muted">${hi.name} ${s[hi.key]}／20、${lo.name} ${s[lo.key]}／20。いちばん強い力と、伸びしろの力の差から見えるあなたの傾向です。</p>` : ""}
+    </section>
+    <section class="panel">
+      <h3>今日からの一歩</h3>
+      <p class="step">${STEPS[lo.key]}</p>
+    </section>
+    <div class="actions">
+      <button class="btn" id="copy">結果をコピーしてシェアする</button>
+      <button class="btn ghost" id="retry">もう一度診断する</button>
+    </div>
+    <p class="toast" id="toast" role="status"></p>
+    <textarea id="share" readonly hidden>${shareText}</textarea>
+    <p class="note">この診断は、今の在り方を見つめるためのセルフチェックです。<br>結果は「今」のあなた。行動が変われば点数も変わります。</p>
+  `;
+  document.getElementById("copy").onclick = async () => {
+    const toast = document.getElementById("toast");
+    try {
+      await navigator.clipboard.writeText(shareText);
+      toast.textContent = "結果をコピーしました。LINEやSNSに貼りつけてね。";
+    } catch (e) {
+      const ta = document.getElementById("share");
+      ta.hidden = false; ta.style.width = "100%"; ta.style.minHeight = "8em";
+      ta.select();
+      toast.textContent = "下の文章を長押しでコピーしてね。";
+    }
+  };
+  document.getElementById("retry").onclick = () => {
+    answers = new Array(QUESTIONS.length).fill(null);
+    renderIntro();
+    window.scrollTo({ top: 0 });
+  };
+  window.scrollTo({ top: 0 });
+}
+
+renderIntro();
+</script>
