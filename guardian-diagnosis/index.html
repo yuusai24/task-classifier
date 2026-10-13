@@ -432,7 +432,6 @@ function renderResult() {
     <section class="panel">
       <p>${type.text}</p>
     </section>`}
-    ${ctaHtml}
     ${canConsult ? `<section class="panel invite">
       <p class="invite-head">診断結果をビジネスのステージアップに活かしたい方へ</p>
       <p>今のあなたは、守護霊からのサインを受け取る力はあるものの、<br>まだ活かしきれていない部分があるかもしれません。</p>
@@ -450,6 +449,7 @@ function renderResult() {
       </ul>
       <p>できたら、自分に花丸をつけてあげて。<br>守護霊のサポートは、あなたが自分で動き始めた時に感じやすくなります。</p>
     </section>` : ""}
+    ${ctaHtml}
     <p class="toast" id="toast" role="status"></p>
     <p class="note">この診断は、今の在り方を見つめるためのセルフチェックです。<br>結果は「今」のあなた。行動が変われば点数も変わります。</p>
   `;
