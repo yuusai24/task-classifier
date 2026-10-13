@@ -239,6 +239,8 @@ const QUESTION_CARDS = {
  19: { src: "q19.webp", w: 1312, h: 1199,
        yes: { left: 13, top: 82, width: 35, height: 15 },
        no:  { left: 50.5, top: 82, width: 36, height: 15 } },
+  // Q20の画像にはYes/Noボタンがないので、画像の下に文字のボタンを出す
+ 20: { src: "q20.webp", w: 1312, h: 1199 },
 };
 const QUESTIONS = [
   ["receive", "「なんか違うかも」と感じても、その感覚を無視してしまうことが多い"],
@@ -335,9 +337,17 @@ function renderQuestion() {
     <section class="q-card">
       <img src="${card.src}" width="${card.w || 1254}" height="${card.h || 1254}" alt="">
       <h2 class="sr-only">Q${current + 1} ${text}</h2>
+      ${card.yes ? `
       <button class="choice hot" data-pts="0" style="${pos(card.yes)}" aria-label="YES（あてはまる）" aria-pressed="${answers[current] === 0}"></button>
-      <button class="choice hot" data-pts="1" style="${pos(card.no)}" aria-label="NO（あてはまらない）" aria-pressed="${answers[current] === 1}"></button>
+      <button class="choice hot" data-pts="1" style="${pos(card.no)}" aria-label="NO（あてはまらない）" aria-pressed="${answers[current] === 1}"></button>` : ""}
     </section>
+    ${card.yes ? "" : `
+    <div class="choices" role="group" aria-label="回答を選ぶ">
+      ${CHOICES.map(c => `
+        <button class="choice" data-pts="${c.pts}" aria-pressed="${answers[current] === c.pts}">
+          <b>${c.label}</b><small>${c.sub}</small>
+        </button>`).join("")}
+    </div>`}
     <button class="back" id="back" ${current === 0 ? "disabled" : ""}>← 前の質問にもどる</button>
   ` : `
     ${progress}
