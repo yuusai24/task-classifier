@@ -112,6 +112,7 @@ header .muted { font-size: .86rem; letter-spacing: 0; }
 .progress-top { display: flex; justify-content: space-between; align-items: baseline; font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: .1em; }
 .bar { height: 6px; background: rgba(255, 255, 255, .08); border-radius: 999px; overflow: hidden; }
 .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--lavender), var(--gold)); border-radius: 999px; transition: width .4s; box-shadow: 0 0 12px var(--glow); }
+.q-img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 16px; border: 1px solid var(--veil-line); box-shadow: 0 0 30px rgba(199, 168, 255, .18); }
 .q-text { font-family: var(--display); font-size: 1.3rem; line-height: 1.8; min-height: 5.4em; text-align: center; display: grid; place-items: center; }
 .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .choice {
@@ -171,6 +172,10 @@ const AXES = [
 const PER_AXIS = 5;
 
 // どの質問も「YES＝ブレーキがかかっている状態」。NOと答えると1点
+// 画像を出す問題は QUESTION_IMAGES に「問題番号: ファイル名」を足す
+const QUESTION_IMAGES = {
+  1: "q01.webp",
+};
 const QUESTIONS = [
   ["receive", "「なんか違うかも」と感じても、その感覚を無視してしまうことが多い"],
   ["receive", "ふと浮かんだアイデアを「気のせい」と流してしまう"],
@@ -253,6 +258,7 @@ function renderIntro() {
 
 function renderQuestion() {
   const [axis, text] = QUESTIONS[current];
+  const img = QUESTION_IMAGES[current + 1];
   const done = answers.filter(v => v !== null).length;
   app.innerHTML = `
     <div class="progress">
@@ -260,6 +266,7 @@ function renderQuestion() {
       <div class="bar"><i style="width:${(done / QUESTIONS.length) * 100}%"></i></div>
     </div>
     <section class="panel">
+      ${img ? `<img class="q-img" src="${img}" width="1254" height="1254" alt="">` : ""}
       <p class="eyebrow">Q${current + 1}</p>
       <p class="q-text">${text}</p>
       <div class="choices" role="group" aria-label="回答を選ぶ">
