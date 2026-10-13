@@ -113,6 +113,11 @@ header .muted { font-size: .86rem; letter-spacing: 0; }
 .bar { height: 6px; background: rgba(255, 255, 255, .08); border-radius: 999px; overflow: hidden; }
 .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--lavender), var(--gold)); border-radius: 999px; transition: width .4s; box-shadow: 0 0 12px var(--glow); }
 .q-img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 16px; border: 1px solid var(--veil-line); box-shadow: 0 0 30px rgba(199, 168, 255, .18); }
+.q-card { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--veil-line); box-shadow: 0 0 34px rgba(199, 168, 255, .22); }
+.q-card img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; }
+.choice.hot { position: absolute; padding: 0; background: transparent; border: 0; border-radius: 999px; box-shadow: none; }
+.choice.hot:hover { background: rgba(255, 255, 255, .08); box-shadow: 0 0 26px rgba(242, 211, 138, .45); }
+.choice.hot[aria-pressed="true"] { background: rgba(255, 255, 255, .12); box-shadow: 0 0 0 3px var(--gold), 0 0 30px rgba(242, 211, 138, .6); }
 .q-text { font-family: var(--display); font-size: 1.3rem; line-height: 1.8; min-height: 5.4em; text-align: center; display: grid; place-items: center; }
 .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .choice {
@@ -176,9 +181,15 @@ const PER_AXIS = 5;
 const QUESTION_IMAGES = {
   1: "q01.webp",
 };
+// 質問文とYes/Noボタンが描かれた画像を使う問題。画像の中のボタンの位置（％）に押せる透明ボタンを重ねる
+const QUESTION_CARDS = {
+  2: { src: "q02.webp",
+       yes: { left: 14, top: 77, width: 35, height: 15 },
+       no:  { left: 51, top: 77, width: 35, height: 15 } },
+};
 const QUESTIONS = [
   ["receive", "「なんか違うかも」と感じても、その感覚を無視してしまうことが多い"],
-  ["receive", "ふと浮かんだアイデアを「気のせい」と流してしまう"],
+  ["receive", "やりたいことがあるのに、毎日のタスクに追われて後回しになっている。"],
   ["receive", "同じ言葉・数字・出来事が続いても、あまり気にしない"],
   ["receive", "人や場所に対する違和感を、自分の勘違いかも？と思って打ち消す"],
   ["receive", "忙しすぎて、自分の感覚を感じる余裕がほとんどない"],
@@ -259,11 +270,24 @@ function renderIntro() {
 function renderQuestion() {
   const [axis, text] = QUESTIONS[current];
   const img = QUESTION_IMAGES[current + 1];
+  const card = QUESTION_CARDS[current + 1];
   const done = answers.filter(v => v !== null).length;
-  app.innerHTML = `
+  const pos = r => `left:${r.left}%;top:${r.top}%;width:${r.width}%;height:${r.height}%`;
+  const progress = `
     <div class="progress">
       <div class="bar"><i style="width:${(done / QUESTIONS.length) * 100}%"></i></div>
-    </div>
+    </div>`;
+  app.innerHTML = card ? `
+    ${progress}
+    <section class="q-card">
+      <img src="${card.src}" width="1254" height="1254" alt="">
+      <h2 class="sr-only">Q${current + 1} ${text}</h2>
+      <button class="choice hot" data-pts="0" style="${pos(card.yes)}" aria-label="YES（あてはまる）" aria-pressed="${answers[current] === 0}"></button>
+      <button class="choice hot" data-pts="1" style="${pos(card.no)}" aria-label="NO（あてはまらない）" aria-pressed="${answers[current] === 1}"></button>
+    </section>
+    <button class="back" id="back" ${current === 0 ? "disabled" : ""}>← 前の質問にもどる</button>
+  ` : `
+    ${progress}
     <section class="panel">
       ${img ? `<img class="q-img" src="${img}" width="1254" height="1254" alt="">` : ""}
       <p class="eyebrow">Q${current + 1}</p>
