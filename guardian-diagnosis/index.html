@@ -179,10 +179,12 @@ const PER_AXIS = 5;
 // どの質問も「YES＝ブレーキがかかっている状態」。NOと答えると1点
 // 画像を出す問題は QUESTION_IMAGES に「問題番号: ファイル名」を足す
 const QUESTION_IMAGES = {
-  1: "q01.webp",
 };
 // 質問文とYes/Noボタンが描かれた画像を使う問題。画像の中のボタンの位置（％）に押せる透明ボタンを重ねる
 const QUESTION_CARDS = {
+  1: { src: "q01.webp",
+       yes: { left: 12, top: 76, width: 37, height: 16 },
+       no:  { left: 51, top: 76, width: 37, height: 16 } },
   2: { src: "q02.webp",
        yes: { left: 14, top: 77, width: 35, height: 15 },
        no:  { left: 51, top: 77, width: 35, height: 15 } },
