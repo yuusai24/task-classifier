@@ -109,7 +109,6 @@ p { margin: 0; }
 .tag.lo { background: var(--glow); color: var(--ink); }
 .combo { font-family: var(--display); font-size: 1.2rem; line-height: 1.6; color: var(--jade); }
 .step { border-left: 3px solid var(--gold); padding-left: 14px; }
-.actions { display: grid; gap: 10px; }
 .note { font-size: .8rem; color: var(--muted); text-align: center; line-height: 1.6; }
 .catch { font-family: var(--display); font-size: 1.35rem; line-height: 1.5; color: var(--gold); text-align: center; text-wrap: balance; }
 .cta { display: grid; gap: 12px; text-align: center; background: var(--jade-soft); border-color: var(--jade); }
@@ -282,12 +281,6 @@ function renderResult() {
   const combo = showCombo ? COMBOS[`${hi.key}>${lo.key}`] : "4つの力のバランスがそろっているタイプ";
   const power = Math.max(.2, total / max);
 
-  const shareText =
-`【守護霊ビジネスパートナー診断】
-${total}点／${max}点：${type.name}
-${AXES.map(a => `${a.name} ${s[a.key]}／${PER_AXIS}`).join("、")}
-${combo}`;
-
   const ctaHtml = type.cta ? `
     <section class="panel cta">
       <p class="catch">${type.catch}</p>
@@ -344,12 +337,7 @@ ${combo}`;
       <p>そんな方は、ぜひ個別相談へお越しください💜</p>
       <a class="btn consult" href="${CONSULT_URL || "#"}" target="_blank" rel="noopener">▶︎ 個別相談はこちら</a>
     </section>
-    <div class="actions">
-      <button class="btn ghost" id="copy">結果をコピーしてシェアする</button>
-      <button class="btn ghost" id="retry">もう一度診断する</button>
-    </div>
     <p class="toast" id="toast" role="status"></p>
-    <textarea id="share" readonly hidden>${shareText}</textarea>
     <p class="note">この診断は、今の在り方を見つめるためのセルフチェックです。<br>結果は「今」のあなた。行動が変われば点数も変わります。</p>
   `;
   const toast = document.getElementById("toast");
@@ -358,22 +346,6 @@ ${combo}`;
       a.onclick = e => { e.preventDefault(); toast.textContent = "相談の受付ページは準備中です。"; };
     });
   }
-  document.getElementById("copy").onclick = async () => {
-    try {
-      await navigator.clipboard.writeText(shareText);
-      toast.textContent = "結果をコピーしました。LINEやSNSに貼りつけてね。";
-    } catch (e) {
-      const ta = document.getElementById("share");
-      ta.hidden = false; ta.style.width = "100%"; ta.style.minHeight = "8em";
-      ta.select();
-      toast.textContent = "下の文章を長押しでコピーしてね。";
-    }
-  };
-  document.getElementById("retry").onclick = () => {
-    answers = new Array(QUESTIONS.length).fill(null);
-    renderIntro();
-    window.scrollTo({ top: 0 });
-  };
   window.scrollTo({ top: 0 });
 }
 
