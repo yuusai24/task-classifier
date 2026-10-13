@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
 <style>
-/* Layout: 一画面一問のカード型。上に光の輪、下に回答ボタン。結果は総合タイプ→4項目バー→組み合わせ→次の一歩 */
+/* Layout: 一画面一問のカード型。上に光の輪、下に回答ボタン。結果は総合タイプ→4項目バー→組み合わせ→個別相談のご案内 */
 :root {
   --bg: #eef3f1;
   --surface: #ffffff;
@@ -108,7 +108,6 @@ p { margin: 0; }
 .tag.hi { background: var(--jade-soft); color: var(--jade); }
 .tag.lo { background: var(--glow); color: var(--ink); }
 .combo { font-family: var(--display); font-size: 1.2rem; line-height: 1.6; color: var(--jade); }
-.step { border-left: 3px solid var(--gold); padding-left: 14px; }
 .note { font-size: .8rem; color: var(--muted); text-align: center; line-height: 1.6; }
 .catch { font-family: var(--display); font-size: 1.35rem; line-height: 1.5; color: var(--gold); text-align: center; text-wrap: balance; }
 .cta { display: grid; gap: 12px; text-align: center; background: var(--jade-soft); border-color: var(--jade); }
@@ -192,14 +191,6 @@ const COMBOS = {
   "self>receive":   "自分で決める力は十分。アンテナを開くと一気に加速するタイプ",
   "self>trust":     "自分で決めたい。でも自分の感覚にまだ自信が持てないタイプ",
   "self>action":    "意志はしっかりある。あとは一歩目を小さく踏み出すタイプ",
-};
-
-// 一番低い項目に合わせた「今日からの一歩」
-const STEPS = {
-  receive: "1日5分、スマホを置いてぼーっとする時間をつくってみて。答えは、頭がゆるんだ時にふっと浮かぶから。浮かんだ言葉や数字はメモしておこう。",
-  trust:   "「気のせいかも」と思った感覚を、否定せずに一行だけ書き出してみて。合ってたか間違ってたかは気にしなくていい。感じた自分に花丸をつけてあげて。",
-  action:  "ピンときたことを「5分でできるサイズ」にして、今日のうちに試してみよう。完璧な準備は要らない。やった人だけが体感できるから。",
-  self:    "迷った時は「どうしたらいい？」の前に「私はどうしたい？」と自分に聞いてみて。答えを決めるのは自分。守護霊はその背中を押してくれる存在なんです。",
 };
 
 const app = document.getElementById("app");
@@ -316,10 +307,6 @@ function renderResult() {
       <p class="eyebrow">あなたの組み合わせ</p>
       <p class="combo">“${combo}”</p>
       ${showCombo ? `<p class="muted">${hi.name} ${s[hi.key]}／${PER_AXIS}、${lo.name} ${s[lo.key]}／${PER_AXIS}。いちばん強い力と、伸びしろの力の差から見えるあなたの傾向です。</p>` : ""}
-    </section>
-    <section class="panel">
-      <h3>今日からの一歩</h3>
-      <p class="step">${STEPS[lo.key]}</p>
     </section>
     <section class="panel invite">
       <p class="invite-head">＼診断結果をビジネスのステージアップに活かしたい方へ／</p>
