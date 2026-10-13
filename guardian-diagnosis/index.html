@@ -271,9 +271,9 @@ function renderResult() {
   const showCombo = gap >= 2;
   const combo = showCombo ? COMBOS[`${hi.key}>${lo.key}`] : "4つの力のバランスがそろっているタイプ";
   const power = Math.max(.2, total / max);
-  // 個別相談ボタンは YES が5〜14個の人にだけ出す
+  // 個別相談ボタンは YES が0〜14個の人に出す
   const yesCount = QUESTIONS.length - total;
-  const canConsult = yesCount >= 5 && yesCount <= 14;
+  const canConsult = yesCount <= 14;
   const showCta = type.cta && canConsult;
   // YES が15個以上の人には、相談ボタンの代わりに「今できる一歩」を出す
   const showFirstStep = yesCount >= 15;
