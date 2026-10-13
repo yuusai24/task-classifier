@@ -113,7 +113,10 @@ p { margin: 0; }
 .note { font-size: .8rem; color: var(--muted); text-align: center; line-height: 1.6; }
 .catch { font-family: var(--display); font-size: 1.35rem; line-height: 1.5; color: var(--gold); text-align: center; text-wrap: balance; }
 .cta { display: grid; gap: 12px; text-align: center; background: var(--jade-soft); border-color: var(--jade); }
-.cta a.btn { text-decoration: none; display: block; }
+a.btn { text-decoration: none; display: block; text-align: center; }
+.invite { gap: 12px; border-color: var(--jade); }
+.invite-head { font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: var(--jade); text-align: center; text-wrap: balance; }
+.invite ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
 .toast { text-align: center; font-size: .85rem; color: var(--jade); min-height: 1.4em; }
 </style>
 
@@ -288,7 +291,7 @@ ${combo}`;
   const ctaHtml = type.cta ? `
     <section class="panel cta">
       <p class="catch">${type.catch}</p>
-      <a class="btn" id="consult" href="${CONSULT_URL || "#"}" target="_blank" rel="noopener">${type.cta}</a>
+      <a class="btn consult" href="${CONSULT_URL || "#"}" target="_blank" rel="noopener">${type.cta}</a>
     </section>` : "";
 
   app.innerHTML = `
@@ -325,6 +328,22 @@ ${combo}`;
       <h3>今日からの一歩</h3>
       <p class="step">${STEPS[lo.key]}</p>
     </section>
+    <section class="panel invite">
+      <p class="invite-head">＼診断結果をビジネスのステージアップに活かしたい方へ／</p>
+      <p>診断でわかったのは、<br>あなたが今どんな形で守護霊からサポートを受け取りやすいのか、という“入口”です。</p>
+      <p>でも大事なのは、<br>その結果をどうビジネスに活かすか。</p>
+      <ul>
+        <li>今のあなたが守護霊をビジネスパートナーにできる状態なのか</li>
+        <li>どんなサインを受け取りやすいのか</li>
+        <li>どこにブレーキがあるのか</li>
+        <li>次のステージへ進むために何を意識するといいのか</li>
+      </ul>
+      <p>ここは、一人ひとり違います。</p>
+      <p>そこで、診断を受けてくださった方へ<br>友彩と個別相談できるチャンスをご用意しました✨</p>
+      <p>「診断結果を仕事に活かしたい」<br>「守護霊をビジネスパートナーにしたい」<br>「もっとステージアップしたい」</p>
+      <p>そんな方は、ぜひ個別相談へお越しください💜</p>
+      <a class="btn consult" href="${CONSULT_URL || "#"}" target="_blank" rel="noopener">▶︎ 個別相談はこちら</a>
+    </section>
     <div class="actions">
       <button class="btn ghost" id="copy">結果をコピーしてシェアする</button>
       <button class="btn ghost" id="retry">もう一度診断する</button>
@@ -334,9 +353,10 @@ ${combo}`;
     <p class="note">この診断は、今の在り方を見つめるためのセルフチェックです。<br>結果は「今」のあなた。行動が変われば点数も変わります。</p>
   `;
   const toast = document.getElementById("toast");
-  const consult = document.getElementById("consult");
-  if (consult && !CONSULT_URL) {
-    consult.onclick = e => { e.preventDefault(); toast.textContent = "相談の受付ページは準備中です。"; };
+  if (!CONSULT_URL) {
+    app.querySelectorAll(".consult").forEach(a => {
+      a.onclick = e => { e.preventDefault(); toast.textContent = "相談の受付ページは準備中です。"; };
+    });
   }
   document.getElementById("copy").onclick = async () => {
     try {
