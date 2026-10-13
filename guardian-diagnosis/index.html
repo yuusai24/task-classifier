@@ -52,6 +52,15 @@ p { margin: 0; }
 .muted { color: var(--muted); font-size: .92rem; }
 header .muted { font-size: .86rem; letter-spacing: 0; }
 
+/* はじめの画面のメイン画像（ふちを夜空になじませる） */
+.hero {
+  display: block; width: calc(100% + 32px); max-width: calc(100% + 32px); height: auto; margin: -32px -16px 0;
+  aspect-ratio: 1 / 1;
+  -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 62%, transparent 100%);
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
 /* 光の輪 */
 .halo { position: relative; width: 150px; height: 150px; margin: 0 auto; }
 .halo span { position: absolute; inset: 0; border-radius: 50%; border: 1px solid var(--gold); opacity: .45; }
@@ -230,10 +239,10 @@ function axisName(key) { return AXES.find(a => a.key === key).name; }
 
 function renderIntro() {
   app.innerHTML = `
-    <div class="halo" style="--power:.55" aria-hidden="true"><span></span><span></span><span></span></div>
+    <img class="hero" src="hero.webp" width="1254" height="1254" alt="守護霊ビジネスパートナー診断　今の自分が守護霊をビジネスパートナーにできるかチェック　受信力・自己信頼・行動力・主体性から診断">
     <header style="display:grid;gap:10px;text-align:center">
       <p class="eyebrow">全20問・YES／NOで約2分</p>
-      <h1>守護霊ビジネスパートナー診断</h1>
+      <h1 class="sr-only">守護霊ビジネスパートナー診断</h1>
       <p class="muted">守護霊は誰のそばにもいる。<br>違いは、そのサポートを受け取って活かせる状態かどうか。<br>今のあなたの「パートナー度」を4つの力で見てみよう。</p>
     </header>
     <section class="panel">
