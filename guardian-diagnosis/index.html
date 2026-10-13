@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>守護霊パートナー度診断</title>
+<title>守護霊ビジネスパートナー診断</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
@@ -80,18 +80,16 @@ p { margin: 0; }
 .bar { height: 6px; background: var(--jade-soft); border-radius: 999px; overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--jade); border-radius: 999px; transition: width .3s; }
 .q-text { font-family: var(--display); font-size: 1.3rem; line-height: 1.7; min-height: 5.1em; }
-.choices { display: grid; gap: 10px; }
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .choice {
   appearance: none; font: inherit; text-align: left; cursor: pointer; color: var(--ink);
   background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px;
-  padding: 13px 16px; display: flex; align-items: center; gap: 12px; transition: border-color .15s, background .15s;
+  padding: 16px 12px; display: grid; justify-items: center; gap: 2px; text-align: center; transition: border-color .15s, background .15s;
 }
+.choice b { font-family: var(--display); font-size: 1.5rem; letter-spacing: .06em; }
+.choice small { color: var(--muted); font-size: .82rem; }
 .choice:hover { border-color: var(--jade); }
 .choice[aria-pressed="true"] { border-color: var(--jade); background: var(--jade-soft); }
-.dot { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; }
-.choice[aria-pressed="true"] .dot { border-color: var(--jade); }
-.choice[aria-pressed="true"] .dot::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--jade); }
-.pts { margin-left: auto; font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .back { appearance: none; background: none; border: 0; color: var(--muted); font: inherit; font-size: .9rem; cursor: pointer; padding: 6px 0; justify-self: start; }
 .back:disabled { visibility: hidden; }
 
@@ -113,57 +111,68 @@ p { margin: 0; }
 .step { border-left: 3px solid var(--gold); padding-left: 14px; }
 .actions { display: grid; gap: 10px; }
 .note { font-size: .8rem; color: var(--muted); text-align: center; line-height: 1.6; }
+.catch { font-family: var(--display); font-size: 1.35rem; line-height: 1.5; color: var(--gold); text-align: center; text-wrap: balance; }
+.cta { display: grid; gap: 12px; text-align: center; background: var(--jade-soft); border-color: var(--jade); }
+.cta a.btn { text-decoration: none; display: block; }
 .toast { text-align: center; font-size: .85rem; color: var(--jade); min-height: 1.4em; }
 </style>
 
 <div class="wrap" id="app"></div>
 
 <script>
-const AXES = [
-  { key: "receive", name: "受信力", desc: "サインやひらめきを感じとる力" },
-  { key: "trust",   name: "自己信頼", desc: "受け取った感覚を信じる力" },
-  { key: "action",  name: "行動力", desc: "受け取ったものを試してみる力" },
-  { key: "self",    name: "主体性", desc: "最後は自分で決める力" },
-];
+// 相談ボタンのリンク先（LINE公式アカウントなど）。決まったらここにURLを入れる
+const CONSULT_URL = "";
 
+const AXES = [
+  { key: "receive", name: "受信力",   desc: "守護霊からのサインや直感を受け取る力" },
+  { key: "trust",   name: "自己信頼", desc: "受け取った感覚を自分で信じられるか" },
+  { key: "action",  name: "行動力",   desc: "受け取ったメッセージを現実に活かせるか" },
+  { key: "self",    name: "主体性",   desc: "守護霊に丸投げせず、自分の人生を自分で選べるか" },
+];
+const PER_AXIS = 5;
+
+// どの質問も「YES＝ブレーキがかかっている状態」。NOと答えると1点
 const QUESTIONS = [
-  ["receive", "理由はなくても「こっちな気がする」と感じることがある。"],
-  ["receive", "人や場所に対して、説明できない違和感を感じることがある。"],
-  ["receive", "同じ言葉・数字・出来事が何度も続くと気になる。"],
-  ["receive", "ふと浮かんだアイデアが、あとから意味を持つことがある。"],
-  ["receive", "頭で考えている時より、リラックスしている時に答えが浮かびやすい。"],
-  ["trust",   "直感を感じた時、すぐ「気のせい」と否定しない。"],
-  ["trust",   "周りと意見が違っても、自分の感覚を大切にできる。"],
-  ["trust",   "「なんとなく嫌」という感覚にも意味があると思える。"],
-  ["trust",   "自分が受け取った感覚を、正解か不正解かだけで判断しない。"],
-  ["trust",   "一度決めたことを、他人の一言ですぐ変えてしまうことは少ない。"],
-  ["action",  "「やってみたい」と思ったら、小さくても行動に移せる。"],
-  ["action",  "怖さがあっても、本当にやりたいことなら一歩踏み出せる。"],
-  ["action",  "直感やひらめきを受け取ったあと、実際に試してみることがある。"],
-  ["action",  "完璧に準備が整うまで待つより、動きながら考えられる。"],
-  ["action",  "チャンスだと感じた時、「また今度」で終わらせない。"],
-  ["self",    "「誰かに人生を変えてほしい」より「自分で変えたい」と思っている。"],
-  ["self",    "守護霊からメッセージをもらっても、最後に決めるのは自分だと思う。"],
-  ["self",    "うまくいかない時、環境や他人だけでなく自分の選択も振り返る。"],
-  ["self",    "「どうしたらいい？」だけでなく、「私はどうしたい？」を考えられる。"],
-  ["self",    "守護霊には答えを決めてもらうのではなく、自分の人生を後押ししてほしいと思う。"],
+  ["receive", "「なんとなく違う」と感じても、その感覚を無視することが多い"],
+  ["receive", "ふと浮かんだアイデアを「気のせい」と流してしまう"],
+  ["receive", "同じ言葉・数字・出来事が続いても、特に意味はないと思う"],
+  ["receive", "人や場所に対する違和感を、考えすぎだと思って打ち消す"],
+  ["receive", "忙しすぎて、自分の感覚を感じる余裕がほとんどない"],
+  ["trust",   "自分の直感より、周りの意見を優先することが多い"],
+  ["trust",   "自分の感覚に自信がなく、すぐ誰かに確認したくなる"],
+  ["trust",   "「間違えたくない」という気持ちが強く、なかなか決められない"],
+  ["trust",   "一度決めても、人に反対されるとすぐ揺らぐ"],
+  ["trust",   "「私はどうしたい？」より「どうするのが正解？」を考えることが多い"],
+  ["action",  "やりたいことがあっても、怖いとやらない選択をする"],
+  ["action",  "チャンスが来ても「また今度」で後回しにすることが多い"],
+  ["action",  "準備が完璧になるまで動けない"],
+  ["action",  "メッセージを受け取って満足して、行動に移さないことが多い"],
+  ["action",  "「今動いた方がいい」と感じても、不安の方を優先して止まる"],
+  ["self",    "守護霊に「正解」を教えてほしいと思う"],
+  ["self",    "守護霊に言われたことなら、そのまま従えばいいと思う"],
+  ["self",    "うまくいかない時、環境や人のせいだと感じることが多い"],
+  ["self",    "守護霊とつながれば、人生やビジネスが自然とうまくいくと思う"],
+  ["self",    "「自分で動くこと」より「守護霊に助けてもらうこと」の方が大事だと思う"],
 ];
 
 const CHOICES = [
-  { pts: 4, label: "とてもあてはまる" },
-  { pts: 3, label: "ややあてはまる" },
-  { pts: 2, label: "あまりあてはまらない" },
-  { pts: 1, label: "まったくあてはまらない" },
+  { pts: 0, label: "YES", sub: "あてはまる" },
+  { pts: 1, label: "NO",  sub: "あてはまらない" },
 ];
 
+// catch：結果のキャッチコピー／cta：相談ボタンの文言（nullならボタンなし）
 const TYPES = [
-  { min: 65, name: "守護霊ビジネスパートナー準備OK",
+  { min: 16, name: "守護霊ビジネスパートナー準備OK",
+    catch: "今すぐ守護霊をビジネスパートナーに！", cta: "今すぐ友彩に相談！",
     text: "受け取る・信じる・動く・自分で決める、のバランスが整っている状態。守護霊からのサインを「答え」ではなく、人生やビジネスを進めるヒントとして活かしやすいタイプ。" },
-  { min: 50, name: "もうすぐパートナータイプ",
+  { min: 11, name: "もうすぐパートナータイプ",
+    catch: "もうすぐパートナー！", cta: "あと一歩を友彩にサポートしてもらう！",
     text: "サインを感じる力はあるけれど、「本当にこれでいい？」と疑ったり、行動の手前で止まりやすいかも。必要なのは、もっとサインを探すことより、受け取ったものを小さく試してみること。" },
-  { min: 35, name: "自分軸育成タイプ",
+  { min: 6, name: "自分軸育成タイプ",
+    catch: "今は準備中", cta: null,
     text: "守護霊からのサインより先に、「私は本当はどうしたい？」を整える段階。自分の意思が曖昧なままだと、どんなメッセージを受け取っても迷いやすい。まずは自分の選択に責任を持つ練習から。" },
   { min: 0, name: "まずは現実を動かすタイプ",
+    catch: "今は準備中", cta: null,
     text: "今は「守護霊ともっとつながらなきゃ」と頑張るより、目の前の現実で自分ができることを一つずつ選ぶことが大切。守護霊に人生を動かしてもらうのではなく、自分が動き始めた時にサポートを感じやすくなる。" },
 ];
 
@@ -201,8 +210,8 @@ function renderIntro() {
   app.innerHTML = `
     <div class="halo" style="--power:.55" aria-hidden="true"><span></span><span></span><span></span></div>
     <header style="display:grid;gap:10px;text-align:center">
-      <p class="eyebrow">全20問・約3分</p>
-      <h1>守護霊パートナー度診断</h1>
+      <p class="eyebrow">全20問・YES／NOで約2分</p>
+      <h1>守護霊ビジネスパートナー診断</h1>
       <p class="muted">守護霊は誰のそばにもいる。<br>違いは、そのサポートを受け取って活かせる状態かどうか。<br>今のあなたの「パートナー度」を4つの力で見てみよう。</p>
     </header>
     <section class="panel">
@@ -210,7 +219,7 @@ function renderIntro() {
       <div class="axes">
         ${AXES.map(a => `<div class="axis-chip"><b>${a.name}</b><small>${a.desc}</small></div>`).join("")}
       </div>
-      <p class="muted">各項目5問・20点満点、合計80点満点。直感で、今の自分に近いものを選んでね。</p>
+      <p class="muted">今の自分にあてはまれば YES、あてはまらなければ NO。考えすぎず、直感で答えてね。</p>
     </section>
     <button class="btn" id="start">診断をはじめる</button>
     <p class="note">この診断は、今の在り方を見つめるためのセルフチェックです。</p>
@@ -232,7 +241,7 @@ function renderQuestion() {
       <div class="choices" role="group" aria-label="回答を選ぶ">
         ${CHOICES.map(c => `
           <button class="choice" data-pts="${c.pts}" aria-pressed="${answers[current] === c.pts}">
-            <span class="dot" aria-hidden="true"></span>${c.label}<span class="pts">${c.pts}点</span>
+            <b>${c.label}</b><small>${c.sub}</small>
           </button>`).join("")}
       </div>
     </section>
@@ -261,63 +270,75 @@ function scoreAxes() {
 function renderResult() {
   const s = scoreAxes();
   const total = Object.values(s).reduce((a, b) => a + b, 0);
+  const max = PER_AXIS * AXES.length;
   const type = TYPES.find(t => total >= t.min);
   const sorted = [...AXES].sort((a, b) => s[b.key] - s[a.key]);
   const hi = sorted[0], lo = sorted[sorted.length - 1];
   const gap = s[hi.key] - s[lo.key];
-  const combo = gap >= 3
-    ? COMBOS[`${hi.key}>${lo.key}`]
-    : "4つの力のバランスがそろっているタイプ";
-  const power = Math.max(.2, (total - 20) / 60);
+  const showCombo = gap >= 2;
+  const combo = showCombo ? COMBOS[`${hi.key}>${lo.key}`] : "4つの力のバランスがそろっているタイプ";
+  const power = Math.max(.2, total / max);
 
   const shareText =
-`【守護霊パートナー度診断】
-${total}点／80点：${type.name}
-${AXES.map(a => `${a.name} ${s[a.key]}／20`).join("、")}
+`【守護霊ビジネスパートナー診断】
+${total}点／${max}点：${type.name}
+${AXES.map(a => `${a.name} ${s[a.key]}／${PER_AXIS}`).join("、")}
 ${combo}`;
+
+  const ctaHtml = type.cta ? `
+    <section class="panel cta">
+      <p class="catch">${type.catch}</p>
+      <a class="btn" id="consult" href="${CONSULT_URL || "#"}" target="_blank" rel="noopener">${type.cta}</a>
+    </section>` : "";
 
   app.innerHTML = `
     <div class="halo" style="--power:${power.toFixed(2)}" aria-hidden="true"><span></span><span></span><span></span></div>
     <section class="score">
       <p class="eyebrow">あなたのパートナー度</p>
-      <p class="score-num">${total}<small>／80点</small></p>
+      <p class="score-num">${total}<small>／${max}点</small></p>
+      ${type.cta ? "" : `<p class="catch">${type.catch}</p>`}
       <h2 class="type-name">${type.name}</h2>
     </section>
     <section class="panel">
       <p>${type.text}</p>
     </section>
+    ${ctaHtml}
     <section class="panel">
       <h3>4つの力の内訳</h3>
       <div class="rows">
         ${AXES.map(a => `
           <div class="row">
             <div class="row-top">
-              <b>${a.name}${gap >= 3 && a.key === hi.key ? '<span class="tag hi">いちばん強い</span>' : ""}${gap >= 3 && a.key === lo.key ? '<span class="tag lo">伸びしろ</span>' : ""}</b>
-              <span>${s[a.key]}／20</span>
+              <b>${a.name}${showCombo && a.key === hi.key ? '<span class="tag hi">いちばん強い</span>' : ""}${showCombo && a.key === lo.key ? '<span class="tag lo">伸びしろ</span>' : ""}</b>
+              <span>${s[a.key]}／${PER_AXIS}</span>
             </div>
-            <div class="bar"><i style="width:${(s[a.key] / 20) * 100}%"></i></div>
+            <div class="bar"><i style="width:${(s[a.key] / PER_AXIS) * 100}%"></i></div>
           </div>`).join("")}
       </div>
     </section>
     <section class="panel">
       <p class="eyebrow">あなたの組み合わせ</p>
       <p class="combo">“${combo}”</p>
-      ${gap >= 3 ? `<p class="muted">${hi.name} ${s[hi.key]}／20、${lo.name} ${s[lo.key]}／20。いちばん強い力と、伸びしろの力の差から見えるあなたの傾向です。</p>` : ""}
+      ${showCombo ? `<p class="muted">${hi.name} ${s[hi.key]}／${PER_AXIS}、${lo.name} ${s[lo.key]}／${PER_AXIS}。いちばん強い力と、伸びしろの力の差から見えるあなたの傾向です。</p>` : ""}
     </section>
     <section class="panel">
       <h3>今日からの一歩</h3>
       <p class="step">${STEPS[lo.key]}</p>
     </section>
     <div class="actions">
-      <button class="btn" id="copy">結果をコピーしてシェアする</button>
+      <button class="btn ghost" id="copy">結果をコピーしてシェアする</button>
       <button class="btn ghost" id="retry">もう一度診断する</button>
     </div>
     <p class="toast" id="toast" role="status"></p>
     <textarea id="share" readonly hidden>${shareText}</textarea>
     <p class="note">この診断は、今の在り方を見つめるためのセルフチェックです。<br>結果は「今」のあなた。行動が変われば点数も変わります。</p>
   `;
+  const toast = document.getElementById("toast");
+  const consult = document.getElementById("consult");
+  if (consult && !CONSULT_URL) {
+    consult.onclick = e => { e.preventDefault(); toast.textContent = "相談の受付ページは準備中です。"; };
+  }
   document.getElementById("copy").onclick = async () => {
-    const toast = document.getElementById("toast");
     try {
       await navigator.clipboard.writeText(shareText);
       toast.textContent = "結果をコピーしました。LINEやSNSに貼りつけてね。";
