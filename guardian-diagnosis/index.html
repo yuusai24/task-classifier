@@ -262,7 +262,6 @@ function renderQuestion() {
   const done = answers.filter(v => v !== null).length;
   app.innerHTML = `
     <div class="progress">
-      <div class="progress-top"><span>${axisName(axis)}</span><span>${current + 1} / ${QUESTIONS.length}</span></div>
       <div class="bar"><i style="width:${(done / QUESTIONS.length) * 100}%"></i></div>
     </div>
     <section class="panel">
