@@ -433,7 +433,19 @@ function renderResult() {
     <section class="panel">
       <p>${type.text}</p>
     </section>`}
-    ${canConsult ? `<section class="panel invite">
+    ${canConsult && type.min === 16 ? `<section class="panel invite">
+      <p class="invite-head">ここまで来たあなたは、<br>もう“準備中”ではありません。</p>
+      <p>守護霊からのサインを受け取り、<br>それを人生やビジネスに活かしていける土台は整っています。</p>
+      <p>あとは、</p>
+      <ul>
+        <li>あなたの守護霊がどんな形でメッセージを送っているのか</li>
+        <li>どうコミュニケーションを取ればいいのか</li>
+      </ul>
+      <p>を知るだけ。</p>
+      <p>「自分の場合は、どんなサインで来る？」<br>「今のビジネスにどう活かせる？」<br>「守護霊をビジネスパートナーにして、次のステージへ進みたい」</p>
+      <p>そう思った方は、<br>友彩に相談してみてください✨</p>
+      <p>あなたに合った守護霊とのつながり方と、<br>ビジネスへの活かし方を一緒に見ていきます。</p>
+    </section>` : canConsult ? `<section class="panel invite">
       <p class="invite-head">診断結果をビジネスのステージアップに活かしたい方へ</p>
       <p>今のあなたは、守護霊からのサインを受け取る力はあるものの、<br>まだ活かしきれていない部分があるかもしれません。</p>
       <p>「自分はどこで止まってる？」<br>「どうしたら守護霊をビジネスパートナーにできる？」</p>
