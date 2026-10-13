@@ -114,7 +114,7 @@ p { margin: 0; }
 a.btn { text-decoration: none; display: block; text-align: center; }
 .invite { gap: 12px; border-color: var(--jade); }
 .invite-head { font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: var(--jade); text-align: center; text-wrap: balance; }
-.invite ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.invite ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
 .toast { text-align: center; font-size: .85rem; color: var(--jade); min-height: 1.4em; }
 </style>
 
@@ -275,6 +275,8 @@ function renderResult() {
   const yesCount = QUESTIONS.length - total;
   const canConsult = yesCount >= 5 && yesCount <= 14;
   const showCta = type.cta && canConsult;
+  // YES が15個以上の人には、相談ボタンの代わりに「今できる一歩」を出す
+  const showFirstStep = yesCount >= 15;
 
   const ctaHtml = showCta ? `
     <section class="panel cta">
@@ -318,6 +320,17 @@ function renderResult() {
       <p>「自分はどこで止まってる？」<br>「どうしたら守護霊をビジネスパートナーにできる？」</p>
       <p>そこを友彩と一緒に整理したい方は、個別相談へ✨</p>
       <a class="btn consult" href="${CONSULT_URL || "#"}" target="_blank" rel="noopener">▶︎ 個別相談はこちら</a>
+    </section>` : ""}
+    ${showFirstStep ? `<section class="panel invite">
+      <p class="invite-head">今できる一歩</p>
+      <p>今は「守護霊とつながらなきゃ」と焦らなくていい時期。<br>まずは、自分の感覚をとり戻すところから始めてみて。</p>
+      <ul>
+        <li>1日5分、スマホを置いて「今、私はどう感じてる？」と自分に聞いてみる</li>
+        <li>「なんか違うかも」と思ったことを、否定せずに一行だけ書き出す</li>
+        <li>「私はどうしたい？」の答えを、小さなことから一つ選んで決めてみる</li>
+        <li>決めたことを、今日のうちに5分だけやってみる</li>
+      </ul>
+      <p>できたら、自分に花丸をつけてあげて。<br>守護霊のサポートは、あなたが自分で動き始めた時に感じやすくなります。</p>
     </section>` : ""}
     <p class="toast" id="toast" role="status"></p>
     <p class="note">この診断は、今の在り方を見つめるためのセルフチェックです。<br>結果は「今」のあなた。行動が変われば点数も変わります。</p>
