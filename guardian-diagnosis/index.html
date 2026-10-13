@@ -271,8 +271,12 @@ function renderResult() {
   const showCombo = gap >= 2;
   const combo = showCombo ? COMBOS[`${hi.key}>${lo.key}`] : "4つの力のバランスがそろっているタイプ";
   const power = Math.max(.2, total / max);
+  // 個別相談ボタンは YES が5〜14個の人にだけ出す
+  const yesCount = QUESTIONS.length - total;
+  const canConsult = yesCount >= 5 && yesCount <= 14;
+  const showCta = type.cta && canConsult;
 
-  const ctaHtml = type.cta ? `
+  const ctaHtml = showCta ? `
     <section class="panel cta">
       <p class="catch">${type.catch}</p>
       <a class="btn consult" href="${CONSULT_URL || "#"}" target="_blank" rel="noopener">${type.cta}</a>
@@ -283,7 +287,7 @@ function renderResult() {
     <section class="score">
       <p class="eyebrow">あなたのパートナー度</p>
       <p class="score-num">${total}<small>／${max}点</small></p>
-      ${type.cta ? "" : `<p class="catch">${type.catch}</p>`}
+      ${showCta ? "" : `<p class="catch">${type.catch}</p>`}
       <h2 class="type-name">${type.name}</h2>
     </section>
     <section class="panel">
@@ -308,7 +312,7 @@ function renderResult() {
       <p class="combo">“${combo}”</p>
       ${showCombo ? `<p class="muted">${hi.name} ${s[hi.key]}／${PER_AXIS}、${lo.name} ${s[lo.key]}／${PER_AXIS}。いちばん強い力と、伸びしろの力の差から見えるあなたの傾向です。</p>` : ""}
     </section>
-    <section class="panel invite">
+    ${canConsult ? `<section class="panel invite">
       <p class="invite-head">＼診断結果をビジネスのステージアップに活かしたい方へ／</p>
       <p>診断でわかったのは、<br>あなたが今どんな形で守護霊からサポートを受け取りやすいのか、という“入口”です。</p>
       <p>でも大事なのは、<br>その結果をどうビジネスに活かすか。</p>
@@ -323,7 +327,7 @@ function renderResult() {
       <p>「診断結果を仕事に活かしたい」<br>「守護霊をビジネスパートナーにしたい」<br>「もっとステージアップしたい」</p>
       <p>そんな方は、ぜひ個別相談へお越しください💜</p>
       <a class="btn consult" href="${CONSULT_URL || "#"}" target="_blank" rel="noopener">▶︎ 個別相談はこちら</a>
-    </section>
+    </section>` : ""}
     <p class="toast" id="toast" role="status"></p>
     <p class="note">この診断は、今の在り方を見つめるためのセルフチェックです。<br>結果は「今」のあなた。行動が変われば点数も変わります。</p>
   `;
