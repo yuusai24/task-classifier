@@ -118,6 +118,8 @@ header .muted { font-size: .86rem; letter-spacing: 0; }
 .choice.hot { position: absolute; padding: 0; background: transparent; border: 0; border-radius: 999px; box-shadow: none; }
 .choice.hot:hover { background: rgba(255, 255, 255, .08); box-shadow: 0 0 26px rgba(242, 211, 138, .45); }
 .choice.hot[aria-pressed="true"] { background: rgba(255, 255, 255, .12); box-shadow: 0 0 0 3px var(--gold), 0 0 30px rgba(242, 211, 138, .6); }
+.result-card { border-radius: 18px; overflow: hidden; border: 1px solid var(--veil-line); box-shadow: 0 0 40px rgba(242, 211, 138, .22); }
+.result-card img { display: block; width: 100%; height: auto; }
 .q-text { font-family: var(--display); font-size: 1.3rem; line-height: 1.8; min-height: 5.4em; text-align: center; display: grid; place-items: center; }
 .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .choice {
@@ -282,6 +284,7 @@ const TYPES = [
     catch: "今は準備中", cta: null,
     text: "守護霊からのサインより先に、「私は本当はどうしたい？」を整える段階。自分の意思が曖昧なままだと、どんなメッセージを受け取っても迷いやすい。まずは自分の選択に責任を持つ練習から。" },
   { min: 0, name: "まずは現実を動かすタイプ",
+    image: { src: "result4.webp", w: 941, h: 1672 },
     catch: "今は準備中", cta: null,
     text: "今は「守護霊ともっとつながらなきゃ」と頑張るより、目の前の現実で自分ができることを一つずつ選ぶことが大切。守護霊に人生を動かしてもらうのではなく、自分が動き始めた時にサポートを感じやすくなる。" },
 ];
@@ -409,6 +412,15 @@ function renderResult() {
     </section>` : "";
 
   app.innerHTML = `
+    ${type.image ? `
+    <section class="result-card">
+      <img src="${type.image.src}" width="${type.image.w}" height="${type.image.h}" alt="">
+      <h2 class="sr-only">診断結果 ${type.catch} ${type.name} ${type.text}</h2>
+    </section>
+    <section class="score">
+      <p class="eyebrow">あなたのパートナー度</p>
+      <p class="score-num">${total}<small>／${max}点</small></p>
+    </section>` : `
     <div class="halo" style="--power:${power.toFixed(2)}" aria-hidden="true"><span></span><span></span><span></span></div>
     <section class="score">
       <p class="eyebrow">あなたのパートナー度</p>
@@ -418,7 +430,7 @@ function renderResult() {
     </section>
     <section class="panel">
       <p>${type.text}</p>
-    </section>
+    </section>`}
     ${ctaHtml}
     <section class="panel">
       <p class="eyebrow">あなたの組み合わせ</p>
