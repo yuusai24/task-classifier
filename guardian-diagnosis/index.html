@@ -421,19 +421,6 @@ function renderResult() {
     </section>
     ${ctaHtml}
     <section class="panel">
-      <h3>4つの力の内訳</h3>
-      <div class="rows">
-        ${AXES.map(a => `
-          <div class="row">
-            <div class="row-top">
-              <b>${a.name}${showCombo && a.key === hi.key ? '<span class="tag hi">いちばん強い</span>' : ""}${showCombo && a.key === lo.key ? '<span class="tag lo">伸びしろ</span>' : ""}</b>
-              <span>${s[a.key]}／${PER_AXIS}</span>
-            </div>
-            <div class="bar"><i style="width:${(s[a.key] / PER_AXIS) * 100}%"></i></div>
-          </div>`).join("")}
-      </div>
-    </section>
-    <section class="panel">
       <p class="eyebrow">あなたの組み合わせ</p>
       <p class="combo">“${combo}”</p>
       ${showCombo ? `<p class="muted">${hi.name} ${s[hi.key]}／${PER_AXIS}、${lo.name} ${s[lo.key]}／${PER_AXIS}。いちばん強い力と、伸びしろの力の差から見えるあなたの傾向です。</p>` : ""}
