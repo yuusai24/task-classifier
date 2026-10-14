@@ -160,11 +160,6 @@ a.btn { text-decoration: none; display: block; text-align: center; }
 .invite ul { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 8px; }
 .invite li { position: relative; padding-left: 1.4em; }
 .invite li::before { content: "✧"; position: absolute; left: 0; color: var(--gold); }
-.line-box { text-align: center; gap: 12px; border-color: rgba(6, 199, 85, .45); background: linear-gradient(180deg, rgba(6, 199, 85, .1), rgba(199, 168, 255, .06)); }
-.line-lead { font-family: var(--display); font-weight: 700; font-size: 1.05rem; line-height: 1.7; text-wrap: balance; }
-a.btn.line-btn { background: #06c755; color: #fff; box-shadow: 0 6px 24px rgba(6, 199, 85, .35); }
-a.btn.line-btn:hover { box-shadow: 0 8px 30px rgba(6, 199, 85, .5); }
-.line-note { font-size: .8rem; }
 .toast { text-align: center; font-size: .85rem; color: var(--lavender); min-height: 1.4em; }
 </style>
 
@@ -174,8 +169,6 @@ a.btn.line-btn:hover { box-shadow: 0 8px 30px rgba(6, 199, 85, .5); }
 <script>
 // 相談ボタンのリンク先（LINE公式アカウントなど）。決まったらここにURLを入れる
 const CONSULT_URL = "https://sub.yuusai-parallelworld.com/p/parallelworldsession";
-// 結果をLINEで受け取るボタンの送り先（LINE公式アカウントのID）
-const LINE_ID = "@039vwnln";
 
 const AXES = [
   { key: "receive", name: "受信力",   desc: "守護霊からのサインや直感を受け取る力" },
@@ -282,19 +275,19 @@ const CHOICES = [
 
 // catch：結果のキャッチコピー／cta：相談ボタンの文言（nullならボタンなし）
 const TYPES = [
-  { min: 16, name: "守護霊ビジネスパートナー準備OK", code: "A",
+  { min: 16, name: "守護霊ビジネスパートナー準備OK",
     image: { src: "result1.webp", w: 941, h: 1672 },
     catch: "今すぐ守護霊をビジネスパートナーに！", cta: "今すぐ友彩に相談！",
     text: "受け取る・信じる・動く・自分で決める、のバランスが整っている状態。守護霊からのサインを「答え」ではなく、人生やビジネスを進めるヒントとして活かしやすいタイプ。" },
-  { min: 11, name: "もうすぐパートナータイプ", code: "B",
+  { min: 11, name: "もうすぐパートナータイプ",
     image: { src: "result2.webp", w: 941, h: 1672 },
     catch: "もうすぐパートナー！", cta: "あと一歩を友彩にサポートしてもらう！",
     text: "サインを感じる力はあるけれど、「本当にこれでいい？」と疑ったり、行動の手前で止まりやすいかも。必要なのは、もっとサインを探すことより、受け取ったものを小さく試してみること。" },
-  { min: 6, name: "自分軸育成タイプ", code: "C",
+  { min: 6, name: "自分軸育成タイプ",
     image: { src: "result3.webp", w: 941, h: 1672 },
     catch: "今は準備中", cta: null,
     text: "守護霊からのサインより先に、「私は本当はどうしたい？」を整える段階。自分の意思が曖昧なままだと、どんなメッセージを受け取っても迷いやすい。まずは自分の選択に責任を持つ練習から。" },
-  { min: 0, name: "まずは現実を動かすタイプ", code: "D",
+  { min: 0, name: "まずは現実を動かすタイプ",
     image: { src: "result4.webp", w: 941, h: 1672 },
     catch: "今は準備中", cta: null,
     text: "今は「守護霊ともっとつながらなきゃ」と頑張るより、目の前の現実で自分ができることを一つずつ選ぶことが大切。守護霊に人生を動かしてもらうのではなく、自分が動き始めた時にサポートを感じやすくなる。" },
@@ -403,28 +396,66 @@ function renderResult() {
   const total = Object.values(s).reduce((a, b) => a + b, 0);
   const max = PER_AXIS * AXES.length;
   const type = TYPES.find(t => total >= t.min);
+  const sorted = [...AXES].sort((a, b) => s[b.key] - s[a.key]);
+  const hi = sorted[0], lo = sorted[sorted.length - 1];
+  const gap = s[hi.key] - s[lo.key];
+  const showCombo = gap >= 2;
+  const combo = showCombo ? COMBOS[`${hi.key}>${lo.key}`] : "4つの力のバランスがそろっているタイプ";
+  const power = Math.max(.2, total / max);
+  // 個別相談ボタンは YES が0〜14個の人に出す
+  const yesCount = QUESTIONS.length - total;
+  const canConsult = yesCount <= 14;
+  const showCta = type.cta && canConsult;
+  // YES が15個以上の人には、相談ボタンの代わりに「今できる一歩」を出す
+  const showFirstStep = yesCount >= 15;
 
-  // 結果はアプリでは見せず、LINEで届ける。
-  // LINEには結果コードだけを送り、LINE側のキーワード自動応答でタイプごとの画像を返す。
-  // 結果コード：A＝準備OK／B＝もうすぐパートナー／C＝自分軸育成／D＝現実を動かす（数字は点数）
-  const code = `${type.code}${total}`;
-  const lineText = `🔮 守護霊ビジネスパートナー診断\n20問の診断が終わりました✨\n【結果コード：${code}】\nわたしの結果を教えてください💜`;
-  const lineUrl = `https://line.me/R/oaMessage/${encodeURIComponent(LINE_ID)}/?${encodeURIComponent(lineText)}`;
+  const ctaHtml = showCta ? `
+    <section class="panel cta">
+      <p class="catch">${type.catch}</p>
+      <a class="btn consult" href="${CONSULT_URL || "#"}" target="_blank" rel="noopener">${type.cta}</a>
+    </section>` : "";
 
   app.innerHTML = `
-    <div class="halo" style="--power:.7" aria-hidden="true"><span></span><span></span><span></span></div>
+    ${type.image ? `
+    <section class="result-card">
+      <img src="${type.image.src}" width="${type.image.w}" height="${type.image.h}" alt="">
+      <h2 class="sr-only">診断結果 ${type.catch} ${type.name} ${type.text}</h2>
+    </section>
     <section class="score">
-      <p class="eyebrow">診断完了</p>
-      <h2 class="type-name">20問おつかれさまでした！</h2>
-      <p class="muted">あなたの結果は<br>LINEでお届けします</p>
+      <p class="eyebrow">あなたのパートナー度</p>
+      <p class="score-num">${total}<small>／${max}点</small></p>
+    </section>` : `
+    <div class="halo" style="--power:${power.toFixed(2)}" aria-hidden="true"><span></span><span></span><span></span></div>
+    <section class="score">
+      <p class="eyebrow">あなたのパートナー度</p>
+      <p class="score-num">${total}<small>／${max}点</small></p>
+      ${showCta ? "" : `<p class="catch">${type.catch}</p>`}
+      <h2 class="type-name">${type.name}</h2>
     </section>
-    <section class="panel line-box">
-      <p class="line-lead">あなたのタイプと<br>守護霊との向き合い方を<br>LINEでお送りします</p>
-      <a class="btn line-btn" href="${lineUrl}" target="_blank" rel="noopener">結果をLINEで受け取る</a>
-      <p class="muted line-note">LINEが開いたら、そのまま送信を押してね</p>
-    </section>
+    <section class="panel">
+      <p>${type.text}</p>
+    </section>`}
+    ${canConsult && type.min === 16 ? `<section class="result-card">
+      <img src="invite1.webp" width="941" height="1672" alt="">
+      <div class="sr-only">ここまで来たあなたは、もう“準備中”ではありません。守護霊からのサインを受け取り、それを人生やビジネスに活かしていける土台は整っています。あとは、あなたの守護霊がどんな形でメッセージを送っているのか、どうコミュニケーションを取ればいいのかを知るだけ。「自分の場合は、どんなサインで来る？」「今のビジネスにどう活かせる？」「守護霊をビジネスパートナーにして、次のステージへ進みたい」そう思った方は、友彩に相談してみてください。あなたに合った守護霊とのつながり方と、ビジネスへの活かし方を一緒に見ていきます。</div>
+    </section>` : canConsult ? `<section class="result-card">
+      <img src="invite2.webp" width="941" height="1672" alt="">
+      <div class="sr-only">診断結果をビジネスのステージアップに活かしたい方へ。今のあなたは、守護霊からのサインを受け取る力はあるものの、まだ活かしきれていない部分があるかもしれません。「自分はどこで止まってる？」「どうしたら守護霊をビジネスパートナーにできる？」そこを友彩と一緒に整理したい方は、友彩に個別で相談へ。</div>
+    </section>` : ""}
+    ${showFirstStep ? `<section class="result-card">
+      <img src="firststep.webp" width="941" height="1672" alt="">
+      <div class="sr-only">今できる一歩。今は「守護霊とつながらなきゃ」と焦らなくていい時期。まずは、自分の感覚をとり戻すところから始めてみて。1日5分、スマホを置いて「今、私はどう感じてる？」と自分に聞いてみる。「なんか違うかも」と思ったことを、否定せずに一行だけ書き出す。「私はどうしたい？」の答えを、小さなことから一つ選んで決めてみる。決めたことを、今日のうちに5分だけやってみる。できたら、自分に花丸をつけてあげて。守護霊のサポートは、あなたが自分で動き始めた時に感じやすくなります。</div>
+    </section>` : ""}
+    ${ctaHtml}
+    <p class="toast" id="toast" role="status"></p>
     <p class="note">この診断は、今の在り方を見つめるためのセルフチェックです。<br>結果は「今」のあなた。行動が変われば点数も変わります。</p>
   `;
+  const toast = document.getElementById("toast");
+  if (!CONSULT_URL) {
+    app.querySelectorAll(".consult").forEach(a => {
+      a.onclick = e => { e.preventDefault(); toast.textContent = "相談の受付ページは準備中です。"; };
+    });
+  }
   window.scrollTo({ top: 0 });
 }
 
