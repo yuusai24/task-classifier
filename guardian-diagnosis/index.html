@@ -315,6 +315,27 @@ let current = 0;
 
 function axisName(key) { return AXES.find(a => a.key === key).name; }
 
+// 画像の先読み：はじめの画面が出たあと、問題の画像を順番にうしろで読みこんでおく
+// （1枚ずつ読みこむので、今見ている画面の表示をじゃましない）
+const preloaded = [];
+function preloadAll() {
+  const list = [
+    ...Object.values(QUESTION_CARDS).map(c => c.src),
+    ...Object.values(QUESTION_IMAGES),
+    ...TYPES.filter(t => t.image).map(t => t.image.src),
+    "invite1.webp", "invite2.webp", "firststep.webp",
+  ];
+  let i = 0;
+  const next = () => {
+    if (i >= list.length) return;
+    const img = new Image();
+    img.onload = img.onerror = next;
+    img.src = list[i++];
+    preloaded.push(img);
+  };
+  next();
+}
+
 function renderIntro() {
   app.innerHTML = `
     <img class="hero" src="hero.webp" width="1254" height="1254" alt="守護霊ビジネスパートナー診断　今の自分が守護霊をビジネスパートナーにできるかチェック　受信力・自己信頼・行動力・主体性から診断">
@@ -460,6 +481,8 @@ function renderResult() {
 }
 
 renderIntro();
+if (document.readyState === "complete") preloadAll();
+else window.addEventListener("load", preloadAll, { once: true });
 
 // 背景の星空（ゆっくりまたたく）
 (function stars() {
