@@ -417,7 +417,7 @@ function renderResult() {
   const showFirstStep = yesCount >= 15;
 
   // LINEのトーク画面を、結果の文が入った状態で開く（送信はお客さんが押す）
-  const lineText = `【守護霊ビジネスパートナー診断】\n結果：${type.name}（${total}／${max}点）`;
+  const lineText = `🔮 守護霊ビジネスパートナー診断\n━━━━━━━━━━\n✨ 診断結果 ✨\n${type.name}\n（パートナー度 ${total}／${max}点）\n━━━━━━━━━━\nわたしのタイプの解説を受け取ります💜`;
   const lineUrl = `https://line.me/R/oaMessage/${encodeURIComponent(LINE_ID)}/?${encodeURIComponent(lineText)}`;
   const lineHtml = `
     <section class="panel line-box">
