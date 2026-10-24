@@ -1,0 +1,21 @@
+{
+  "memo": "友彩さん版『守護霊ビジネス診断』リール。文字の中の \\n は改行、{ } でかこんだ文字は大きくなります。",
+  "template": "../templates/quiz_3choice.json",
+  "output": "../output/shugorei_shindan.mp4",
+  "clips": {
+    "wide": {"file": "../input/wide.mp4", "start": 0},
+    "pan": {"file": "../input/pan.mp4", "start": 0},
+    "pullback": {"file": "../input/pullback.mp4", "start": 0}
+  },
+  "texts": {
+    "title": "守護霊ビジネス診断",
+    "question": "年商1,000万を超えた起業家さんへ",
+    "intro": "このうち1つに\nあなたのビジネスを動かす\n守護霊のメッセージを込めました",
+    "ask": "それは\nどれでしょう？",
+    "hint": "直感で「これだ」と\n感じたものがヒント",
+    "cta": "答えは「{守護霊}」と\nコメントしてね",
+    "sub": "あなたの守護霊タイプも\n診断できます"
+  },
+  "labels": {},
+  "bgm": null
+}

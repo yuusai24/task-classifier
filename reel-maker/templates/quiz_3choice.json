@@ -1,0 +1,29 @@
+{
+  "name": "3択クイズ型（参考：霊力診断リール）",
+  "memo": "y・x は画面の上から・左からの位置（0〜1）。start・end は動画のはじめからの秒数。end が null なら最後まで。",
+  "size": [1080, 1920],
+  "fps": 30,
+  "scenes": [
+    {"slot": "wide", "duration": 3.0, "memo": "3つ並んだ引きの映像（カメラは動かさない）"},
+    {"slot": "pan", "duration": 4.84, "memo": "左→真ん中→右と、1つずつ寄って映す"},
+    {"slot": "pullback", "duration": 5.16, "memo": "右のもののアップから、3つ全部が入るまで引く"}
+  ],
+  "layers": [
+    {"type": "band", "start": 0, "end": 3.0, "y": 0.21, "height": 0.17},
+    {"type": "text", "key": "title", "style": "title", "start": 0, "end": 3.0, "y": 0.21},
+    {"type": "text", "key": "question", "style": "pink", "start": 0, "end": 3.0, "y": 0.37},
+    {"type": "countdown", "start": 0.45, "end": 3.0, "y": 0.76},
+
+    {"type": "text", "key": "intro", "style": "pink", "start": 3.0, "end": 7.84, "y": 0.26},
+    {"type": "label", "text": "A", "start": 3.75, "end": 4.6, "x": 0.5, "y": 0.86},
+    {"type": "label", "text": "B", "start": 5.45, "end": 6.1, "x": 0.5, "y": 0.86},
+    {"type": "label", "text": "C", "start": 6.9, "end": 7.84, "x": 0.5, "y": 0.86},
+
+    {"type": "text", "key": "ask", "style": "blue", "start": 7.84, "end": 9.84, "y": 0.13},
+    {"type": "text", "key": "hint", "style": "green", "start": 7.84, "end": 9.84, "y": 0.79},
+
+    {"type": "text", "key": "cta", "style": "blue", "start": 9.84, "end": null, "y": 0.25},
+    {"type": "text", "key": "sub", "style": "green_small", "start": 9.84, "end": null, "y": 0.77}
+  ],
+  "audio": {"delay": 0.45, "fade_out": 1.0}
+}
