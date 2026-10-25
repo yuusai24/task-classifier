@@ -260,6 +260,7 @@ class Look:
         f = frame.astype(np.float32) / 255
         g = self.grade
         if g:
+            orig = f
             f = (f - 0.5) * g.get("contrast", 1.0) + 0.5
             f *= g.get("exposure", 1.0)
             gray = f.mean(axis=2, keepdims=True)
@@ -271,6 +272,8 @@ class Look:
                 lift = np.array(hex_rgb(g["lift"])[::-1], np.float32) / 255
                 f = lift + f * (1 - lift)
             f = np.clip(f, 0, 1)
+            mix = g.get("mix", 1.0)  # 0.6 なら、色のトーンを6割だけかける（もとの映像の色を4割残す）
+            f = orig * (1 - mix) + f * mix
         if self.vignette is not None:
             f *= self.vignette
         if self.nebula is not None:

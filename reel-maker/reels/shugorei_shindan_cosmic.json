@@ -180,35 +180,29 @@
   },
   "look": {
     "grade": {
-      "exposure": 0.66,
-      "contrast": 1.15,
-      "saturation": 1.0,
-      "multiply": "#8f86ff",
-      "multiply_strength": 0.45,
-      "lift": "#0a0624"
+      "exposure": 0.85,
+      "contrast": 1.2,
+      "saturation": 1.15,
+      "multiply": "#a49cff",
+      "multiply_strength": 0.4,
+      "lift": "#0a0624",
+      "mix": 0.7
     },
-    "vignette": 0.9,
+    "vignette": 0.6,
     "nebula": [
       {
         "x": 0.15,
-        "y": 0.08,
-        "r": 0.55,
+        "y": 0.05,
+        "r": 0.5,
         "color": "#7b3cff",
-        "alpha": 0.35
+        "alpha": 0.3
       },
       {
         "x": 0.9,
-        "y": 0.3,
-        "r": 0.45,
+        "y": 0.22,
+        "r": 0.4,
         "color": "#2bb3ff",
-        "alpha": 0.25
-      },
-      {
-        "x": 0.6,
-        "y": 0.95,
-        "r": 0.5,
-        "color": "#c13cff",
-        "alpha": 0.08
+        "alpha": 0.2
       }
     ],
     "stars": {
