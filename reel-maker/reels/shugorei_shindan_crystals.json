@@ -46,7 +46,10 @@
   "bgm": null,
   "positions": {
     "intro": {
-      "y": 0.2
+      "y": 0.115
+    },
+    "hint": {
+      "y": 0.9
     }
   },
   "styles": {
@@ -58,7 +61,7 @@
       ]
     },
     "pink": {
-      "size": 0.078,
+      "size": 0.07,
       "fill": "#ff3fae",
       "stroke": [
         "#ffffff",
