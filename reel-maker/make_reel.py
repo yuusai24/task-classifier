@@ -363,7 +363,7 @@ def build_layers(template, reel, W, H):
         elif kind == "band":
             layer.update(reel.get("positions", {}).get("band", {}))
             band = reel.get("band", {})
-            layer["image"] = render_band(W, spec["height"], H, band.get("color", "#ffffff"), band.get("alpha", 140))
+            layer["image"] = render_band(W, layer["height"], H, band.get("color", "#ffffff"), band.get("alpha", 140))
         elif kind == "countdown":
             layer["color"] = reel.get("countdown", {}).get("color", "#ffffff")
         layers.append(layer)
