@@ -93,9 +93,8 @@ def layout_text(text, style, width):
     return lines, base, line_width
 
 
-def render_text(text, style_name, width):
+def render_text(text, style, width):
     """文字を、フチ・光・グラデーションつきの透明画像（RGBA）にする。"""
-    style = STYLES[style_name]
     lines, px, line_width = layout_text(text, style, width)
     pad = int(px * 0.6)
     line_heights = [px * (EMPHASIS_SCALE if any(e for _, e in r) else 1) * 1.25 for r in lines]
@@ -123,6 +122,14 @@ def render_text(text, style_name, width):
         sh = stroke.filter(ImageFilter.GaussianBlur(px * 0.05))
         layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
         layer.paste((40, 60, 30, 160), (int(px * 0.04), int(px * 0.06)), sh)
+        out = Image.alpha_composite(out, layer)
+    if "halo" in style:
+        # 明るい背景でも読めるように、文字のまわりにうすい影をしく
+        color, opacity, radius = style["halo"]
+        grow = max(3, int(radius * width)) | 1
+        hl = stroke.filter(ImageFilter.MaxFilter(grow)).filter(ImageFilter.GaussianBlur(radius * width))
+        layer = Image.new("RGBA", (w, h), hex_rgb(color) + (0,))
+        layer.putalpha(hl.point(lambda v: int(v * opacity)))
         out = Image.alpha_composite(out, layer)
     if "glow" in style:
         color, radius = style["glow"]
@@ -227,6 +234,8 @@ class ClipReader:
 def build_layers(template, reel, W, H):
     """型とリール設定から、重ねる素材（文字・帯など）を前もって作っておく。"""
     texts = reel.get("texts", {})
+    # 文字のデザインは、リール設定の styles で一部だけ変えられる
+    styles = {name: dict(s, **reel.get("styles", {}).get(name, {})) for name, s in STYLES.items()}
     layers = []
     for spec in template["layers"]:
         kind = spec["type"]
@@ -236,11 +245,11 @@ def build_layers(template, reel, W, H):
             if not value:
                 continue
             layer.update(reel.get("positions", {}).get(spec["key"], {}))  # 文字の位置をリールごとに変える
-            layer["image"] = render_text(value, spec["style"], W)
+            layer["image"] = render_text(value, styles[spec["style"]], W)
         elif kind == "label":
             label = dict(spec, **reel.get("labels", {}).get(spec["text"], {}))
             layer.update(label)
-            layer["image"] = render_text(label["text"], "label", W)
+            layer["image"] = render_text(label["text"], styles["label"], W)
         elif kind == "band":
             layer["image"] = render_band(W, spec["height"], H)
         layers.append(layer)
