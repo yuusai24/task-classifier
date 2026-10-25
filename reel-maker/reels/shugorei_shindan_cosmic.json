@@ -50,133 +50,166 @@
     },
     "hint": {
       "y": 0.9
+    },
+    "band": {
+      "y": 0.16,
+      "height": 0.13
+    },
+    "title": {
+      "y": 0.16
+    },
+    "question": {
+      "y": 0.29
     }
   },
   "styles": {
     "title": {
-      "font": "serif",
+      "font": "sans",
+      "size": 0.11,
       "gradient": [
         "#ffffff",
-        "#c9b8ff"
+        "#d9ccff"
       ],
       "stroke": [
-        "#6b4fd8",
-        0.004
+        "#2a1670",
+        0.006
       ],
       "glow": [
         "#8a6cff",
-        0.02
+        0.016
       ],
       "halo": [
-        "#03031a",
-        0.6,
-        0.016
+        "#02021a",
+        0.75,
+        0.012
       ],
       "shadow": false
     },
     "pink": {
-      "size": 0.068,
+      "font": "sans",
+      "size": 0.062,
       "gradient": [
         "#ffffff",
-        "#ffc9f3"
+        "#ffd6f6"
       ],
       "stroke": [
-        "#b04ad6",
-        0.003
+        "#4a145e",
+        0.005
       ],
       "glow": [
         "#d65cff",
-        0.018
-      ],
-      "halo": [
-        "#03031a",
-        0.6,
-        0.016
-      ]
-    },
-    "blue": {
-      "size": 0.078,
-      "gradient": [
-        "#ffffff",
-        "#bfeaff"
-      ],
-      "stroke": [
-        "#2f7fd6",
-        0.003
-      ],
-      "glow": [
-        "#38bdf8",
-        0.02
-      ],
-      "halo": [
-        "#03031a",
-        0.6,
-        0.016
-      ]
-    },
-    "green": {
-      "gradient": [
-        "#fff8de",
-        "#f3c766"
-      ],
-      "stroke": [
-        "#a06a10",
-        0.003
-      ],
-      "glow": [
-        "#ffb84d",
-        0.014
-      ],
-      "halo": [
-        "#03031a",
-        0.6,
-        0.016
-      ]
-    },
-    "green_small": {
-      "size": 0.058,
-      "gradient": [
-        "#fff8de",
-        "#f3c766"
-      ],
-      "stroke": [
-        "#a06a10",
-        0.003
-      ],
-      "glow": [
-        "#ffb84d",
         0.012
       ],
       "halo": [
-        "#03031a",
-        0.6,
-        0.016
+        "#02021a",
+        0.75,
+        0.012
+      ],
+      "box": [
+        "#0b0a30",
+        120
+      ]
+    },
+    "blue": {
+      "font": "sans",
+      "size": 0.074,
+      "gradient": [
+        "#ffffff",
+        "#d4f1ff"
+      ],
+      "stroke": [
+        "#0b2a5e",
+        0.005
+      ],
+      "glow": [
+        "#38bdf8",
+        0.014
+      ],
+      "halo": [
+        "#02021a",
+        0.75,
+        0.012
+      ],
+      "box": [
+        "#0b0a30",
+        120
+      ]
+    },
+    "green": {
+      "font": "sans",
+      "size": 0.062,
+      "gradient": [
+        "#fffbe8",
+        "#ffd77a"
+      ],
+      "stroke": [
+        "#4a2c00",
+        0.005
+      ],
+      "glow": [
+        "#ffb84d",
+        0.01
+      ],
+      "halo": [
+        "#02021a",
+        0.75,
+        0.012
+      ],
+      "box": [
+        "#0b0a30",
+        120
+      ]
+    },
+    "green_small": {
+      "font": "sans",
+      "size": 0.056,
+      "gradient": [
+        "#fffbe8",
+        "#ffd77a"
+      ],
+      "stroke": [
+        "#4a2c00",
+        0.005
+      ],
+      "glow": [
+        "#ffb84d",
+        0.01
+      ],
+      "halo": [
+        "#02021a",
+        0.75,
+        0.012
+      ],
+      "box": [
+        "#0b0a30",
+        120
       ]
     },
     "label": {
+      "font": "sans",
       "size": 0.1,
       "gradient": [
         "#fffbe6",
         "#ffd166"
       ],
       "stroke": [
-        "#8a5a00",
-        0.003
+        "#4a2c00",
+        0.005
       ],
       "glow": [
         "#9fe8ff",
-        0.014
+        0.012
       ],
       "halo": [
-        "#03031a",
-        0.6,
-        0.016
+        "#02021a",
+        0.75,
+        0.012
       ]
     }
   },
   "band": {
     "color": "#0b0830",
-    "alpha": 120
+    "alpha": 150
   },
   "countdown": {
     "color": "#cfe6ff"

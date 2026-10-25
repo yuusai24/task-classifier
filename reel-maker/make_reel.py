@@ -118,6 +118,12 @@ def render_text(text, style, width):
         y += lh
 
     out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    if "box" in style:
+        # 文字のうしろに、角の丸い半透明の下じきをしく
+        color, alpha = style["box"]
+        m = int(pad * 0.45)
+        ImageDraw.Draw(out).rounded_rectangle([m, m, w - m, h - m], radius=int(px * 0.4),
+                                              fill=hex_rgb(color) + (alpha,))
     if style.get("shadow"):
         sh = stroke.filter(ImageFilter.GaussianBlur(px * 0.05))
         layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
@@ -355,6 +361,7 @@ def build_layers(template, reel, W, H):
             layer.update(label)
             layer["image"] = render_text(label["text"], styles["label"], W)
         elif kind == "band":
+            layer.update(reel.get("positions", {}).get("band", {}))
             band = reel.get("band", {})
             layer["image"] = render_band(W, spec["height"], H, band.get("color", "#ffffff"), band.get("alpha", 140))
         elif kind == "countdown":
