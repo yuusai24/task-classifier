@@ -204,17 +204,18 @@ def cover(frame, w, h):
 class ClipReader:
     """動画を前から順に読み、指定した時間のコマを返す。最後まで行ったら最後のコマを返し続ける。"""
 
-    def __init__(self, path, start):
+    def __init__(self, path, start, speed=1.0):
         self.cap = cv2.VideoCapture(path)
         if not self.cap.isOpened():
             sys.exit(f"動画が開けません: {path}")
         self.fps = self.cap.get(cv2.CAP_PROP_FPS) or 30
         self.cap.set(cv2.CAP_PROP_POS_MSEC, start * 1000)
+        self.speed = speed  # 2.0 なら2倍速
         self.index = -1
         self.frame = None
 
     def at(self, t):
-        want = int(t * self.fps)
+        want = int(t * self.speed * self.fps)
         while self.index < want:
             ok, f = self.cap.read()
             if not ok:
@@ -234,6 +235,7 @@ def build_layers(template, reel, W, H):
             value = texts.get(spec["key"])
             if not value:
                 continue
+            layer.update(reel.get("positions", {}).get(spec["key"], {}))  # 文字の位置をリールごとに変える
             layer["image"] = render_text(value, spec["style"], W)
         elif kind == "label":
             label = dict(spec, **reel.get("labels", {}).get(spec["text"], {}))
@@ -310,7 +312,7 @@ def make_reel(reel_path, preview=False):
     t0 = 0.0
     for scene in scenes:
         clip = clips[scene["slot"]]
-        reader = ClipReader(resolve(clip["file"], base), clip.get("start", 0))
+        reader = ClipReader(resolve(clip["file"], base), clip.get("start", 0), clip.get("speed", 1.0))
         n = int(round(scene["duration"] * fps))
         for i in range(n):
             src = reader.at(i / fps)
@@ -331,7 +333,7 @@ def frame_at(scenes, clips, base, t, W, H):
     for scene in scenes:
         if t < t0 + scene["duration"] or scene is scenes[-1]:
             clip = clips[scene["slot"]]
-            reader = ClipReader(resolve(clip["file"], base), clip.get("start", 0))
+            reader = ClipReader(resolve(clip["file"], base), clip.get("start", 0), clip.get("speed", 1.0))
             return cover(reader.at(t - t0), W, H)
         t0 += scene["duration"]
 

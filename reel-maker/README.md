@@ -58,6 +58,22 @@ python3 make_reel.py reels/shugorei_shindan.json             # リール動画�
 ```
 `start`・`end` は動画のはじめからの秒数、`x`・`y` は画面の左・上からの位置（0〜1）です。
 
+### 1本でまとめて撮ったとき（例：`reels/shugorei_shindan_crystals.json`）
+同じ動画を3回使い、`start`（何秒目から使うか）と `speed`（速さ。2.0 なら2倍速）で場面を分けます。
+```json
+"clips": {
+  "wide": {"file": "../input/crystals.mp4", "start": 1.0},
+  "pan": {"file": "../input/crystals.mp4", "start": 4.6, "speed": 2.05},
+  "pullback": {"file": "../input/crystals.mp4", "start": 14.3}
+}
+```
+
+### 文字の位置を変えたいとき
+`positions` で、文字ごとに位置を変えられます（例：ピンクの文字を少し上にする）。
+```json
+"positions": {"intro": {"y": 0.2}}
+```
+
 ### BGM を入れるとき
 ```json
 "bgm": {"file": "../input/bgm.mp3", "delay": 0.45, "volume": 0.8}

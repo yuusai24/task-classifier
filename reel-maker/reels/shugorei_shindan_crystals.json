@@ -1,0 +1,52 @@
+{
+  "memo": "友彩さんが撮ったクリスタル3本の動画（1本撮り）で作る『守護霊ビジネス診断』リール。1本の動画を3つの場面に分けて使います。",
+  "template": "../templates/quiz_3choice.json",
+  "output": "../output/shugorei_shindan_crystals.mp4",
+  "clips": {
+    "wide": {
+      "file": "../input/crystals.mp4",
+      "start": 1.0
+    },
+    "pan": {
+      "file": "../input/crystals.mp4",
+      "start": 4.6,
+      "speed": 2.05
+    },
+    "pullback": {
+      "file": "../input/crystals.mp4",
+      "start": 14.3
+    }
+  },
+  "texts": {
+    "title": "守護霊ビジネス診断",
+    "question": "年商1,000万を超えた起業家さんへ",
+    "intro": "このうち1つに\nあなたのビジネスを動かす\n守護霊のメッセージを込めました",
+    "ask": "それは\nどれでしょう？",
+    "hint": "直感で「これだ」と\n感じたものがヒント",
+    "cta": "答えは「{守護霊}」と\nコメントしてね",
+    "sub": "あなたの守護霊タイプも\n診断できます"
+  },
+  "labels": {
+    "A": {
+      "start": 4.2,
+      "end": 5.0,
+      "x": 0.37
+    },
+    "B": {
+      "start": 5.5,
+      "end": 6.2,
+      "x": 0.5
+    },
+    "C": {
+      "start": 6.8,
+      "end": 7.84,
+      "x": 0.53
+    }
+  },
+  "bgm": null,
+  "positions": {
+    "intro": {
+      "y": 0.2
+    }
+  }
+}
