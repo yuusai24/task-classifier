@@ -154,30 +154,31 @@ def render_text(text, style, width):
     return np.array(Image.alpha_composite(out, fill))
 
 
-def render_band(width, height_frac, full_h):
+def render_band(width, height_frac, full_h, color="#ffffff", alpha=140):
     h = int(height_frac * full_h)
     band = np.zeros((h, width, 4), np.uint8)
-    band[...] = (255, 255, 255, 140)
+    band[...] = hex_rgb(color) + (alpha,)
     return band
 
 
-def render_countdown(t_local, width):
+def render_countdown(t_local, width, color="#ffffff"):
     """映画のはじまりのようなカウントダウン（3・2・1）。t_local は始まってからの秒数。"""
     size = int(width * 0.46)
     img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
+    rgb = hex_rgb(color)
     c = size / 2
     r_out, r_in = size * 0.40, size * 0.32
     lw = max(2, int(size * 0.012))
     number = max(1, 3 - int(t_local))
     frac = t_local % 1.0
-    d.ellipse([c - r_out, c - r_out, c + r_out, c + r_out], fill=(255, 255, 255, 70))
+    d.ellipse([c - r_out, c - r_out, c + r_out, c + r_out], fill=rgb + (70,))
     d.pieslice([c - r_out, c - r_out, c + r_out, c + r_out], -90, -90 + 360 * frac,
-               fill=(255, 255, 255, 110))
-    d.ellipse([c - r_out, c - r_out, c + r_out, c + r_out], outline=(255, 255, 255, 200), width=lw)
-    d.ellipse([c - r_in, c - r_in, c + r_in, c + r_in], outline=(255, 255, 255, 200), width=lw)
-    d.line([0, c, size, c], fill=(255, 255, 255, 170), width=lw)
-    d.line([c, 0, c, size], fill=(255, 255, 255, 170), width=lw)
+               fill=rgb + (110,))
+    d.ellipse([c - r_out, c - r_out, c + r_out, c + r_out], outline=rgb + (200,), width=lw)
+    d.ellipse([c - r_in, c - r_in, c + r_in, c + r_in], outline=rgb + (200,), width=lw)
+    d.line([0, c, size, c], fill=rgb + (170,), width=lw)
+    d.line([c, 0, c, size], fill=rgb + (170,), width=lw)
     d.text((c, c), str(number), font=font("sans", size * 0.30), fill=(255, 255, 255, 255),
            anchor="mm", stroke_width=max(1, lw // 2), stroke_fill=(80, 80, 80, 200))
     return np.array(img)
@@ -206,6 +207,106 @@ def cover(frame, w, h):
     y0 = (resized.shape[0] - h) // 2
     x0 = (resized.shape[1] - w) // 2
     return resized[y0:y0 + h, x0:x0 + w]
+
+
+def star_sprite(size):
+    """ぼんやり光る点に、十字のきらめきをつけた星の形（0〜1 の明るさ）。"""
+    r = size * 4
+    yy, xx = np.mgrid[-r:r + 1, -r:r + 1].astype(np.float32)
+    dist = np.sqrt(xx ** 2 + yy ** 2)
+    core = np.exp(-(dist / max(size * 0.6, 0.6)) ** 2)
+    cross = (np.exp(-(xx / 0.8) ** 2) * np.exp(-np.abs(yy) / (size * 1.3))
+             + np.exp(-(yy / 0.8) ** 2) * np.exp(-np.abs(xx) / (size * 1.3)))
+    return np.clip(core + cross * 0.6, 0, 1)[..., None]
+
+
+class Look:
+    """映像の世界観（色のトーン・まわりを暗く・星雲・星のきらめき・流れ星）をつける。"""
+
+    def __init__(self, cfg, W, H, total):
+        cfg = cfg or {}
+        self.W, self.H = W, H
+        self.grade = cfg.get("grade")
+        self.vignette = None
+        if cfg.get("vignette"):
+            yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+            r2 = ((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2
+            self.vignette = np.clip(1 - cfg["vignette"] * r2 / 2, 0, 1)[..., None]
+        self.nebula = None
+        if cfg.get("nebula"):
+            yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+            neb = np.zeros((H, W, 3), np.float32)
+            for b in cfg["nebula"]:
+                g = np.exp(-(((xx - b["x"] * W) ** 2 + (yy - b["y"] * H) ** 2) / (b["r"] * W) ** 2))
+                bgr = np.array(hex_rgb(b["color"])[::-1], np.float32) / 255
+                neb += g[..., None] * bgr * b.get("alpha", 0.3)
+            self.nebula = np.clip(neb, 0, 1)
+        self.stars = []
+        st = cfg.get("stars")
+        if st:
+            rng = np.random.default_rng(st.get("seed", 1))
+            top = st.get("area", [0.0, 1.0])
+            sprites = {s: star_sprite(s) for s in (1, 2, 3)}
+            color = np.array(hex_rgb(st.get("color", "#ffffff"))[::-1], np.float32) / 255
+            for _ in range(st.get("count", 120)):
+                size = int(rng.choice([1, 1, 1, 2, 2, 3]))
+                self.stars.append({
+                    "x": rng.uniform(0, W), "y": rng.uniform(top[0] * H, top[1] * H),
+                    "sprite": sprites[size] * color, "phase": rng.uniform(0, 2 * np.pi),
+                    "speed": rng.uniform(1.0, 3.0), "level": rng.uniform(0.4, 1.0)})
+        self.shooting = cfg.get("shooting", [])
+
+    def apply(self, frame, t):
+        f = frame.astype(np.float32) / 255
+        g = self.grade
+        if g:
+            f = (f - 0.5) * g.get("contrast", 1.0) + 0.5
+            f *= g.get("exposure", 1.0)
+            gray = f.mean(axis=2, keepdims=True)
+            f = gray + (f - gray) * g.get("saturation", 1.0)
+            if "multiply" in g:
+                m = np.array(hex_rgb(g["multiply"])[::-1], np.float32) / 255
+                f *= 1 - (1 - m) * g.get("multiply_strength", 1.0)
+            if "lift" in g:
+                lift = np.array(hex_rgb(g["lift"])[::-1], np.float32) / 255
+                f = lift + f * (1 - lift)
+            f = np.clip(f, 0, 1)
+        if self.vignette is not None:
+            f *= self.vignette
+        if self.nebula is not None:
+            f = 1 - (1 - f) * (1 - self.nebula)
+        for s in self.stars:
+            bright = s["level"] * (0.55 + 0.45 * math.sin(s["phase"] + t * s["speed"] * 2 * math.pi))
+            self._add(f, s["sprite"] * bright, s["x"], s["y"])
+        for sh in self.shooting:
+            p = (t - sh["start"]) / sh.get("duration", 0.7)
+            if 0 <= p <= 1:
+                self._shooting_star(f, sh, p)
+        return (np.clip(f, 0, 1) * 255).astype(np.uint8)
+
+    def _add(self, f, sprite, cx, cy):
+        h, w = sprite.shape[:2]
+        x0, y0 = int(cx - w / 2), int(cy - h / 2)
+        fx0, fy0, fx1, fy1 = max(0, x0), max(0, y0), min(self.W, x0 + w), min(self.H, y0 + h)
+        if fx0 < fx1 and fy0 < fy1:
+            f[fy0:fy1, fx0:fx1] += sprite[fy0 - y0:fy1 - y0, fx0 - x0:fx1 - x0]
+
+    def _shooting_star(self, f, sh, p):
+        (x0, y0), (x1, y1) = sh["from"], sh["to"]
+        head = (x0 + (x1 - x0) * p, y0 + (y1 - y0) * p)
+        tail_len = 0.35
+        layer = np.zeros((self.H, self.W), np.float32)
+        steps = 24
+        for k in range(steps):
+            q = max(0.0, p - tail_len * k / steps)
+            a = (x0 + (x1 - x0) * q, y0 + (y1 - y0) * q)
+            b = (x0 + (x1 - x0) * max(0.0, q - tail_len / steps), y0 + (y1 - y0) * max(0.0, q - tail_len / steps))
+            cv2.line(layer, (int(a[0] * self.W), int(a[1] * self.H)), (int(b[0] * self.W), int(b[1] * self.H)),
+                     float(1 - k / steps), max(1, int(4 * (1 - k / steps))), cv2.LINE_AA)
+        layer = cv2.GaussianBlur(layer, (0, 0), 1.5)
+        fade = math.sin(p * math.pi)
+        f += layer[..., None] * fade
+        self._add(f, star_sprite(4) * fade, head[0] * self.W, head[1] * self.H)
 
 
 class ClipReader:
@@ -251,7 +352,10 @@ def build_layers(template, reel, W, H):
             layer.update(label)
             layer["image"] = render_text(label["text"], styles["label"], W)
         elif kind == "band":
-            layer["image"] = render_band(W, spec["height"], H)
+            band = reel.get("band", {})
+            layer["image"] = render_band(W, spec["height"], H, band.get("color", "#ffffff"), band.get("alpha", 140))
+        elif kind == "countdown":
+            layer["color"] = reel.get("countdown", {}).get("color", "#ffffff")
         layers.append(layer)
     return layers
 
@@ -263,7 +367,7 @@ def draw_overlays(frame, layers, t, W, H, total):
             continue
         cx, cy = layer.get("x", 0.5) * W, layer["y"] * H
         if layer["type"] == "countdown":
-            blend(frame, render_countdown(t - layer["start"], W), cx, cy)
+            blend(frame, render_countdown(t - layer["start"], W, layer["color"]), cx, cy)
         else:
             blend(frame, layer["image"], cx, cy)
 
@@ -281,6 +385,7 @@ def make_reel(reel_path, preview=False):
     scenes = template["scenes"]
     total = sum(s["duration"] for s in scenes)
     layers = build_layers(template, reel, W, H)
+    look = Look(reel.get("look"), W, H, total)
     out_path = resolve(reel["output"], base)
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
@@ -293,7 +398,7 @@ def make_reel(reel_path, preview=False):
         stem = os.path.splitext(out_path)[0]
         times = sorted({0.5} | {l["start"] + 0.3 for l in layers})
         for t in [t for t in times if t < total]:
-            frame = frame_at(scenes, clips, base, t, W, H)
+            frame = look.apply(frame_at(scenes, clips, base, t, W, H), t)
             draw_overlays(frame, layers, t, W, H, total)
             cv2.imwrite(f"{stem}_preview_{t:05.2f}s.jpg", frame)
         print(f"確認用の画像を作りました: {stem}_preview_*.jpg")
@@ -327,7 +432,7 @@ def make_reel(reel_path, preview=False):
             src = reader.at(i / fps)
             if src is None:
                 sys.exit(f"動画からコマが読めません: {clip['file']}")
-            frame = cover(src, W, H)
+            frame = look.apply(cover(src, W, H), t0 + i / fps)
             draw_overlays(frame, layers, t0 + i / fps, W, H, total)
             proc.stdin.write(frame.tobytes())
         t0 += n / fps

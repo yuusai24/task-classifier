@@ -1,0 +1,250 @@
+{
+  "memo": "クリスタル動画で作る『守護霊ビジネス診断』リールの宇宙バージョン。映像を夜空のような色にして、星のきらめき・星雲・流れ星を重ねます。",
+  "template": "../templates/quiz_3choice.json",
+  "output": "../output/shugorei_shindan_cosmic.mp4",
+  "clips": {
+    "wide": {
+      "file": "../input/crystals.mp4",
+      "start": 1.0
+    },
+    "pan": {
+      "file": "../input/crystals.mp4",
+      "start": 4.6,
+      "speed": 2.05
+    },
+    "pullback": {
+      "file": "../input/crystals.mp4",
+      "start": 14.3
+    }
+  },
+  "texts": {
+    "title": "守護霊ビジネス診断",
+    "question": "ビジネスステージアップしたい\n女性起業家",
+    "intro": "このうち1つに\nあなたのビジネスを動かす\n守護霊のメッセージを込めました",
+    "ask": "それは\nどれでしょう？",
+    "hint": "直感で「これだ」と\n感じたものがヒント",
+    "cta": "答えは「{守護霊}」と\nコメントしてね",
+    "sub": "あなたの守護霊タイプも\n診断できます"
+  },
+  "labels": {
+    "A": {
+      "start": 4.2,
+      "end": 5.0,
+      "x": 0.37
+    },
+    "B": {
+      "start": 5.5,
+      "end": 6.2,
+      "x": 0.5
+    },
+    "C": {
+      "start": 6.8,
+      "end": 7.84,
+      "x": 0.53
+    }
+  },
+  "bgm": null,
+  "positions": {
+    "intro": {
+      "y": 0.2
+    }
+  },
+  "styles": {
+    "title": {
+      "font": "serif",
+      "gradient": [
+        "#ffffff",
+        "#c9b8ff"
+      ],
+      "stroke": [
+        "#6b4fd8",
+        0.004
+      ],
+      "glow": [
+        "#8a6cff",
+        0.02
+      ],
+      "halo": [
+        "#03031a",
+        0.6,
+        0.016
+      ],
+      "shadow": false
+    },
+    "pink": {
+      "size": 0.074,
+      "gradient": [
+        "#ffffff",
+        "#ffc9f3"
+      ],
+      "stroke": [
+        "#b04ad6",
+        0.003
+      ],
+      "glow": [
+        "#d65cff",
+        0.018
+      ],
+      "halo": [
+        "#03031a",
+        0.6,
+        0.016
+      ]
+    },
+    "blue": {
+      "size": 0.078,
+      "gradient": [
+        "#ffffff",
+        "#bfeaff"
+      ],
+      "stroke": [
+        "#2f7fd6",
+        0.003
+      ],
+      "glow": [
+        "#38bdf8",
+        0.02
+      ],
+      "halo": [
+        "#03031a",
+        0.6,
+        0.016
+      ]
+    },
+    "green": {
+      "gradient": [
+        "#fff8de",
+        "#f3c766"
+      ],
+      "stroke": [
+        "#a06a10",
+        0.003
+      ],
+      "glow": [
+        "#ffb84d",
+        0.014
+      ],
+      "halo": [
+        "#03031a",
+        0.6,
+        0.016
+      ]
+    },
+    "green_small": {
+      "size": 0.058,
+      "gradient": [
+        "#fff8de",
+        "#f3c766"
+      ],
+      "stroke": [
+        "#a06a10",
+        0.003
+      ],
+      "glow": [
+        "#ffb84d",
+        0.012
+      ],
+      "halo": [
+        "#03031a",
+        0.6,
+        0.016
+      ]
+    },
+    "label": {
+      "size": 0.1,
+      "gradient": [
+        "#fffbe6",
+        "#ffd166"
+      ],
+      "stroke": [
+        "#8a5a00",
+        0.003
+      ],
+      "glow": [
+        "#9fe8ff",
+        0.014
+      ],
+      "halo": [
+        "#03031a",
+        0.6,
+        0.016
+      ]
+    }
+  },
+  "band": {
+    "color": "#0b0830",
+    "alpha": 120
+  },
+  "countdown": {
+    "color": "#cfe6ff"
+  },
+  "look": {
+    "grade": {
+      "exposure": 0.66,
+      "contrast": 1.15,
+      "saturation": 1.0,
+      "multiply": "#8f86ff",
+      "multiply_strength": 0.45,
+      "lift": "#0a0624"
+    },
+    "vignette": 0.9,
+    "nebula": [
+      {
+        "x": 0.15,
+        "y": 0.08,
+        "r": 0.55,
+        "color": "#7b3cff",
+        "alpha": 0.35
+      },
+      {
+        "x": 0.9,
+        "y": 0.3,
+        "r": 0.45,
+        "color": "#2bb3ff",
+        "alpha": 0.25
+      },
+      {
+        "x": 0.6,
+        "y": 0.95,
+        "r": 0.5,
+        "color": "#c13cff",
+        "alpha": 0.08
+      }
+    ],
+    "stars": {
+      "count": 170,
+      "seed": 7,
+      "area": [
+        0.0,
+        0.55
+      ],
+      "color": "#eaf2ff"
+    },
+    "shooting": [
+      {
+        "start": 0.6,
+        "duration": 0.7,
+        "from": [
+          0.95,
+          0.04
+        ],
+        "to": [
+          0.45,
+          0.2
+        ]
+      },
+      {
+        "start": 9.9,
+        "duration": 0.8,
+        "from": [
+          0.1,
+          0.05
+        ],
+        "to": [
+          0.6,
+          0.18
+        ]
+      }
+    ]
+  }
+}

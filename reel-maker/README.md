@@ -74,6 +74,17 @@ python3 make_reel.py reels/shugorei_shindan.json             # リール動画�
 "positions": {"intro": {"y": 0.2}}
 ```
 
+### 世界観を変えたいとき（例：宇宙版 `reels/shugorei_shindan_cosmic.json`）
+- `look`：映像の雰囲気
+  - `grade`：色のトーン（`exposure`＝明るさ、`saturation`＝色のこさ、`multiply`＝全体にのせる色）
+  - `vignette`：画面のまわりを暗くする強さ
+  - `nebula`：ぼんやり光る雲（星雲）の場所・大きさ・色
+  - `stars`：きらめく星の数と、出す範囲（`area` は画面の上から何割まで）
+  - `shooting`：流れ星（何秒目に、どこからどこへ流れるか）
+- `styles`：文字の色・光・フチ（`gradient` で上から下へ色を変えられる）
+- `band`：タイトルのうしろの帯の色
+- `countdown`：カウントダウンの色
+
 ### BGM を入れるとき
 ```json
 "bgm": {"file": "../input/bgm.mp3", "delay": 0.45, "volume": 0.8}
