@@ -77,6 +77,7 @@ python3 make_reel.py reels/shugorei_shindan.json             # リール動画�
 ### 世界観を変えたいとき（例：宇宙版 `reels/shugorei_shindan_cosmic.json`）
 - `look`：映像の雰囲気
   - `grade`：色のトーン（`exposure`＝明るさ、`saturation`＝色のこさ、`multiply`＝全体にのせる色）
+  - `grade` の `protect`：石など見せたいものがある場所（x・y・rx・ry）は、色のトーンを弱くしてもとの色を残す
   - `vignette`：画面のまわりを暗くする強さ
   - `nebula`：ぼんやり光る雲（星雲）の場所・大きさ・色
   - `stars`：きらめく星の数と、出す範囲（`area` は画面の上から何割まで）

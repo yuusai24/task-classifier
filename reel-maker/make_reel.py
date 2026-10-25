@@ -233,6 +233,15 @@ class Look:
         cfg = cfg or {}
         self.W, self.H = W, H
         self.grade = cfg.get("grade")
+        self.mix_map = None
+        if self.grade and "protect" in self.grade:
+            # 見せたいもの（石など）がある場所は、色のトーンを弱くして、もとの色を残す
+            p = self.grade["protect"]
+            yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+            d2 = ((xx - p["x"] * W) / (p["rx"] * W)) ** 2 + ((yy - p["y"] * H) / (p["ry"] * H)) ** 2
+            inside = np.exp(-d2 ** 2)
+            outer = self.grade.get("mix", 1.0)
+            self.mix_map = (outer + (p["mix"] - outer) * inside)[..., None]
         self.vignette = None
         if cfg.get("vignette"):
             yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
@@ -278,7 +287,8 @@ class Look:
                 lift = np.array(hex_rgb(g["lift"])[::-1], np.float32) / 255
                 f = lift + f * (1 - lift)
             f = np.clip(f, 0, 1)
-            mix = g.get("mix", 1.0)  # 0.6 なら、色のトーンを6割だけかける（もとの映像の色を4割残す）
+            # 0.6 なら、色のトーンを6割だけかける（もとの映像の色を4割残す）
+            mix = self.mix_map if self.mix_map is not None else g.get("mix", 1.0)
             f = orig * (1 - mix) + f * mix
         if self.vignette is not None:
             f *= self.vignette

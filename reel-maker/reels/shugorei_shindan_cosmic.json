@@ -222,9 +222,16 @@
       "multiply": "#a49cff",
       "multiply_strength": 0.4,
       "lift": "#0a0624",
-      "mix": 0.7
+      "mix": 0.75,
+      "protect": {
+        "x": 0.5,
+        "y": 0.55,
+        "rx": 0.6,
+        "ry": 0.33,
+        "mix": 0.12
+      }
     },
-    "vignette": 0.6,
+    "vignette": 0.35,
     "nebula": [
       {
         "x": 0.15,
