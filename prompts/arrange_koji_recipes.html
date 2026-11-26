@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アレンジ麹レシピ集</title>
+<style>
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: #e8f4fd;
+    color: #333;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+  .title-block {
+    background: #ff00ff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .title-block .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+    opacity: 0.85;
+    margin-bottom: 6px;
+  }
+  .title-block h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+    line-height: 1.4;
+  }
+  .title-block .sub {
+    font-size: 13px;
+    color: #fff;
+    opacity: 0.9;
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  .section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .section-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .section p {
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 0;
+    color: #444;
+  }
+  .section-note .section-icon { background: #ede7f6; }
+  .section-note .section-title { color: #5e35b1; }
+  .section-note { border-left: 4px solid #9575cd; }
+
+  .recipe-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--accent, #999);
+  }
+  .recipe-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .recipe-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent, #999);
+    color: #fff;
+    font-weight: 900;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .recipe-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: #333;
+  }
+  .recipe-source {
+    font-size: 11px;
+    color: #888;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .recipe-source a { color: #888; }
+  .recipe-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent, #999);
+    letter-spacing: 1px;
+    margin: 14px 0 4px;
+  }
+  .recipe-text {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #444;
+    margin: 0;
+  }
+  .recipe-note {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #b8860b;
+    background: #fff8e1;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-top: 12px;
+  }
+  .step-list-sm {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: step;
+  }
+  .step-list-sm li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    padding: 4px 0 4px 28px;
+    position: relative;
+    counter-increment: step;
+  }
+  .step-list-sm li::before {
+    content: counter(step) '.';
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+    color: var(--accent, #999);
+  }
+
+  .divider {
+    text-align: center;
+    color: #9575cd;
+    font-size: 12px;
+    letter-spacing: 4px;
+    margin: 28px 0 8px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- タイトル -->
+  <div class="title-block">
+    <div class="label">REFERENCE MATERIAL</div>
+    <h1>アレンジ麹レシピ集</h1>
+    <div class="sub">基本の塩麹・醤油麹を覚えたあと、次に試したくなる応用レシピの参考資料です。各SNS投稿者のレシピを出典付きでまとめています。</div>
+  </div>
+
+  <div class="section section-note">
+    <div class="section-header">
+      <div class="section-icon">📌</div>
+      <div class="section-title">この資料について</div>
+    </div>
+    <p>
+      ここに集めたのは、各SNSで紹介されているアレンジ麹・発酵調味料のレシピです。分量や作り方は投稿者それぞれの管理によるものなので、
+      実際に仕込む際は出典元の投稿もあわせて確認してください。特に「キムチ麹」「ハーブ麹」は詳細な分量が未確認のため、投稿元での確認をおすすめします。<br><br>
+      なお、基本の「塩麹」「醤油麹」そのもののレシピは、今回集めた投稿の中には含まれていませんでした（別紙の講座資料に収録済みです）。
+    </p>
+  </div>
+
+  <div class="divider">◆ ◆ ◆</div>
+
+  <!-- 1. にんにく麹 -->
+  <div class="recipe-card" style="--accent:#8d6e63">
+    <div class="recipe-header">
+      <div class="recipe-number">1</div>
+      <div class="recipe-title">にんにく麹</div>
+      <div class="recipe-source">出典：@peko_chokatsu</div>
+    </div>
+    <div class="recipe-label">材料</div>
+    <p class="recipe-text">にんにく50g（皮むき後）・水120ml・米麹100g・塩30g<br>※生麹を使う場合：生麹120g・水90〜100ml</p>
+    <div class="recipe-label">作り方</div>
+    <ol class="step-list-sm">
+      <li>にんにくと水をフードプロセッサーで攪拌する</li>
+      <li>米麹・塩を加えてさらに混ぜる</li>
+      <li>発酵させる（ヨーグルトメーカーなら60℃・8時間／炊飯器の保温機能で湯煎し8時間／常温なら夏5〜7日・冬1〜2週間、1日1回かき混ぜる）</li>
+    </ol>
+    <div class="recipe-note">保存目安：冷蔵2〜3ヶ月、冷凍約半年</div>
+  </div>
+
+  <!-- 2. 玉ねぎ麹 -->
+  <div class="recipe-card" style="--accent:#ad1457">
+    <div class="recipe-header">
+      <div class="recipe-number">2</div>
+      <div class="recipe-title">玉ねぎ麹</div>
+      <div class="recipe-source">出典：@shoken_gohan</div>
+    </div>
+    <div class="recipe-label">材料</div>
+    <p class="recipe-text">玉ねぎ250g・米麹100g・塩35g</p>
+    <div class="recipe-note">投稿者によると、かなりしょっぱめの仕上がりとのこと。塩は半量程度に減らしても良さそうです。</div>
+  </div>
+
+  <!-- 3. コンソメ麹 -->
+  <div class="recipe-card" style="--accent:#2e7d32">
+    <div class="recipe-header">
+      <div class="recipe-number">3</div>
+      <div class="recipe-title">コンソメ麹</div>
+      <div class="recipe-source">出典：@anko.kojirecipe</div>
+    </div>
+    <div class="recipe-label">材料</div>
+    <p class="recipe-text">米麹100g・塩35g・玉ねぎ150g・人参1/2本（80〜90g）・セロリ50g・にんにく麹10g（またはにんにく2片）</p>
+    <div class="recipe-label">作り方</div>
+    <ol class="step-list-sm">
+      <li>材料をすべてフードプロセッサーにかける</li>
+      <li>清潔な容器に入れ、58℃で8時間発酵させるか、室温で7〜10日（毎日1回かき混ぜる）</li>
+    </ol>
+  </div>
+
+  <!-- 4. 中華麹 -->
+  <div class="recipe-card" style="--accent:#c62828">
+    <div class="recipe-header">
+      <div class="recipe-number">4</div>
+      <div class="recipe-title">中華麹</div>
+      <div class="recipe-source">出典：@shoken_gohan</div>
+    </div>
+    <div class="recipe-label">材料（小瓶1本分）</div>
+    <p class="recipe-text">米麹100g・塩18g・鶏ひき肉70g・水100ml・干し椎茸1/2枚・昆布2〜3g・生姜5g・にんにく5g・長ねぎ（青い部分）5cm</p>
+    <div class="recipe-label">作り方</div>
+    <ol class="step-list-sm">
+      <li>水で干し椎茸・鶏ひき肉などを煮る</li>
+      <li>火が通ったら粗熱を取る</li>
+      <li>麹を加えて58℃で8時間発酵させる</li>
+    </ol>
+  </div>
+
+  <!-- 5. キムチ麹 -->
+  <div class="recipe-card" style="--accent:#d84315">
+    <div class="recipe-header">
+      <div class="recipe-number">5</div>
+      <div class="recipe-title">キムチ麹</div>
+      <div class="recipe-source">出典：@shoken_gohan</div>
+    </div>
+    <p class="recipe-text">米麹・出汁麹をベースに、ナンプラー・干しエビ・粉唐辛子・りんご・玉ねぎなどを合わせた発酵キムチ麹。</p>
+    <div class="recipe-note">詳しい分量は未確認です。仕込む前に投稿元で確認してください。</div>
+  </div>
+
+  <!-- 6. ハーブ麹 -->
+  <div class="recipe-card" style="--accent:#558b2f">
+    <div class="recipe-header">
+      <div class="recipe-number">6</div>
+      <div class="recipe-title">ハーブ麹（塩麹アレンジ）</div>
+      <div class="recipe-source">出典：@shoken_gohan</div>
+    </div>
+    <p class="recipe-text">ローズマリー・タイム・バジルなどを使った塩麹のバリエーション。</p>
+    <div class="recipe-note">分量は未確認です。仕込む前に投稿元で確認してください。</div>
+  </div>
+
+  <!-- 7. スパイスカレー味噌 -->
+  <div class="recipe-card" style="--accent:#f9a825">
+    <div class="recipe-header">
+      <div class="recipe-number">7</div>
+      <div class="recipe-title">スパイスカレー味噌</div>
+      <div class="recipe-source">出典：@shoken_gohan</div>
+    </div>
+    <div class="recipe-label">材料（家庭用分量）</div>
+    <p class="recipe-text">
+      米麹330g・天然塩100g・乾燥大豆225g（茹で上がり500g目安）<br>
+      スパイス：クミン4.5g・コリアンダー4.5g・ターメリック2g・ガラムマサラ2g・黒胡椒1.5g・チリ0.5g・フェンネル0.75g・クローブ0.75g・カルダモン1g・シナモン3つまみ
+    </p>
+    <div class="recipe-label">作り方</div>
+    <ol class="step-list-sm">
+      <li>大豆を煮て潰す</li>
+      <li>40℃くらいまで冷ます</li>
+      <li>塩切り麹とスパイスを混ぜる</li>
+      <li>容器に詰めて6ヶ月熟成させる</li>
+    </ol>
+    <div class="recipe-note">出典リンク：<a href="https://www.instagram.com/reel/DRooONFks7i/" target="_blank" rel="noopener">https://www.instagram.com/reel/DRooONFks7i/</a></div>
+  </div>
+
+  <!-- 8. 塩麹参鶏湯 -->
+  <div class="recipe-card" style="--accent:#00838f">
+    <div class="recipe-header">
+      <div class="recipe-number">8</div>
+      <div class="recipe-title">塩麹参鶏湯（料理）</div>
+      <div class="recipe-source">出典：@popo_mutenka_hakkou</div>
+    </div>
+    <p class="recipe-text" style="margin-bottom:10px;">※麹そのものではなく、仕込んだ塩麹を使う料理のレシピです。</p>
+    <div class="recipe-label">材料（3〜4人分）</div>
+    <p class="recipe-text">手羽元10本・手羽先5本〜・塩麹大さじ3〜4・しいたけ3個・白菜3枚・長ねぎ1本・大根1/3本・にんにく5片・生姜スライス5〜10枚・白米1合・水800ml〜</p>
+    <div class="recipe-label">作り方</div>
+    <p class="recipe-text">鍋に材料を重ねて入れ、弱火で30分〜コトコト煮込む。</p>
+    <div class="recipe-note">出典リンク：<a href="https://www.instagram.com/reel/DTKqP9pEbrN/" target="_blank" rel="noopener">https://www.instagram.com/reel/DTKqP9pEbrN/</a></div>
+  </div>
+
+</body>
+</html>
